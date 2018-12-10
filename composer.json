@@ -1,0 +1,29 @@
+{
+    "name": "sroehrl/neoan3",
+    "description": "the efficient PHP framework",
+    "require": {
+        "php": "^5.6 || ^7.0",
+        "ext-json": "*",
+        "mnsami/composer-custom-directory-installer": "1.1.*",
+        "pug-php/pug": "^3.2",
+        "leafo/scssphp": "0.7.6",
+        "phpmailer/phpmailer": "~6.0",
+        "neoan3-apps/db": "dev-master",
+        "neoan3-apps/curl": "dev-master",
+        "neoan3-apps/session": "dev-master",
+        "neoan3-apps/ops": "dev-master",
+        "neoan3-apps/js": "dev-master"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "neoan",
+            "email": "neoan@neoan.us"
+        }
+    ],
+    "extra": {
+        "installer-paths": {
+
+        }
+    }
+}

@@ -1,0 +1,56 @@
+#Options -Multiviews
+#Options +FollowSymLinks
+RewriteEngine On
+
+RewriteBase /neoan3/
+
+
+# turn off www
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+# force ssl
+#RewriteCond %{HTTPS} off
+#RewriteCond %{REQUEST_URI} !/img/
+#RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+
+# add trailing slashes if not real file
+RewriteCond %{SERVER_PORT} !^3000$
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !pagespeed
+RewriteCond %{REQUEST_FILENAME} !phpmyadmin
+RewriteCond %{REQUEST_URI} !(/$|\.)
+RewriteRule (.*) %{REQUEST_URI}/ [R=301,L]
+#RewriteRule ^(.*[^/])$ /$1/ [L,R=301]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !pagespeed
+RewriteCond %{REQUEST_FILENAME} !phpmyadmin
+RewriteRule ^(.*)?/$     index.php?action=$1&%{QUERY_STRING}    [L]
+
+# caching for css & js & img
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresDefault "access plus 1 month 1 days"
+ExpiresByType image/gif "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType text/javascript "access plus 1 month 1 week"
+ExpiresByType application/x-javascript "access plus 1 month 1 days"
+</IfModule>
+#pagespeed_module
+<IfModule pagespeed_module>
+ModPagespeedEnableFilters extend_cache
+
+ModPagespeedDisallow "*"
+</IfModule>
+
+
+#override htpasswd of possible higher folder
+#Satisfy Any
+#Order Allow,Deny
+#Allow from all
