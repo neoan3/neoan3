@@ -1,12 +1,15 @@
 <?php
 namespace Neoan3\Components;
-use Neoan3\Core\Unicore;
+use Neoan3\Frame;
+use Neoan3\Core;
 /**
 * Created by UNICORE-Concr 10/18/2018
 */
+
 use \Neoan3\Apps\Js;
-class Test extends Unicore{
-    public $alert;
+
+class Test extends Core\Unicore{
+    public $click;
     function init(){
         $this->uni('kit')
             ->addHead('title','Test')
@@ -21,10 +24,12 @@ class Test extends Unicore{
 
             //->alert('before')
             //->listen()
+
             ->click('this.style.fontSize="30px"')
             ->headerHook()
             ->output();
     }
+
 
 	function alert($uni,$args=['no text given']){
 
@@ -49,6 +54,7 @@ class Test extends Unicore{
         $uni->js .= $js;
     }
     function headerHook($uni,$args=[]){
+        return true;
         $uni = load::controller('testing')
             ->external($uni);
     }

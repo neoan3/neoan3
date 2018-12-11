@@ -1,11 +1,11 @@
 <?php
 /**
 * Created by UNICORE-Concr 10/18/2018
-* @method $this alert(string $string)
 */
 namespace Neoan3\Frame;
 use Neoan3\Core\Serve;
 use Leafo\ScssPhp as Leafo;
+
 class Frame extends Serve {
     function __construct() {
         parent::__construct();
@@ -52,7 +52,7 @@ class Frame extends Serve {
             ],
             'js'=>[
                 [
-                    'src'=>base.'vendor/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'
+                    'src'=>base.'node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'
                 ],
 
                /* [

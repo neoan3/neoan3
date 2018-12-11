@@ -11,9 +11,8 @@ class ApiTest extends Unicore {
             ->includeElement('neoan-api')
             ->callback($this,'listen')
             ->callback(new Test,'alert')
-            ->compiler();
+            ->compiler()->output();
 
-        $this->unicore->output();
     }
     function ctrl($uni,$args=[]){
 
