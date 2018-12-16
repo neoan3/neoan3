@@ -1,17 +1,36 @@
 <?php
 namespace Neoan3\Components;
 use Neoan3\Core\Unicore;
+
+/**
+ * Class error_404
+ * @package Neoan3\Components
+ */
 class error_404 extends Unicore
 {
-	function init()
+    /**
+     * Hooking into the default router logic
+     */
+    function init()
 	{
         error_reporting(E_ALL ^E_NOTICE);
         ini_set('display_errors',1);
 	    header("HTTP/1.0 404 Not Found");
-		$this->uni()->addHead('title','Not found')->callback($this,'action')->output();
-
+	    if(defined('default_404')){
+	        $class = __NAMESPACE__ .'\\'.default_404;
+	        $run = new $class();
+	        $run->init();
+	        exit();
+        }
+		$this->uni()->addHead('title','Not found')
+            ->callback($this,'action')->output();
 	}
-	function action($uni,$args=[])
+
+    /**
+     * @param $uni
+     * @param array $args
+     */
+    function action($uni, $args=[])
 	{
 		$uni->main = '
 			<h3>404 - Nothing can be found here</h3>

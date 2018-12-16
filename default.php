@@ -1,1 +1,6 @@
-<?php define('default_ctrl','Test');
+<?php
+// default route (homepage)
+define('default_ctrl','Test');
+
+// optional: custom 404
+define('default_404','Test');
