@@ -151,10 +151,14 @@ class Serve {
         return $this;
     }
     function __call($name, $arguments) {
+        $pass = null;
+        if(isset($arguments[0])){
+            $pass = $arguments[0];
+        }
         if(!method_exists($this,$name)){
             foreach ($this->methods as $key=>$function){
                 if($key==$name){
-                    $this->methods[$name]($key,$arguments[0]);
+                    $this->methods[$name]($key,$pass);
                     return $this;
                 }
             }

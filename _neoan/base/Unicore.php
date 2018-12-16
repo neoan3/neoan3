@@ -5,9 +5,11 @@
  * Date: 12/9/2018
  * Time: 1:33 PM
  */
+
 namespace Neoan3\Core;
 use Neoan3\Apps\Ops;
 use Neoan3\Frame\Frame;
+/** @property $this $click */
 class Unicore {
     public $unicore;
     function uni($frame=''){
