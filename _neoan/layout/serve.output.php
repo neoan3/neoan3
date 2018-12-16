@@ -75,7 +75,7 @@ class Serve {
         }
     }
     function includeJsModule($module){
-        $this->modules .= '<script type="module">'.$module.'</script>';
+        $this->modules .= '<script type="module" src="'.base.'node_modules/'.$module.'"></script>';
         return $this;
     }
     function includeJs($src,$data=[],$type='text/javascript'){
