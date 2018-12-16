@@ -4,9 +4,6 @@ class Route{
     public $call;
     public $protocol;
     function __construct($context='view') {
-        define('path', dirname(dirname(dirname(__FILE__))));
-        define('neoan_path', dirname(dirname(__FILE__)));
-        define('asset_path', dirname(dirname(dirname(__FILE__))).'/asset');
         require_once(path.'/default.php');
         $this->protocol = ($_SERVER['SERVER_PORT']!='80'&&empty($_SERVER['HTTPS'])?':8080':'');
         $this->defineBase($this->offset($context));
@@ -24,6 +21,7 @@ class Route{
         switch ($context){
             case 'view': $r = -9; break;
             case 'api': $r = -19; break;
+            case 'node': $r = -21; break;
         }
         return $r;
     }

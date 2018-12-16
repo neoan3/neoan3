@@ -31,6 +31,10 @@ RewriteCond %{REQUEST_FILENAME} !pagespeed
 RewriteCond %{REQUEST_FILENAME} !phpmyadmin
 RewriteRule ^(.*)?/$     index.php?action=$1&%{QUERY_STRING}    [L]
 
+# redirect node_modules to
+# remove for native use or set to [R=301]
+RewriteRule ^node_modules/(.*)$    _neoan/base/Node.php?action=$1&%{QUERY_STRING}    [L,NC]
+
 # caching for css & js & img
 <IfModule mod_expires.c>
 ExpiresActive On

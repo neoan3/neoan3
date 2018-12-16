@@ -51,8 +51,11 @@ class Frame extends Serve {
                 ]
             ],
             'js'=>[
-                [
-                    'src'=>base.'vendor/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'
+               [
+                    'src'=>base.'node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js'
+               ],[
+                    'src'=>base.'node_modules/@polymer/polymer/polymer-element.js',
+                    'type'=>'module'
                 ],
 
                /* [

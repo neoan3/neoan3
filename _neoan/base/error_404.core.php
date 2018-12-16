@@ -1,5 +1,7 @@
 <?php
-class error_404 extends unicore
+namespace Neoan3\Components;
+use Neoan3\Core\Unicore;
+class error_404 extends Unicore
 {
 	function init()
 	{

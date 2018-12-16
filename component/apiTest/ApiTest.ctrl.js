@@ -1,6 +1,6 @@
 (function () {
-    document.querySelector('body')
+   /* document.querySelector('body')
         .addEventListener('apiResponse', function (data) {
         console.log(data.detail)
-    });
+    });*/
 })();

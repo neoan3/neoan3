@@ -18,6 +18,7 @@ class Serve {
     public  $importedStyles='';
     public  $scripts='';
     public  $importedScripts='';
+    public  $modules='';
     public  $js='';
     public  $pug;
     public  $passOn;
@@ -36,7 +37,7 @@ class Serve {
         $this->html .= '<!doctype html><html><head>{{head}}</head><body>';
         $this->html .= '<style>{{importedStyles}}{{style}}</style>';
         $this->html .= '<header>{{header}}</header><neoan-root></neoan-root>{{main}}<footer>{{footer}}</footer>';
-        $this->html .= '{{importedScripts}}{{scripts}}<script>{{js}}</script></body></html>';
+        $this->html .= '{{importedScripts}}{{scripts}}<script>{{js}}</script>{{modules}}</body></html>';
     }
     function addHead($what,$obj){
         switch($what){
@@ -73,7 +74,10 @@ class Serve {
             $this->importedStyles  .= ' @import url(' . $style . '); ';
         }
     }
-
+    function includeJsModule($module){
+        $this->modules .= '<script type="module">'.$module.'</script>';
+        return $this;
+    }
     function includeJs($src,$data=[],$type='text/javascript'){
 
         if(empty($data)){
@@ -193,6 +197,7 @@ class Serve {
             'js'=>$this->js,
             'importedScripts'=>$this->importedScripts,
             'footer'=>$this->footer,
+            'modules'=>$this->modules
         ]);
     }
 }
