@@ -155,6 +155,7 @@ class Serve {
             foreach ($this->methods as $key=>$function){
                 if($key==$name){
                     $this->methods[$name]($key,$arguments[0]);
+                    return $this;
                 }
             }
             die('Unknown method: '.$name);

@@ -16,13 +16,11 @@ class Test extends Unicore{
             ->hook('main','test')
             ->addMethod($this,'alert')
             ->addMethod($this,'click')
-            ->addMethod($this,'headerHook')
             ->addMethod($this,'listen')
 
-            //->alert('before')
+            ->alert('before')
             //->listen()
             ->click('this.style.fontSize="30px"')
-            ->headerHook()
             ->output();
     }
 
@@ -48,10 +46,7 @@ class Test extends Unicore{
             ->out();
         $uni->js .= $js;
     }
-    function headerHook($uni,$args=[]){
-        $uni = load::controller('testing')
-            ->external($uni);
-    }
+
     function api($obj=[]){
         return ['response'=>'test-data'];
     }
