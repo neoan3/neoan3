@@ -8,14 +8,14 @@
 
 namespace Neoan3\Core;
 use Neoan3\Apps\Ops;
-use Neoan3\Frame\Frame;
+use Neoan3\Frame;
 /** @property $this $click */
 class Unicore {
     public $unicore;
     function uni($frame=''){
         if($frame!=''){
-            include_once(path . '/frame/' . $frame . '/' . $frame . '.php');
-            $this->unicore = new Frame();
+            $class =  '\\Neoan3\\Frame\\'. ucfirst($frame);
+            $this->unicore = new $class();
         } else {
             $this->unicore = new Serve();
         }

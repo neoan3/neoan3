@@ -6,13 +6,22 @@
 namespace Neoan3\Frame;
 use Neoan3\Core\Serve;
 use Leafo\ScssPhp as Leafo;
-class Frame extends Serve {
+class Kit extends Serve {
     function __construct() {
         parent::__construct();
         define('db_host','localhost');
         define('db_name','neoan');
         define('db_user','root');
         define('db_password','');
+        $this->imp([
+            'paper-button',
+            'iron-ajax'
+        ]);
+    }
+    protected function imp($arr){
+        foreach ($arr as $item) {
+            $this->includeJsModule('@polymer/'.$item.'/'.$item.'.js');
+        }
     }
     function compiler(){
         $server = new Leafo\Compiler();
