@@ -7,6 +7,7 @@
 define('path', dirname(dirname(dirname(__FILE__))));
 define('neoan_path', dirname(dirname(__FILE__)));
 define('asset_path', dirname(dirname(dirname(__FILE__))).'/asset');
+
 require_once(dirname(__FILE__) . '/Unicore.php');
 include_once(dirname(__FILE__).'/Route.php');
 

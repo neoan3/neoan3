@@ -35,6 +35,10 @@ RewriteRule ^(.*)?/$     index.php?action=$1&%{QUERY_STRING}    [L]
 # remove for native use or set to [R=301]
 RewriteRule ^node_modules/(.*)$    _neoan/base/Node.php?action=$1&%{QUERY_STRING}    [L,NC]
 
+# redirect to default API-endpoint:
+# {root}/api.v1/
+RewriteRule ^api.v1/(.*)$    _neoan/base/Api.php    [L,NC]
+
 # caching for css & js & img
 <IfModule mod_expires.c>
 ExpiresActive On

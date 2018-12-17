@@ -1,9 +1,10 @@
 <?php
-
 require_once(dirname(__FILE__) . '/_includes.php');
+
 $route = new Route('api');
 $api = new Api();
 $api->apiRoute();
+
 exit();
 
 /**
@@ -13,7 +14,15 @@ class Api {
     /**
      * @var
      */
-    public $post;
+    public $stream;
+    /**
+     * @var array
+     */
+    public $header = [];
+    /**
+     * @var
+     */
+    private $responseCode;
 
     /**
      * Api constructor.
@@ -23,46 +32,109 @@ class Api {
         if(!empty($data)){
             $divide = json_decode($data, true);
             // secure here!!
-            $this->post = $divide;
+            $this->stream = $divide;
         } elseif(!empty($_FILES)){
-            $this->post = $_POST;
+            $this->stream = $_POST;
+        } else {
+            $this->stream = $_REQUEST;
         }
         $this->requestMethod();
+        $this->requestHeader();
     }
 
     /**
-     * exit if options
+     * exit if options and provide possible requests
      */
     private function requestMethod(){
-        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-            header("Content-Type: application/json");
-            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-                header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-                header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-            exit(0);
+        if (isset($_SERVER['REQUEST_METHOD']) ) {
+            $this->header['REQUEST_METHOD'] = $_SERVER['REQUEST_METHOD'];
+            if($_SERVER['REQUEST_METHOD'] == 'OPTIONS'){
+                header("Content-Type: application/json");
+                if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+                    header("Access-Control-Allow-Methods: GET, POST, PUSH, DELETE, OPTIONS");
+                if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+                    header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+                exit(0);
+            }
         }
     }
 
+    /**
+     *
+     */
+    function requestHeader(){
+        $endpointParts = explode('/',$_SERVER['REQUEST_URI']);
+        $targetParts = explode('?',end($endpointParts));
+
+        $this->header = array_merge($this->header,apache_request_headers());
+        $this->header['target'] = $targetParts[0];
+    }
+
+    /**
+     * @param $number
+     */
+    function setResponseHeader($number){
+        $this->responseCode = $number;
+    }
     /**
      * route to class/function/data
      */
     function apiRoute(){
-
-        $frame = $this->post['config'];
-        require_once(path . '/frame/' . $frame . '/' . $frame . '.php');
-        $frame = new Neoan3\Frame\Frame();
-        require_once(path . '/component/' . $this->post['c'] . '/' . $this->post['c'] . '.ctrl.php');
-        $class = __NAMESPACE__ . '\\Neoan3\\Components\\'.$this->post['c'];
-        $c = new $class(false);
-
-        $function = $this->post['f'];
-        $obj = (isset($this->post['d']) ? $this->post['d'] : array());
-        header('Content-type: application/json');
-        if (!empty($obj)) {
-            echo json_encode($c->$function($obj));
-        } else {
-            echo json_encode($c->$function());
+        if(!isset($this->header['target'])){
+            $this->setResponseHeader(503);
+            $this->exiting(['error'=>'missing target']);
         }
+
+        $function = strtolower($this->header['REQUEST_METHOD']).ucfirst($this->header['target']);
+        $class = __NAMESPACE__ . '\\Neoan3\\Components\\'.$this->header['target'];
+        $this->checkErrors($class,$function);
+        $c = new $class(false);
+        $this->setResponseHeader(200);
+
+        if (!empty($this->stream)) {
+            $this->exiting($c->$function($this->stream));
+        } else {
+            $this->exiting($c->$function());
+        }
+
+    }
+
+    /**
+     * @param $class
+     * @param $function
+     */
+    private function checkErrors($class, $function){
+        $file = path . '/component/' . $this->header['target'] . '/' . $this->header['target'] . '.ctrl.php';
+        try{
+            if(!file_exists($file)){
+                $this->setResponseHeader(404);
+                throw new Exception('unknown endpoint');
+            } else {
+                require_once($file);
+            }
+            if(!method_exists($class,$function)){
+                $this->setResponseHeader(405);
+                throw new Exception('method '.$this->header['REQUEST_METHOD'].' is not supported at this endpoint');
+            }
+            $r = new ReflectionMethod($class, $function);
+            $params = $r->getParameters();
+            if(isset($params[0])&&!$params[0]->isOptional()&&empty($this->stream)){
+                $this->setResponseHeader(400);
+                throw new Exception('request is empty');
+            }
+        } catch (Exception $e){
+
+            $this->exiting(['error'=>$e->getMessage()]);
+        }
+    }
+
+    /**
+     * @param $answer
+     */
+    private function exiting($answer){
+        http_response_code($this->responseCode);
+        header('Content-type: application/json');
+        echo json_encode($answer);
+        exit();
     }
 }
