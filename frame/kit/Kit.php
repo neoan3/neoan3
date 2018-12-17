@@ -37,7 +37,7 @@ class Kit extends Serve {
                     'sizes'=>'32x32',
                     'type'=>'image/png',
                     'rel'=>'icon',
-                    'href'=>'http://neoan.us/img/favicon/favicon-32x32.png'
+                    'href'=>'asset/neoan-favicon.png'
                 ]
             ],
             'stylesheet'=>[

@@ -19,9 +19,7 @@ class Unicore {
         } else {
             $this->unicore = new Serve();
         }
-
         $track = debug_backtrace();
-
         $this->get_files($track[0]['file']);
         return $this->unicore;
     }
