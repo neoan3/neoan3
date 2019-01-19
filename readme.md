@@ -13,7 +13,7 @@ PHP7
 ## Installation
 1. Change .htaccess accordingly (in most cases changing the rewriteBase is enough)
 2. Run composer install
-3. Run nmp install
+3. Run nmp init
 
 
 MIT license [opensource](https://opensource.org/licenses/MIT)
