@@ -2,6 +2,7 @@
 
 class Route{
     public $call;
+    public $url_parts;
     public $protocol;
     function __construct($context='view') {
         require_once(path.'/default.php');
@@ -27,8 +28,8 @@ class Route{
     }
     private function loader(){
         if (isset($_GET['action']) && trim($_GET['action']) != '') {
-            $url_part = explode('/', $_GET['action']);
-            $normalize = explode('-',$url_part[0]);
+            $this->url_parts = explode('/', $_GET['action']);
+            $normalize = explode('-',$this->url_parts[0]);
             $this->call = '';
             foreach($normalize as $part){
                 $this->call .= ucfirst(strtolower($part));

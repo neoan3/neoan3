@@ -11,9 +11,9 @@
  * @return false or value
  */
 function sub($no) {
-    global $url_part;
-    if(!empty($url_part[$no]))
-        return $url_part[$no];
+    global $route;
+    if(!empty($route->url_parts[$no]))
+        return $route->url_parts[$no];
     else
         return false;
 }
@@ -29,9 +29,9 @@ function img($src,$alt = '',$additional ='') {
         $alt = $alt[0];
     }
     if(strpos($additional, 'id="') === false)
-        $autoid = 'id= "' . $alt . '_img"';
+        $autoId = 'id= "' . $alt . '_img"';
     else
-        $autoid = '';
+        $autoId = '';
 
     return '<img src="' . $src . '" alt="' . $alt . '" ' . $autoid . ' ' . $additional . ' />';
 }
