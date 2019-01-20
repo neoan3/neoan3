@@ -1,45 +1,105 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sroehrl
- * Date: 10/18/2018
- * Time: 1:57 PM
- */
+
 namespace Neoan3\Core;
 use Neoan3\Apps\Ops;
-use Pug\Pug;
+
+/**
+ * Class Serve
+ * @package Neoan3\Core
+ */
 class Serve {
+    /**
+     * @var string
+     */
     private $html='';
+    /**
+     * @var string
+     */
     public  $head='';
+    /**
+     * @var string
+     */
     public  $header='';
+    /**
+     * @var string
+     */
     public  $main='';
+    /**
+     * @var string
+     */
     public  $footer='';
+    /**
+     * @var string
+     */
     public  $style='';
+    /**
+     * @var string
+     */
     public  $importedStyles='';
+    /**
+     * @var string
+     */
     public  $scripts='';
+    /**
+     * @var string
+     */
     public  $importedScripts='';
+    /**
+     * @var string
+     */
     public  $modules='';
+    /**
+     * @var string
+     */
     public  $js='';
-    public  $pug;
+    /**
+     * @var string
+     */
+    public  $viewExt='html';
+    /**
+     * @var
+     */
     public  $passOn;
+    /**
+     * @var array
+     */
     public  $methods=[];
+    /**
+     * @var array
+     */
     public  $ctrl=[];
 
+    /**
+     * Serve constructor.
+     */
     function __construct(){
-        $this->pug = new Pug();
         $this->html = '';
 
         $this->initFrame();
         $this->startHtml();
     }
+
+    /**
+     * @return array
+     */
     function constants(){return [];}
+
+    /**
+     *
+     */
     function startHtml(){
         $this->html .= '<!doctype html><html><head>{{head}}</head><body>';
         $this->html .= '<style>{{importedStyles}}{{style}}</style>';
         $this->html .= '<header>{{header}}</header><neoan-root></neoan-root>{{main}}<footer>{{footer}}</footer>';
         $this->html .= '{{importedScripts}}{{scripts}}<script>{{js}}</script>{{modules}}</body></html>';
     }
-    function addHead($what,$obj){
+
+    /**
+     * @param $what
+     * @param $obj
+     * @return $this
+     */
+    function addHead($what, $obj){
         switch($what){
             case 'link':
                 $this->head .= '<link ';
@@ -66,6 +126,10 @@ class Serve {
         }
         return $this;
     }
+
+    /**
+     * @param $style
+     */
     function addStylesheet($style){
         if(strpos($style,base)!==false){
             $file = file_get_contents($style);
@@ -74,11 +138,23 @@ class Serve {
             $this->importedStyles  .= ' @import url(' . $style . '); ';
         }
     }
+
+    /**
+     * @param $module
+     * @return $this
+     */
     function includeJsModule($module){
         $this->modules .= '<script type="module" src="'.base.'node_modules/'.$module.'"></script>';
         return $this;
     }
-    function includeJs($src,$data=[],$type='text/javascript'){
+
+    /**
+     * @param $src
+     * @param array $data
+     * @param string $type
+     * @return $this
+     */
+    function includeJs($src, $data=[], $type='text/javascript'){
 
         if(empty($data)){
             $this->scripts .= "\n". '<script type="'.$type.'" src="' . $src . '"></script>';
@@ -95,12 +171,20 @@ class Serve {
             }
 
         }
-
+        return $this;
     }
+
+    /**
+     * @param $name
+     * @return string
+     */
     private function annotate($name){
         return "\n/* include(" .$name .') */' ."\n";
     }
 
+    /**
+     *
+     */
     private function initFrame(){
 
         foreach($this->constants() as $type => $includes){
@@ -125,18 +209,30 @@ class Serve {
         }
 
     }
-    function hook($hook,$view,$params=[]){
+
+    /**
+     * @param $hook
+     * @param $view
+     * @param array $params
+     * @return $this
+     */
+    function hook($hook, $view, $params=[]){
         if(!isset($params['base'])){
             $params['base'] = base;
         }
         $this->$hook .= Ops::embrace(
-            $this->pug->renderFile(path.'/component/'.$view.'/'.$view.'.view.pug',$params),
+            $this->fileContent(path.'/component/'.$view.'/'.$view.'.view.'.$this->viewExt,$params),
             $params
         );
         return $this;
     }
 
-    function addMethod($context,$function){
+    /**
+     * @param $context
+     * @param $function
+     * @return $this
+     */
+    function addMethod($context, $function){
         $this->passOn[$function] = [$context,$function];
         $this->methods[$function] = function(){
             $args = func_get_args();
@@ -145,11 +241,22 @@ class Serve {
         };
         return $this;
     }
+
+    /**
+     * @param $name
+     * @return $this
+     */
     function addController($name){
         require_once(path.'/component/'.$name.'/'.$name.'.ctrl.php');
         $this->ctrl[$name.'Ctrl'] = new $name;
         return $this;
     }
+
+    /**
+     * @param $name
+     * @param $arguments
+     * @return $this
+     */
     function __call($name, $arguments) {
         $pass = null;
         if(isset($arguments[0])){
@@ -165,6 +272,11 @@ class Serve {
             die('Unknown method: '.$name);
         }
     }
+
+    /**
+     * @param $name
+     * @return string
+     */
     private function snake2Camel($name){
         $nameParts = explode('-',$name);
         $res = '';
@@ -173,23 +285,49 @@ class Serve {
         }
         return $res;
     }
-    function includeElement($element,$params=[]){
+
+    /**
+     * @param $element
+     * @param array $params
+     * @return $this
+     */
+    function includeElement($element, $params=[]){
         $pName = $this->snake2Camel($element);
         $path = path.'/component/'.$pName.'/'.$pName.'.ce.';
-        if(file_exists($path.'pug')){
-            $this->footer .= '<template id="'.$element.'">'.$this->pug->renderFile($path.'pug',$params).'</template>';
+        if(file_exists($path.$this->viewExt)){
+            $this->footer .= '<template id="'.$element.'">'.
+                $this->fileContent($path.$this->viewExt,$params).
+                '</template>';
         }
         if(file_exists($path.'js')){
-            $this->js .= file_get_contents($path.'js');
+            $this->modules .= '<script type="module" src="'.base.'/serve.file/'.$pName.'/ce"></script>';
         }
 
         return $this;
     }
 
-    function callback($context,$function){
+    /**
+     * @param $context
+     * @param $function
+     * @return $this
+     */
+    function callback($context, $function){
         $context->$function($this);
         return $this;
     }
+
+    /**
+     * @param $filePath
+     * @param array $params
+     * @return false|string
+     */
+    function fileContent($filePath, $params=[]){
+        return file_get_contents($filePath);
+    }
+
+    /**
+     *
+     */
     function output(){
 
         echo Ops::embrace($this->html,[
