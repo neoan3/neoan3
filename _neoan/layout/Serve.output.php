@@ -56,8 +56,17 @@ class Serve {
      * @var string
      */
     public  $viewExt='html';
+    /**
+     * @var string
+     */
     public  $styleExt='css';
+    /**
+     * @var string
+     */
     public  $feExt='js';
+    /**
+     * @var
+     */
     public  $runComponent;
     /**
      * @var
@@ -80,8 +89,15 @@ class Serve {
 
         $this->initFrame();
         $this->startHtml();
+
     }
+
+    /**
+     * @param array $params
+     * @return $this
+     */
     function assume($params=[]){
+
         if(!isset($params['base'])){
             $params['base'] = base;
         }
@@ -345,9 +361,10 @@ class Serve {
 
     /**
      * echos DOM
+     * @param array $params optional
      */
-    function output(){
-        $this->assume();
+    function output($params=[]){
+        $this->assume($params);
         echo Ops::embrace($this->html,[
             'head'=>$this->head,
             'style'=>$this->style,
