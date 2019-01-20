@@ -326,7 +326,7 @@ class Serve {
     }
 
     /**
-     *
+     * echos DOM
      */
     function output(){
 
