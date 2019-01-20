@@ -1,0 +1,51 @@
+<?php
+require_once(dirname(__FILE__) . '/_includes.php');
+
+$route = new Route('fileServe');
+$serve = new FileServe($_GET['action']);
+
+use \Neoan3\Apps\Ops;
+class FileServe {
+    private $supported;
+    private $substitutes=[];
+    function __construct($action) {
+        $this->setSupported();
+        $this->substitutes['base'] = base;
+        $parts = explode('/',$action);
+
+        $folder = path.'/component/'.$parts[0];
+        // important: file-serve requires custom delimiter in file-name
+        if(isset($parts[1])){
+            foreach ($this->supported as $type){
+                $this->setSubtitutes($folder.'/'.$parts[0].'.'.$parts[1].'.'.$type,$type);
+            }
+            $keys = array_keys($this->substitutes);
+            $this->mimeType(end($keys));
+            echo Ops::embrace(end($this->substitutes),$this->substitutes);
+            exit();
+        }
+        echo '';
+        exit();
+    }
+    private function mimeType($ext){
+        switch ($ext){
+            case 'js': $type = 'text/javascript'; break;
+            case 'json': $type = 'application/json'; break;
+            default: $type = 'text/'.$ext;
+        }
+        header('Content-Type: '.$type);
+    }
+    private function setSubtitutes($path,$type){
+        if(file_exists($path)){
+            $this->substitutes[$type] = file_get_contents($path);
+        }
+    }
+    private function setSupported(){
+        $this->supported = [
+            'html',
+            'css',
+            'js'
+        ];
+    }
+
+}

@@ -23,6 +23,7 @@ class Route{
             case 'view': $r = -9; break;
             case 'api': $r = -19; break;
             case 'node': $r = -21; break;
+            case 'fileServe': $r = -26; break;
         }
         return $r;
     }
