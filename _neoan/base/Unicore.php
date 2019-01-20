@@ -7,41 +7,44 @@
  */
 
 namespace Neoan3\Core;
-use Neoan3\Apps\Ops;
-use Neoan3\Frame;
-/** @property $this $click */
+/**
+ * Class Unicore
+ * @package Neoan3\Core
+ */
 class Unicore {
-    public $unicore;
+    /**
+     * @var
+     */
+    public $uniCore;
+
+    /**
+     * @param string $frame
+     * @return Serve
+     */
     function uni($frame=''){
         if($frame!=''){
             $class =  '\\Neoan3\\Frame\\'. ucfirst($frame);
-            $this->unicore = new $class();
+            $this->uniCore = new $class();
         } else {
-            $this->unicore = new Serve();
+            $this->uniCore = new Serve();
         }
+
         $track = debug_backtrace();
-        $this->get_files($track[0]['file']);
-        return $this->unicore;
+        $this->setRunComponent($track[0]['file']);
+        return $this->uniCore;
     }
 
-    function get_files($file){
+    /**
+     * @param $file
+     */
+    function setRunComponent($file){
         $folder = substr($file,0,strrpos($file,DIRECTORY_SEPARATOR));
-        $files = scandir($folder);
-        if(!empty($files)){
-            foreach ($files as $include){
-                $buffer ='';
-                if($include!='.'&&$include!='..'&&!is_dir($folder . DIRECTORY_SEPARATOR . $include)){
-                    $buffer = file_get_contents($folder . DIRECTORY_SEPARATOR . $include);
-                }
-                switch(substr($include,-8)){
-                    case 'tyle.css':
-                        $this->unicore->addStylesheet($buffer);
-                        break;
-                    case '.ctrl.js':
-                        $this->unicore->js .= Ops::embrace($buffer,array('base'=>base));
-                        break;
-                }
-            }
-        }
+        $fParts = explode(DIRECTORY_SEPARATOR,$folder);
+        $component = end($fParts);
+        $this->uniCore->runComponent = [
+            $folder,
+            $component
+        ];
     }
+
 }

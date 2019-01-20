@@ -12,8 +12,7 @@
         "neoan3-apps/curl": "dev-master",
         "neoan3-apps/session": "dev-master",
         "neoan3-apps/ops": "dev-master",
-        "neoan3-apps/js": "dev-master",
-        "ext-apache": "*"
+        "neoan3-apps/js": "dev-master"
     },
     "license": "MIT",
     "authors": [

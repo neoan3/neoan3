@@ -39,6 +39,10 @@ RewriteRule ^node_modules/(.*)$    _neoan/base/Node.php?action=$1&%{QUERY_STRING
 # {root}/api.v1/
 RewriteRule ^api.v1/(.*)$    _neoan/base/Api.php    [L,NC]
 
+# redirect to fileserver:
+# {root}/serve.file/
+RewriteRule ^serve.file/(.*)$    _neoan/base/FileServe.php?action=$1&%{QUERY_STRING}    [L,NC]
+
 # caching for css & js & img
 <IfModule mod_expires.c>
 ExpiresActive On
