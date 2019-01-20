@@ -11,7 +11,14 @@ namespace Neoan3\Components;
 
 use Neoan3\Core\Unicore;
 
+/**
+ * Class Start
+ * @package Neoan3\Components
+ */
 class Start extends Unicore {
+    /**
+     * Route constructor
+     */
     function init(){
         $this->uni('kit')
             ->hook('main','start')
