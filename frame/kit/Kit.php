@@ -6,16 +6,23 @@
 namespace Neoan3\Frame;
 use Neoan3\Core\Serve;
 use Leafo\ScssPhp as Leafo;
+use Pug\Pug;
 class Kit extends Serve {
+    public $pug;
     function __construct() {
         parent::__construct();
         define('db_host','localhost');
         define('db_name','neoan');
         define('db_user','root');
         define('db_password','');
+
+        $this->viewExt = 'pug';
+        $this->pug = new Pug();
         $this->imp([
             'paper-button',
-            'iron-ajax'
+            'paper-tabs',
+            'iron-ajax',
+            'iron-pages'
         ]);
     }
     protected function imp($arr){
@@ -23,6 +30,16 @@ class Kit extends Serve {
             $this->includeJsModule('@polymer/'.$item.'/'.$item.'.js');
         }
     }
+    function fileContent($filePath,$params=[]) {
+        try{
+           $html =  $this->pug->renderFile($filePath,$params);
+        } catch (\Exception $e){
+            var_dump($e->getMessage());
+            die();
+        }
+        return $html;
+    }
+
     function compiler(){
         $server = new Leafo\Compiler();
         $this->style .= $server->compile(file_get_contents(path.'/component/ApiTest/ApiTest.style.scss'));
@@ -66,17 +83,6 @@ class Kit extends Serve {
                     'src'=>base.'node_modules/@polymer/polymer/polymer-element.js',
                     'type'=>'module'
                 ],
-
-               /* [
-                    'src'=>base.'vendor/node_modules/@polymer/polymer/polymer-element.js',
-                    'data'=>[
-                        'api-point'=>''.base.'_neoan/apps/api.app.php',
-                        'config'=>'kit',
-                        'endpoint'=>current_endpoint,
-                        'base'=>base
-                    ],
-                    'type'=>'module'
-                ],*/
                 [
                     'src'=>''.base.'frame/kit/kit.js',
                     'data'=>[
