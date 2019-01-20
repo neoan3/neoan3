@@ -10,14 +10,22 @@ use Pug\Pug;
 class Kit extends Serve {
     public $pug;
     function __construct() {
+
         parent::__construct();
         define('db_host','localhost');
         define('db_name','neoan');
         define('db_user','root');
         define('db_password','');
 
-        $this->viewExt = 'pug';
-        $this->pug = new Pug();
+        // custom
+        define('dev_mode',true);
+        if(dev_mode){
+            $this->viewExt = 'pug';
+            $this->pug = new Pug();
+        }
+
+
+
         $this->imp([
             'paper-button',
             'paper-tabs',
@@ -31,13 +39,19 @@ class Kit extends Serve {
         }
     }
     function fileContent($filePath,$params=[]) {
-        try{
-           $html =  $this->pug->renderFile($filePath,$params);
-        } catch (\Exception $e){
-            var_dump($e->getMessage());
-            die();
+        if(dev_mode){
+            try{
+                $html =  $this->pug->renderFile($filePath,$params);
+                file_put_contents(substr($filePath,0,-3).'html',$html);
+            } catch (\Exception $e){
+                var_dump($e->getMessage());
+                die();
+            }
+            return $html;
+        } else {
+            return parent::fileContent($filePath,$params);
         }
-        return $html;
+
     }
 
     function compiler(){

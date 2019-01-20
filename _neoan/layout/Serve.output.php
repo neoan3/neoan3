@@ -56,6 +56,9 @@ class Serve {
      * @var string
      */
     public  $viewExt='html';
+    public  $styleExt='css';
+    public  $feExt='js';
+    public  $runComponent;
     /**
      * @var
      */
@@ -78,6 +81,20 @@ class Serve {
         $this->initFrame();
         $this->startHtml();
     }
+    function assume($params=[]){
+        if(!isset($params['base'])){
+            $params['base'] = base;
+        }
+        $test = $this->runComponent[0].DIRECTORY_SEPARATOR.$this->runComponent[1];
+        if(file_exists($test.'.style.css')){
+            $this->style .= Ops::embrace(file_get_contents($test.'.style.css'),$params);
+        }
+        if(file_exists($test.'.ctrl.js')){
+            $this->js .= Ops::embrace(file_get_contents($test.'.ctrl.js'),$params);
+        }
+        return $this;
+    }
+
 
     /**
      * @return array
@@ -325,11 +342,12 @@ class Serve {
         return file_get_contents($filePath);
     }
 
+
     /**
      * echos DOM
      */
     function output(){
-
+        $this->assume();
         echo Ops::embrace($this->html,[
             'head'=>$this->head,
             'style'=>$this->style,
