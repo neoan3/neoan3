@@ -36,8 +36,10 @@ class Route{
                 $this->call .= ucfirst(strtolower($part));
             }
         }
-        if(file_exists(path . '/component/' . $this->call . '/' . $this->call . '.ctrl.php')){
-            require_once(path . '/component/' . $this->call . '/' . $this->call . '.ctrl.php');
+
+        $className = ucfirst($this->call);
+        if(file_exists(path . '/component/' . $this->call . '/' . $className . '.ctrl.php')){
+            require_once(path . '/component/' . $this->call . '/' . $className . '.ctrl.php');
         } else {
             require_once(neoan_path .'/base/error_404.core.php');
             $this->call = 'error_404';

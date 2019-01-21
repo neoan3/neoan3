@@ -25,7 +25,7 @@ spl_autoload_register(function ($class) {
     }
     $relativeClass = substr($class, $len);
     $className = str_replace('\\', '/', $relativeClass);
-    $file = $baseDir . $className .'/'.$className. '.php';
+    $file = $baseDir . strtolower($className) .'/'.ucfirst($className). '.php';
 
     if (file_exists($file)) {
         require $file;

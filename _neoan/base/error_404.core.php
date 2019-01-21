@@ -17,7 +17,7 @@ class error_404 extends Unicore
         ini_set('display_errors',1);
 	    header("HTTP/1.0 404 Not Found");
 	    if(defined('default_404')){
-	        $class = __NAMESPACE__ .'\\'.default_404;
+	        $class = __NAMESPACE__ .'\\'.ucfirst(default_404);
 	        $run = new $class();
 	        $run->init();
 	        exit();
