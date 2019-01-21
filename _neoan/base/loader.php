@@ -9,7 +9,7 @@ spl_autoload_register(function ($class) {
     }
     $relativeClass = substr($class, $len);
     $className = str_replace('\\', '/', $relativeClass);
-    $file = $baseDir . $className .'/'.$className. '.ctrl.php';
+    $file = $baseDir . $className .'/'.ucfirst($className). '.ctrl.php';
 
     if (file_exists($file)) {
         require $file;

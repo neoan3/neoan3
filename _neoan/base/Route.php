@@ -33,7 +33,7 @@ class Route{
             $normalize = explode('-',$this->url_parts[0]);
             $this->call = '';
             foreach($normalize as $part){
-                $this->call .= ucfirst(strtolower($part));
+                $this->call .= strtolower(strtolower($part));
             }
         }
 
