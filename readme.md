@@ -8,12 +8,15 @@ PHP7
 
 ## Download
 
-`git clone https://github.com/sroehrl/neoan3.git myproject`
+`npm install -g neoan3-cli`
 
 ## Installation
-1. Change .htaccess accordingly (in most cases changing the rewriteBase is enough)
-2. Run composer install
-3. Run nmp init
+1. Run `neoan3 new app [my-project]`
+2. `cd [my-project]`
+3. Run `composer install`
+4. Run `nmp init`
+5. Change .htaccess accordingly (in most cases changing the rewriteBase is enough)
+6. that's it, you are good to go
 
 
 MIT license [opensource](https://opensource.org/licenses/MIT)
