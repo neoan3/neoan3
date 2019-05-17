@@ -1,0 +1,14 @@
+html{
+    background: #2B3B31;
+}
+.container{
+    max-width:900px;
+    margin:0 auto;
+}
+h1{
+    font-family: "Lucida Console", Monaco, monospace;
+    color: #7EC52C;
+}
+p {
+    color: rgba(150, 223, 44, 0.7);
+}
