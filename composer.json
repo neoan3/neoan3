@@ -17,6 +17,9 @@
     ],
     "extra": {
         "installer-paths": {
+            "./frame/{$name}":[],
+            "./model/{$name}":[],
+            "./component/{$name}":[]
         }
     }
 }
