@@ -58,9 +58,9 @@ function frame($input = '', $web=false){
 
 function redirect($where=base,$method='php',$get=false) {
     if($method == 'php')
-        header('location: ' . ctrl($where,true) .($get?'?'.$get:'') );
+        header('location: ' . base . '/'.$where .($get?'?'.$get:'') );
     elseif($method == 'js') {
-        return 'window.location = "' . ctrl($where,true) .($get?'?'.$get:'') . '";';
+        return 'window.location = "' . base . '/'.$where .($get?'?'.$get:'') . '";';
     }
     return true;
 }
