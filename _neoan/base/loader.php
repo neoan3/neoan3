@@ -31,3 +31,19 @@ spl_autoload_register(function ($class) {
         require $file;
     }
 });
+// Auto-load Neoan3 Models
+spl_autoload_register(function ($class) {
+    $prefix = 'Neoan3\\Model\\';
+    $baseDir = path . '/model/';
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        return;
+    }
+    $relativeClass = substr($class, $len);
+    $className = substr(str_replace('\\', '/', $relativeClass),0,strpos($relativeClass,'Model'));
+    $file = $baseDir . strtolower($className) .'/'.ucfirst($className). '.model.php';
+
+    if (file_exists($file)) {
+        require $file;
+    }
+});
