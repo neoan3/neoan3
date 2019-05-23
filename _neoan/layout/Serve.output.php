@@ -365,7 +365,7 @@ class Serve {
      * @return false|string
      */
     function fileContent($filePath, $params=[]){
-        return file_get_contents($filePath);
+        return Ops::embrace(file_get_contents($filePath),$params);
     }
 
 
