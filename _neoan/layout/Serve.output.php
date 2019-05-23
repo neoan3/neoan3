@@ -97,10 +97,7 @@ class Serve {
      * @return $this
      */
     function assume($params=[]){
-
-        if(!isset($params['base'])){
-            $params['base'] = base;
-        }
+        $params = $this->ensureBase($params);
         $test = $this->runComponent[0].DIRECTORY_SEPARATOR.$this->runComponent[1];
         if(file_exists($test.'.style.css')){
             $this->style .= Ops::embrace(file_get_contents($test.'.style.css'),$params);
@@ -250,9 +247,7 @@ class Serve {
      * @return $this
      */
     function hook($hook, $view, $params=[]){
-        if(!isset($params['base'])){
-            $params['base'] = base;
-        }
+        $params = $this->ensureBase($params);
         $this->$hook .= Ops::embrace(
             $this->fileContent(path.'/component/'.$view.'/'.$view.'.view.'.$this->viewExt,$params),
             $params
@@ -320,11 +315,26 @@ class Serve {
     }
 
     /**
+     * Add base-property to params
+     *
+     * @param $params
+     *
+     * @return mixed
+     */
+    private function ensureBase($params){
+        if(!isset($params['base'])){
+            $params['base'] = base;
+        }
+        return $params;
+    }
+
+    /**
      * @param $element
      * @param array $params
      * @return $this
      */
     function includeElement($element, $params=[]){
+        $params = $this->ensureBase($params);
         $pName = $this->snake2Camel($element);
         $path = path.'/component/'.$pName.'/'.$pName.'.ce.';
         if(file_exists($path.$this->viewExt)){
