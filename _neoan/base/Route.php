@@ -17,7 +17,7 @@ class Route{
         $string .= substr($_SERVER['PHP_SELF'],0,$offset);
         if(substr($string,-2) === '//'){
             $string .= substr($string,-1);
-        } elseif(substr($string,-2) !== '/'){
+        } elseif(substr($string,-1) !== '/'){
             $string .= '/';
         }
         define('base', $string );
