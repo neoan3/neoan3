@@ -15,6 +15,11 @@ class Route{
         $string = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'? 'https':'http');
         $string .= '://' . $_SERVER['SERVER_NAME'] . $this->protocol;
         $string .= substr($_SERVER['PHP_SELF'],0,$offset);
+        if(substr($string,-2) === '//'){
+            $string .= substr($string,-1);
+        } elseif(substr($string,-2) !== '/'){
+            $string .= '/';
+        }
         define('base', $string );
     }
     private function offset($context){
