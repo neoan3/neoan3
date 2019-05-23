@@ -9,7 +9,7 @@ spl_autoload_register(function ($class) {
     }
     $relativeClass = substr($class, $len);
     $className = str_replace('\\', '/', $relativeClass);
-    $file = $baseDir . $className .'/'.ucfirst($className). '.ctrl.php';
+    $file = $baseDir . lcfirst($className) .'/'.ucfirst($className). '.ctrl.php';
 
     if (file_exists($file)) {
         require $file;
@@ -25,7 +25,7 @@ spl_autoload_register(function ($class) {
     }
     $relativeClass = substr($class, $len);
     $className = str_replace('\\', '/', $relativeClass);
-    $file = $baseDir . strtolower($className) .'/'.ucfirst($className). '.php';
+    $file = $baseDir . lcfirst($className) .'/'.ucfirst($className). '.php';
 
     if (file_exists($file)) {
         require $file;
@@ -41,7 +41,7 @@ spl_autoload_register(function ($class) {
     }
     $relativeClass = substr($class, $len);
     $className = substr(str_replace('\\', '/', $relativeClass),0,strpos($relativeClass,'Model'));
-    $file = $baseDir . strtolower($className) .'/'.ucfirst($className). '.model.php';
+    $file = $baseDir . lcfirst($className) .'/'.ucfirst($className). '.model.php';
 
     if (file_exists($file)) {
         require $file;
