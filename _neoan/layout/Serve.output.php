@@ -313,8 +313,8 @@ class Serve {
     private function snake2Camel($name){
         $nameParts = explode('-',$name);
         $res = '';
-        foreach ($nameParts as $namePart){
-            $res .= ucwords($namePart);
+        foreach ($nameParts as $i =>$namePart){
+            $res .= $i===0?strtolower($namePart): ucwords($namePart);
         }
         return $res;
     }

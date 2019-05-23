@@ -104,7 +104,7 @@ class Api {
      * @param $function
      */
     private function checkErrors($class, $function){
-        $file = path . '/component/' . $this->header['target'] . '/' . $this->header['target'] . '.ctrl.php';
+        $file = path . '/component/' . $this->header['target'] . '/' . ucfirst($this->header['target']) . '.ctrl.php';
         try{
             if(!file_exists($file)){
                 $this->setResponseHeader(404);
