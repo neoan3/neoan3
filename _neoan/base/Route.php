@@ -25,10 +25,10 @@ class Route{
     private function offset($context){
         $r = 0;
         switch ($context){
-            case 'view': $r = -9; break;
-            case 'api': $r = -19; break;
-            case 'node': $r = -21; break;
-            case 'fileServe': $r = -26; break;
+            case 'view': $r = -9-strlen($this->protocol); break;
+            case 'api': $r = -19-strlen($this->protocol); break;
+            case 'node': $r = -21-strlen($this->protocol); break;
+            case 'fileServe': $r = -26-strlen($this->protocol); break;
         }
         return $r;
     }

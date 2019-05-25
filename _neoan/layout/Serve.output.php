@@ -162,7 +162,7 @@ class Serve {
      */
     function addStylesheet($style){
         if(strpos($style,base)!==false){
-            $file = file_get_contents($style);
+            $file = file_get_contents(path.'/'.substr($style,strlen(base)));
             $this->style .= Ops::embrace($file,['base'=>base]);
         } else {
             $this->importedStyles  .= ' @import url(' . $style . '); ';
