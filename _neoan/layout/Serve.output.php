@@ -86,7 +86,7 @@ class Serve {
      */
     function __construct(){
         $this->html = '';
-
+        $this->secureCustomElementDefine();
         $this->initFrame();
         $this->startHtml();
 
@@ -326,6 +326,13 @@ class Serve {
             $params['base'] = base;
         }
         return $params;
+    }
+
+    /**
+     * Prevents redefining custom elements
+     */
+    private function secureCustomElementDefine(){
+        $this->js .= file_get_contents(__DIR__.'/protectors.js');
     }
 
     /**
