@@ -14,6 +14,9 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 #RewriteCond %{REQUEST_URI} !/img/
 #RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# Apache-fix: get Authorization header
+RewriteEngine On
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 # add trailing slashes if not real file
 RewriteCond %{SERVER_PORT} !^3000$
