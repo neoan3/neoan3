@@ -67,8 +67,6 @@ class Api {
     function requestHeader(){
         $endpointParts = explode('/',$_SERVER['REQUEST_URI']);
         $targetParts = explode('?',end($endpointParts));
-
-        $this->header = array_merge($this->header,apache_request_headers());
         $this->header['target'] = $targetParts[0];
     }
 
