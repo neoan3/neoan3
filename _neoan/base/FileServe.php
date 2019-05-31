@@ -11,6 +11,9 @@ class FileServe {
     function __construct($action) {
         $this->setSupported();
         $this->substitutes['base'] = base;
+        foreach($_GET as $key =>$value){
+            $this->substitutes[$key] = $value;
+        }
         $parts = explode('/',$action);
 
         $folder = path.'/component/'.$parts[0];

@@ -350,7 +350,14 @@ class Serve {
                 '</template>';
         }
         if(file_exists($path.'js')){
-            $this->modules .= '<script type="module" src="'.base.'/serve.file/'.$pName.'/ce"></script>';
+            $getString = '';
+            foreach($params as $key =>$value){
+                $getString .= (strlen($getString)>0?'&':'').$key .'='.$value;
+            }
+            if(strlen($getString)>0){
+                $getString = '?'.$getString;
+            }
+            $this->modules .= '<script type="module" src="'.base.'/serve.file/'.$pName.'/ce'.$getString.'"></script>';
         }
 
         return $this;
