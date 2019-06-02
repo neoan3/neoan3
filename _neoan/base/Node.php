@@ -6,16 +6,16 @@
 require_once(dirname(__FILE__) . '/_includes.php');
 $route = new Route('node');
 
-if(isset($_GET['action'])){
+if (isset($_GET['action'])) {
     header('Content-Type: application/javascript');
-    $js =  new Node($_GET['action']);
+    $js = new Node($_GET['action']);
     echo $js->answer;
 }
 
 /**
  * Class Node
  */
-class Node{
+class Node {
     /**
      * @var string
      */
@@ -23,12 +23,13 @@ class Node{
 
     /**
      * Node constructor.
+     *
      * @param $path
      */
     function __construct($path) {
-        $file = path.'/node_modules/'.$path;
-        if(file_exists($file)){
-            $this->answer =  $this->parseFile($file);
+        $file = path . '/node_modules/' . $path;
+        if (file_exists($file)) {
+            $this->answer = $this->parseFile($file);
         } else {
             $this->answer = $this->error($path);
         }
@@ -37,19 +38,22 @@ class Node{
 
     /**
      * @param $include
+     *
      * @return string
      */
-    function error($include){
+    function error($include) {
         return "console.error('neoan3 nodejs import failed ($include)');";
     }
 
     /**
      * @param $file
+     *
      * @return string|string[]|null
      */
-    function parseFile($file){
+    function parseFile($file) {
         $file = file_get_contents($file);
-        return preg_replace('/(\s[\'|\"])(@[a-z0-9\/\-\.]+)/','$1'.base.'/node_modules/$2',$file);
+        $base = substr(base, -1) == '/' ? base : base . '/';
+        return preg_replace('/(\s[\'|\"])(@[a-z0-9\/\-\.]+)/', '$1' . $base . 'node_modules/$2', $file);
 
     }
 
