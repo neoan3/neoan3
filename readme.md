@@ -8,6 +8,8 @@ PHP7
 
 ## Download
 
+Easiest way is through the cli-tool:
+
 `npm install -g neoan3-cli`
 
 ## Installation
