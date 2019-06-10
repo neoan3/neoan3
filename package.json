@@ -22,8 +22,5 @@
   },
   "homepage": "https://github.com/sroehrl/neoan3#readme",
   "dependencies": {
-    "@polymer/iron-pages": "^3.0.1",
-    "@polymer/paper-tabs": "^3.0.1",
-    "ace-builds": "^1.4.2"
   }
 }
