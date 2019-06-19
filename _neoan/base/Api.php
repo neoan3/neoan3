@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . '/_includes.php');
 
 use Neoan3\Core\RouteException;
 
-$route = new Route('api');
+$route = new Route();
 $api = new Api();
 $api->apiRoute();
 

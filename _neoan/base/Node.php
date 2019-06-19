@@ -4,7 +4,7 @@
  * the .htaccess contains a rewrite to this file to handle such issues
  * */
 require_once(dirname(__FILE__) . '/_includes.php');
-$route = new Route('node');
+$route = new Route();
 
 if (isset($_GET['action'])) {
     header('Content-Type: application/javascript');

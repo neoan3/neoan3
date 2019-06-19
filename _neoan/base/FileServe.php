@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/_includes.php');
 
-$route = new Route('fileServe');
+$route = new Route();
 $serve = new FileServe($_GET['action']);
 
 use \Neoan3\Apps\Ops;

@@ -4,17 +4,19 @@ class Route{
     public $call;
     public $url_parts;
     public $protocol;
-    function __construct($context='view') {
+    function __construct() {
         require_once(path.'/default.php');
         $this->protocol = ($_SERVER['SERVER_PORT']!='80'&&empty($_SERVER['HTTPS'])?':8080':'');
-        $this->defineBase($this->offset($context));
+        $this->defineBase();
         $this->call = default_ctrl;
         $this->loader();
     }
-    private function defineBase($offset){
+    private function defineBase(){
         $string = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'? 'https':'http');
         $string .= '://' . $_SERVER['SERVER_NAME'] . $this->protocol;
-        $string .= substr($_SERVER['PHP_SELF'],0,$offset);
+        $string .= dirname($_SERVER['PHP_SELF']);
+        $string = str_replace('\\','',$string);
+
         if(substr($string,-2) === '//'){
             $string .= substr($string,-1);
         } elseif(substr($string,-1) !== '/'){
@@ -22,16 +24,7 @@ class Route{
         }
         define('base', $string );
     }
-    private function offset($context){
-        $r = 0;
-        switch ($context){
-            case 'view': $r = -9-strlen($this->protocol); break;
-            case 'api': $r = -19-strlen($this->protocol); break;
-            case 'node': $r = -21-strlen($this->protocol); break;
-            case 'fileServe': $r = -26-strlen($this->protocol); break;
-        }
-        return $r;
-    }
+
     private function loader(){
         if (isset($_GET['action']) && trim($_GET['action']) != '') {
             $this->url_parts = explode('/', $_GET['action']);
