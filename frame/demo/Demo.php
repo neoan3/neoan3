@@ -7,22 +7,25 @@
  */
 
 namespace Neoan3\Frame;
+
 use Neoan3\Core\Serve;
 
-class Demo extends Serve{
-    function constants(){
+class Demo extends Serve
+{
+    function constants()
+    {
         return [
-            'base'=>[base],
-            'link'=>[
+            'base' => [base],
+            'link' => [
                 [
-                    'sizes'=>'32x32',
-                    'type'=>'image/png',
-                    'rel'=>'icon',
-                    'href'=>'asset/neoan-favicon.png'
+                    'sizes' => '32x32',
+                    'type' => 'image/png',
+                    'rel' => 'icon',
+                    'href' => 'asset/neoan-favicon.png'
                 ]
             ],
-            'stylesheet'=>[
-            ''.base.'frame/demo/demo.css',
+            'stylesheet' => [
+                '' . base . 'frame/demo/demo.css',
             ]
         ];
     }

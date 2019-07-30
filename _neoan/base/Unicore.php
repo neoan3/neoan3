@@ -7,11 +7,13 @@
  */
 
 namespace Neoan3\Core;
+
 /**
  * Class Unicore
  * @package Neoan3\Core
  */
-class Unicore {
+class Unicore
+{
     /**
      * @var
      */
@@ -21,9 +23,10 @@ class Unicore {
      * @param string $frame
      * @return Serve
      */
-    function uni($frame=''){
-        if($frame!=''){
-            $class =  '\\Neoan3\\Frame\\'. ucfirst($frame);
+    function uni($frame = '')
+    {
+        if ($frame != '') {
+            $class = '\\Neoan3\\Frame\\' . ucfirst($frame);
             $this->uniCore = new $class();
         } else {
             $this->uniCore = new Serve();
@@ -37,9 +40,10 @@ class Unicore {
     /**
      * @param $file
      */
-    function setRunComponent($file){
-        $folder = substr($file,0,strrpos($file,DIRECTORY_SEPARATOR));
-        $fParts = explode(DIRECTORY_SEPARATOR,$folder);
+    function setRunComponent($file)
+    {
+        $folder = substr($file, 0, strrpos($file, DIRECTORY_SEPARATOR));
+        $fParts = explode(DIRECTORY_SEPARATOR, $folder);
         $component = end($fParts);
         $this->uniCore->runComponent = [
             $folder,

@@ -15,7 +15,8 @@ if (isset($_GET['action'])) {
 /**
  * Class Node
  */
-class Node {
+class Node
+{
     /**
      * @var string
      */
@@ -26,7 +27,8 @@ class Node {
      *
      * @param $path
      */
-    function __construct($path) {
+    function __construct($path)
+    {
         $file = path . '/node_modules/' . $path;
         if (file_exists($file)) {
             $this->answer = $this->parseFile($file);
@@ -41,7 +43,8 @@ class Node {
      *
      * @return string
      */
-    function error($include) {
+    function error($include)
+    {
         return "console.error('neoan3 nodejs import failed ($include)');";
     }
 
@@ -50,7 +53,8 @@ class Node {
      *
      * @return string|string[]|null
      */
-    function parseFile($file) {
+    function parseFile($file)
+    {
         $file = file_get_contents($file);
         $base = substr(base, -1) == '/' ? base : base . '/';
         return preg_replace('/(\s[\'|\"])(@[a-z0-9\/\-\.]+)/', '$1' . $base . 'node_modules/$2', $file);

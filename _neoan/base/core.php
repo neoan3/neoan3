@@ -1,13 +1,15 @@
 <?php
 
 // catch all errors?
-function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+function exception_error_handler($errno, $errstr, $errfile, $errline)
+{
     if (!(error_reporting() & $errfile)) {
         return;
     }
     throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
 
 }
+
 //set_error_handler("exception_error_handler");
 
 

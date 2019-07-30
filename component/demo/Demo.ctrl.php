@@ -1,11 +1,15 @@
 <?php
+
 namespace Neoan3\Components;
+
 use Neoan3\Core\Unicore;
 
-class Demo extends Unicore{
-    function init(){
+class Demo extends Unicore
+{
+    function init()
+    {
         $this->uni('demo')
-            ->hook('main','demo')
-            ->output();
+             ->hook('main', 'demo')
+             ->output();
     }
 }
