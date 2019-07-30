@@ -1,90 +1,93 @@
 <?php
 
 namespace Neoan3\Core;
+
 use Neoan3\Apps\Ops;
 
 /**
  * Class Serve
  * @package Neoan3\Core
  */
-class Serve {
+class Serve
+{
     /**
      * @var string
      */
-    private $html='';
+    private $html = '';
     /**
      * @var string
      */
-    public  $head='';
+    public $head = '';
     /**
      * @var string
      */
-    public  $header='';
+    public $header = '';
     /**
      * @var string
      */
-    public  $main='';
+    public $main = '';
     /**
      * @var string
      */
-    public  $footer='';
+    public $footer = '';
     /**
      * @var string
      */
-    public  $style='';
+    public $style = '';
     /**
      * @var string
      */
-    public  $importedStyles='';
+    public $importedStyles = '';
     /**
      * @var string
      */
-    public  $scripts='';
+    public $scripts = '';
     /**
      * @var string
      */
-    public  $importedScripts='';
+    public $importedScripts = '';
     /**
      * @var string
      */
-    public  $modules='';
+    public $modules = '';
     /**
      * @var string
      */
-    public  $js='';
+    public $js = '';
     /**
      * @var string
      */
-    public  $viewExt='html';
+    public $viewExt = 'html';
     /**
      * @var string
      */
-    public  $styleExt='css';
+    public $styleExt = 'css';
     /**
      * @var string
      */
-    public  $feExt='js';
+    public $feExt = 'js';
     /**
      * @var
      */
-    public  $runComponent;
+    public $runComponent;
     /**
      * @var
      */
-    public  $passOn;
+    public $passOn;
     /**
      * @var array
      */
-    public  $methods=[];
+    public $methods = [];
     /**
      * @var array
      */
-    public  $ctrl=[];
+    public $ctrl = [];
 
     /**
      * Serve constructor.
      */
-    function __construct(){
+    function __construct()
+    {
         $this->html = '';
         $this->secureCustomElementDefine();
         $this->initFrame();
@@ -96,14 +99,15 @@ class Serve {
      * @param array $params
      * @return $this
      */
-    function assume($params=[]){
+    function assume($params = [])
+    {
         $params = $this->ensureBase($params);
-        $test = $this->runComponent[0].DIRECTORY_SEPARATOR.$this->runComponent[1];
-        if(file_exists($test.'.style.css')){
-            $this->style .= Ops::embrace(file_get_contents($test.'.style.css'),$params);
+        $test = $this->runComponent[0] . DIRECTORY_SEPARATOR . $this->runComponent[1];
+        if (file_exists($test . '.style.css')) {
+            $this->style .= Ops::embrace(file_get_contents($test . '.style.css'), $params);
         }
-        if(file_exists($test.'.ctrl.js')){
-            $this->js .= Ops::embrace(file_get_contents($test.'.ctrl.js'),$params);
+        if (file_exists($test . '.ctrl.js')) {
+            $this->js .= Ops::embrace(file_get_contents($test . '.ctrl.js'), $params);
         }
         return $this;
     }
@@ -112,12 +116,16 @@ class Serve {
     /**
      * @return array
      */
-    function constants(){return [];}
+    function constants()
+    {
+        return [];
+    }
 
     /**
      *
      */
-    function startHtml(){
+    function startHtml()
+    {
         $this->html .= '<!doctype html><html><head>{{head}}</head><body>';
         $this->html .= '<style>{{importedStyles}}{{style}}</style>';
         $this->html .= '<header>{{header}}</header><neoan-root></neoan-root>{{main}}<footer>{{footer}}</footer>';
@@ -129,24 +137,25 @@ class Serve {
      * @param $obj
      * @return $this
      */
-    function addHead($what, $obj){
-        switch($what){
+    function addHead($what, $obj)
+    {
+        switch ($what) {
             case 'link':
                 $this->head .= '<link ';
-                foreach($obj as $key => $val){
+                foreach ($obj as $key => $val) {
                     $this->head .= ' ' . $key . '="' . $val . '"';
                 }
                 $this->head .= '/>';
                 break;
             case 'base':
-                $this->head .= '<base href="' .$obj.'">';
+                $this->head .= '<base href="' . $obj . '">';
                 break;
             case 'title':
-                $this->head .=  '<title>'.$obj.'</title>';
+                $this->head .= '<title>' . $obj . '</title>';
                 break;
             case 'meta':
                 $this->head .= '<meta ';
-                foreach($obj as $key => $val){
+                foreach ($obj as $key => $val) {
                     $this->head .= ' ' . $key . '="' . $val . '"';
                 }
                 $this->head .= '/>';
@@ -160,12 +169,13 @@ class Serve {
     /**
      * @param $style
      */
-    function addStylesheet($style){
-        if(strpos($style,base)!==false){
-            $file = file_get_contents(path.'/'.substr($style,strlen(base)));
-            $this->style .= Ops::embrace($file,['base'=>base]);
+    function addStylesheet($style)
+    {
+        if (strpos($style, base) !== false) {
+            $file = file_get_contents(path . '/' . substr($style, strlen(base)));
+            $this->style .= Ops::embrace($file, ['base' => base]);
         } else {
-            $this->importedStyles  .= ' @import url(' . $style . '); ';
+            $this->importedStyles .= ' @import url(' . $style . '); ';
         }
     }
 
@@ -173,8 +183,9 @@ class Serve {
      * @param $module
      * @return $this
      */
-    function includeJsModule($module){
-        $this->modules .= '<script type="module" src="'.base.'node_modules/'.$module.'"></script>';
+    function includeJsModule($module)
+    {
+        $this->modules .= '<script type="module" src="' . base . 'node_modules/' . $module . '"></script>';
         return $this;
     }
 
@@ -184,20 +195,21 @@ class Serve {
      * @param string $type
      * @return $this
      */
-    function includeJs($src, $data=[], $type='text/javascript'){
+    function includeJs($src, $data = [], $type = 'text/javascript')
+    {
 
-        if(empty($data)){
-            $this->scripts .= "\n". '<script type="'.$type.'" src="' . $src . '"></script>';
+        if (empty($data)) {
+            $this->scripts .= "\n" . '<script type="' . $type . '" src="' . $src . '"></script>';
         } else {
-            $cont = Ops::embrace(file_get_contents($src),$data);
-            $btr = explode(DIRECTORY_SEPARATOR,$src);
-            if($type!=='text/javascript'){
-                $this->scripts .= "\n". '<script type="'.$type.'">';
+            $cont = Ops::embrace(file_get_contents($src), $data);
+            $btr = explode(DIRECTORY_SEPARATOR, $src);
+            if ($type !== 'text/javascript') {
+                $this->scripts .= "\n" . '<script type="' . $type . '">';
                 $this->scripts .= $this->annotate(end($btr));
                 $this->scripts .= $cont;
                 $this->scripts .= '</script>';
-            } else{
-                $this->js .= $this->annotate(end($btr)). $cont;
+            } else {
+                $this->js .= $this->annotate(end($btr)) . $cont;
             }
 
         }
@@ -208,32 +220,37 @@ class Serve {
      * @param $name
      * @return string
      */
-    private function annotate($name){
-        return "\n/* include(" .$name .') */' ."\n";
+    private function annotate($name)
+    {
+        return "\n/* include(" . $name . ') */' . "\n";
     }
 
     /**
      *
      */
-    private function initFrame(){
+    private function initFrame()
+    {
 
-        foreach($this->constants() as $type => $includes){
-            foreach($includes as $include){
-                switch ($type){
+        foreach ($this->constants() as $type => $includes) {
+            foreach ($includes as $include) {
+                switch ($type) {
                     case 'link':
-                        $this->addHead('link',$include);
+                        $this->addHead('link', $include);
                         break;
-                    case 'base': $this->addHead('base',$include);
+                    case 'base':
+                        $this->addHead('base', $include);
                         break;
-                    case 'stylesheet': $this->addStylesheet($include);
+                    case 'stylesheet':
+                        $this->addStylesheet($include);
                         break;
-                    case 'meta': $this->addHead('meta',$include);
+                    case 'meta':
+                        $this->addHead('meta', $include);
                         break;
                     case 'js':
-                        isset($include['data'])?$data = $include['data']:$data=[];
-                        isset($include['type'])?$jsType = $include['type']:$jsType='text/javascript';
-                        $this->includeJs($include['src'],$data,$jsType);
-                       break;
+                        isset($include['data']) ? $data = $include['data'] : $data = [];
+                        isset($include['type']) ? $jsType = $include['type'] : $jsType = 'text/javascript';
+                        $this->includeJs($include['src'], $data, $jsType);
+                        break;
                 }
             }
         }
@@ -246,10 +263,11 @@ class Serve {
      * @param array $params
      * @return $this
      */
-    function hook($hook, $view, $params=[]){
+    function hook($hook, $view, $params = [])
+    {
         $params = $this->ensureBase($params);
         $this->$hook .= Ops::embrace(
-            $this->fileContent(path.'/component/'.$view.'/'.$view.'.view.'.$this->viewExt,$params),
+            $this->fileContent(path . '/component/' . $view . '/' . $view . '.view.' . $this->viewExt, $params),
             $params
         );
         return $this;
@@ -260,12 +278,13 @@ class Serve {
      * @param $function
      * @return $this
      */
-    function addMethod($context, $function){
-        $this->passOn[$function] = [$context,$function];
-        $this->methods[$function] = function(){
+    function addMethod($context, $function)
+    {
+        $this->passOn[$function] = [$context, $function];
+        $this->methods[$function] = function () {
             $args = func_get_args();
             $pass = array_shift($args);
-            return $this->passOn[$pass][0]->{$this->passOn[$pass][1]}($this,$args);
+            return $this->passOn[$pass][0]->{$this->passOn[$pass][1]}($this, $args);
         };
         return $this;
     }
@@ -274,9 +293,10 @@ class Serve {
      * @param $name
      * @return $this
      */
-    function addController($name){
-        require_once(path.'/component/'.$name.'/'.$name.'.ctrl.php');
-        $this->ctrl[$name.'Ctrl'] = new $name;
+    function addController($name)
+    {
+        require_once(path . '/component/' . $name . '/' . $name . '.ctrl.php');
+        $this->ctrl[$name . 'Ctrl'] = new $name;
         return $this;
     }
 
@@ -285,19 +305,20 @@ class Serve {
      * @param $arguments
      * @return $this
      */
-    function __call($name, $arguments) {
+    function __call($name, $arguments)
+    {
         $pass = null;
-        if(isset($arguments[0])){
+        if (isset($arguments[0])) {
             $pass = $arguments[0];
         }
-        if(!method_exists($this,$name)){
-            foreach ($this->methods as $key=>$function){
-                if($key==$name){
-                    $this->methods[$name]($key,$pass);
+        if (!method_exists($this, $name)) {
+            foreach ($this->methods as $key => $function) {
+                if ($key == $name) {
+                    $this->methods[$name]($key, $pass);
                     return $this;
                 }
             }
-            die('Unknown method: '.$name);
+            die('Unknown method: ' . $name);
         }
     }
 
@@ -305,11 +326,12 @@ class Serve {
      * @param $name
      * @return string
      */
-    private function snake2Camel($name){
-        $nameParts = explode('-',$name);
+    private function snake2Camel($name)
+    {
+        $nameParts = explode('-', $name);
         $res = '';
-        foreach ($nameParts as $i =>$namePart){
-            $res .= $i===0?strtolower($namePart): ucwords($namePart);
+        foreach ($nameParts as $i => $namePart) {
+            $res .= $i === 0 ? strtolower($namePart) : ucwords($namePart);
         }
         return $res;
     }
@@ -321,8 +343,9 @@ class Serve {
      *
      * @return mixed
      */
-    private function ensureBase($params){
-        if(!isset($params['base'])){
+    private function ensureBase($params)
+    {
+        if (!isset($params['base'])) {
             $params['base'] = base;
         }
         return $params;
@@ -331,8 +354,9 @@ class Serve {
     /**
      * Prevents redefining custom elements
      */
-    private function secureCustomElementDefine(){
-        $this->js .= file_get_contents(__DIR__.'/protectors.js');
+    private function secureCustomElementDefine()
+    {
+        $this->js .= file_get_contents(__DIR__ . '/protectors.js');
     }
 
     /**
@@ -340,24 +364,25 @@ class Serve {
      * @param array $params
      * @return $this
      */
-    function includeElement($element, $params=[]){
+    function includeElement($element, $params = [])
+    {
         $params = $this->ensureBase($params);
         $pName = $this->snake2Camel($element);
-        $path = path.'/component/'.$pName.'/'.$pName.'.ce.';
-        if(file_exists($path.$this->viewExt)){
-            $this->footer .= '<template id="'.$element.'">'.
-                $this->fileContent($path.$this->viewExt,$params).
+        $path = path . '/component/' . $pName . '/' . $pName . '.ce.';
+        if (file_exists($path . $this->viewExt)) {
+            $this->footer .= '<template id="' . $element . '">' .
+                $this->fileContent($path . $this->viewExt, $params) .
                 '</template>';
         }
-        if(file_exists($path.'js')){
+        if (file_exists($path . 'js')) {
             $getString = '';
-            foreach($params as $key =>$value){
-                $getString .= (strlen($getString)>0?'&':'').$key .'='.$value;
+            foreach ($params as $key => $value) {
+                $getString .= (strlen($getString) > 0 ? '&' : '') . $key . '=' . $value;
             }
-            if(strlen($getString)>0){
-                $getString = '?'.$getString;
+            if (strlen($getString) > 0) {
+                $getString = '?' . $getString;
             }
-            $this->modules .= '<script type="module" src="'.base.'/serve.file/'.$pName.'/ce'.$getString.'"></script>';
+            $this->modules .= '<script type="module" src="' . base . '/serve.file/' . $pName . '/ce' . $getString . '"></script>';
         }
 
         return $this;
@@ -368,7 +393,8 @@ class Serve {
      * @param $function
      * @return $this
      */
-    function callback($context, $function){
+    function callback($context, $function)
+    {
         $context->$function($this);
         return $this;
     }
@@ -378,8 +404,9 @@ class Serve {
      * @param array $params
      * @return false|string
      */
-    function fileContent($filePath, $params=[]){
-        return Ops::embrace(file_get_contents($filePath),$params);
+    function fileContent($filePath, $params = [])
+    {
+        return Ops::embrace(file_get_contents($filePath), $params);
     }
 
 
@@ -387,19 +414,20 @@ class Serve {
      * echos DOM
      * @param array $params optional
      */
-    function output($params=[]){
+    function output($params = [])
+    {
         $this->assume($params);
-        echo Ops::embrace($this->html,[
-            'head'=>$this->head,
-            'style'=>$this->style,
-            'importedStyles'=>$this->importedStyles,
-            'header'=>$this->header,
-            'main'=>$this->main,
-            'scripts'=>$this->scripts,
-            'js'=>$this->js,
-            'importedScripts'=>$this->importedScripts,
-            'footer'=>$this->footer,
-            'modules'=>$this->modules
+        echo Ops::embrace($this->html, [
+            'head' => $this->head,
+            'style' => $this->style,
+            'importedStyles' => $this->importedStyles,
+            'header' => $this->header,
+            'main' => $this->main,
+            'scripts' => $this->scripts,
+            'js' => $this->js,
+            'importedScripts' => $this->importedScripts,
+            'footer' => $this->footer,
+            'modules' => $this->modules
         ]);
     }
 }

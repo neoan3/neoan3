@@ -2,9 +2,11 @@
 
 
 namespace Neoan3\Core;
+
 use Exception;
 use Throwable;
 
-class RouteException extends Exception {
+class RouteException extends Exception
+{
 
 }
