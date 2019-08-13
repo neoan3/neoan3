@@ -1,22 +1,35 @@
+# neoan3 PHP all purpose hybrid framework
+
+Rapid development, light-weight, lightning-fast, beginner-friendly yet limitlessly powerful? 
+
+neoan3 is all that and more. 
+
 ## Requirements
 
-PHP7
+PHP7 (recommended min version is 7.2)
 
 [composer](https://getcomposer.org/)
 
-[nodeJS](https://nodejs.org)
+[nodeJS](https://nodejs.org) (optional, but recommended)
 
 ## Download
 
-Easiest way is through the cli-tool:
+Easiest & fastest way is through the cli-tool:
 
 `npm install -g neoan3-cli`
 
 ## Installation
+
+_via cli_
+
 1. Run `neoan3 new app [base]`
-2. Run `composer install`
-3. Run `nmp init`
+2. Run `composer install` (only when prompted; should run automatically)
+3. Run `npm init`(this is not a requirement if you do not plan to use any npm packages)
 4. that's it, you are good to go
+
+_via fork or download_
+
+You can also clone, fork or download this repository. 
 
 (You might have to adjust the .htaccess file depending on your system)
 
