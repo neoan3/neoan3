@@ -41,9 +41,10 @@ class Route
                 $this->call .= $i > 0 ? ucfirst(strtolower($part)) : strtolower($part);
                 $className .= ucfirst(strtolower($part));
             }
+        } else {
+            $className = ucfirst($this->call);
         }
 
-        $className = ucfirst($this->call);
         if (file_exists(path . '/component/' . $this->call . '/' . $className . '.ctrl.php')) {
             require_once(path . '/component/' . $this->call . '/' . $className . '.ctrl.php');
         } else {
