@@ -32,12 +32,14 @@ class Route
 
     private function loader()
     {
+        $className = '';
         if (isset($_GET['action']) && trim($_GET['action']) != '') {
             $this->url_parts = explode('/', $_GET['action']);
             $normalize = explode('-', $this->url_parts[0]);
             $this->call = '';
-            foreach ($normalize as $part) {
-                $this->call .= strtolower(strtolower($part));
+            foreach ($normalize as $i => $part) {
+                $this->call .= $i > 0 ? ucfirst(strtolower($part)) : strtolower($part);
+                $className .= ucfirst(strtolower($part));
             }
         }
 
