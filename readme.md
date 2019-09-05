@@ -4,6 +4,8 @@ Rapid development, light-weight, lightning-fast, beginner-friendly yet limitless
 
 neoan3 is all that and more. 
 
+[See documentation](http://neoan.us/neoan3docs/getting-started/) (work in progress)
+
 ## Requirements
 
 PHP7 (recommended min version is 7.2)
