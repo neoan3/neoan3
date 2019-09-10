@@ -1,0 +1,229 @@
+{
+  "user": {
+    "id": {
+      "type": "binary(16)",
+      "key": "primary",
+      "nullable": false,
+      "default": false,
+      "a_i": false
+    },
+    "customer_id": {
+      "type": "binary(16)",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "user_type": {
+      "type": "enum('user','seller','admin')",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "user_name": {
+      "type": "varchar(255)",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "insert_date": {
+      "type": "timestamp",
+      "key": false,
+      "nullable": false,
+      "default": "CURRENT_TIMESTAMP",
+      "a_i": false
+    },
+    "delete_date": {
+      "type": "datetime",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    }
+  },
+  "user_email": {
+    "id": {
+      "type": "binary(16)",
+      "key": "primary",
+      "nullable": false,
+      "default": false,
+      "a_i": false
+    },
+    "user_id": {
+      "type": "binary(16)",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "email": {
+      "type": "varchar(99)",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "confirm_code": {
+      "type": "varchar(30)",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "insert_date": {
+      "type": "timestamp",
+      "key": false,
+      "nullable": false,
+      "default": "CURRENT_TIMESTAMP",
+      "a_i": false
+    },
+    "confirm_date": {
+      "type": "datetime",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "delete_date": {
+      "type": "datetime",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    }
+  },
+  "user_password": {
+    "id": {
+      "type": "binary(16)",
+      "key": "primary",
+      "nullable": false,
+      "default": false,
+      "a_i": false
+    },
+    "user_id": {
+      "type": "binary(16)",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "password": {
+      "type": "varchar(255)",
+      "key": false,
+      "nullable": false,
+      "default": false,
+      "a_i": false
+    },
+    "confirm_code": {
+      "type": "varchar(60)",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "insert_date": {
+      "type": "timestamp",
+      "key": false,
+      "nullable": false,
+      "default": "CURRENT_TIMESTAMP",
+      "a_i": false
+    },
+    "confirm_date": {
+      "type": "datetime",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "delete_date": {
+      "type": "datetime",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    }
+  },
+  "user_profile": {
+    "id": {
+      "type": "binary(16)",
+      "key": "primary",
+      "nullable": false,
+      "default": false,
+      "a_i": false
+    },
+    "user_id": {
+      "type": "binary(16)",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "first_name": {
+      "type": "varchar(80)",
+      "key": false,
+      "nullable": false,
+      "default": false,
+      "a_i": false
+    },
+    "last_name": {
+      "type": "varchar(90)",
+      "key": false,
+      "nullable": false,
+      "default": false,
+      "a_i": false
+    },
+    "insert_date": {
+      "type": "timestamp",
+      "key": false,
+      "nullable": false,
+      "default": "CURRENT_TIMESTAMP",
+      "a_i": false
+    },
+    "delete_date": {
+      "type": "datetime",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    }
+  },
+  "user_role": {
+    "id": {
+      "type": "binary(16)",
+      "key": "primary",
+      "nullable": false,
+      "default": false,
+      "a_i": false
+    },
+    "user_id": {
+      "type": "binary(16)",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    },
+    "role": {
+      "type": "varchar(50)",
+      "key": false,
+      "nullable": false,
+      "default": false,
+      "a_i": false
+    },
+    "insert_date": {
+      "type": "timestamp",
+      "key": false,
+      "nullable": false,
+      "default": "CURRENT_TIMESTAMP",
+      "a_i": false
+    },
+    "delete_date": {
+      "type": "datetime",
+      "key": false,
+      "nullable": true,
+      "default": false,
+      "a_i": false
+    }
+  }
+}

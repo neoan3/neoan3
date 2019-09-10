@@ -35,7 +35,7 @@ class IndexModel
      * @return mixed
      * @throws \Exception
      */
-    static function _create($obj, $transformer)
+    static function validateAgainstTransformer($obj, $transformer)
     {
         foreach ($transformer as $tableOrField => $info) {
             // if missing
@@ -86,7 +86,7 @@ class IndexModel
                 }
             }
             // translate?
-            if (isset($info['translate']) && $info['translate']) {
+            if (isset($info['translate']) && $info['translate'] && isset($obj[$tableOrField])) {
                 $obj[$info['translate']] = $obj[$tableOrField];
                 unset($obj[$tableOrField]);
             }
