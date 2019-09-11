@@ -4,12 +4,33 @@
 namespace Neoan3\Components;
 
 
-class Transformer
+use Neoan3\Apps\Db;
+use Neoan3\Core\Unicore;
+use Neoan3\Model\IndexModel;
+use Neoan3\Model\UserModel;
+
+
+
+class Transformer extends Unicore
 {
-    private static $structure = [];
-    function init($neosn3transformStructure)
-    {
-        $this->uni()->output();
+    function init(){
+        $this->uni('demo');
+        Db::setEnvironment(['name'=>'db_app','assumes_uuid'=>true]);
+        $id = IndexModel::first(Db::easy('user.id'))['id'];
+        /*$in =
+            [
+                'email' => [
+                    'email' => 'some@other.com'
+                ],
+                'password' => [
+                    'password' => 'foobarbaz'
+                ],
+                'userName' => 'sam'
+            ];*/
+        $u = UserModel::get($id);
+        var_dump($u);
+        die();
     }
+
 
 }
