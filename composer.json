@@ -3,10 +3,13 @@
     "description": "the efficient PHP framework",
     "minimum-stability": "dev",
     "require": {
-        "php": "^5.6 || ^7.0",
+        "php": "^7.0",
         "ext-json": "*",
         "mnsami/composer-custom-directory-installer": "1.1.*",
-        "neoan3-apps/ops": "dev-master"
+        "neoan3-apps/ops": "^0.0.4",
+        "neoan3-apps/db": "^0.2.1",
+        "neoan3-model/index": "^0.0.1",
+        "neoan3-apps/transformer": "dev-master"
     },
     "license": "MIT",
     "authors": [
@@ -17,9 +20,11 @@
     ],
     "extra": {
         "installer-paths": {
-            "./frame/{$name}":[],
-            "./model/{$name}":[],
-            "./component/{$name}":[]
+            "./frame/{$name}": [],
+            "./model/{$name}": [
+                "neoan3-model/index"
+            ],
+            "./component/{$name}": []
         }
     }
 }

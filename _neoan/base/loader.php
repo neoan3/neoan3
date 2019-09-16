@@ -41,9 +41,13 @@ spl_autoload_register(function ($class) {
     }
     $relativeClass = substr($class, $len);
     $className = substr(str_replace('\\', '/', $relativeClass), 0, strpos($relativeClass, 'Model'));
-    $file = $baseDir . lcfirst($className) . '/' . ucfirst($className) . '.model.php';
+    $possible = ['.model.php','.transformer.php'];
+    foreach ($possible as $ending){
+        $file = $baseDir . lcfirst($className) . '/' . ucfirst($className) . $ending;
 
-    if (file_exists($file)) {
-        require $file;
+        if (file_exists($file)) {
+            require_once $file;
+        }
     }
+
 });
