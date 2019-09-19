@@ -1,2 +1,14 @@
-<div class="container"><h1>< neoan3 /> running</h1>
-    <p>Welcome to your new project</p></div>
+<div class="container">
+    <h1>< neoan3 /> running</h1>
+    <p>Welcome to your new project</p>
+    <p>
+        <n-template for="require as inc => version">
+            {{inc}} ({{version}}) <br>
+        </n-template>
+    </p>
+
+    <section class="box">
+        <h2>Documentation</h2>
+        <p>The current documentation can be found @ <a href="http://neoan.us/neoan3docs/">http://neoan.us/neoan3docs</a></p>
+    </section>
+</div>
