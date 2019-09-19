@@ -6,7 +6,7 @@
         "php": "^7.0",
         "ext-json": "*",
         "mnsami/composer-custom-directory-installer": "1.1.*",
-        "neoan3-apps/ops": "^0.0.4",
+        "neoan3-apps/ops": "^0.1.1",
         "neoan3-apps/db": "^0.2.1",
         "neoan3-model/index": "^0.0.1",
         "neoan3-apps/transformer": "dev-master"
