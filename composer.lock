@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "71fd415ff74e25d081f9156f1ad2a4ad",
+    "content-hash": "322b65259efb15183b7ff0395e3f62d9",
     "packages": [
         {
             "name": "mnsami/composer-custom-directory-installer",
@@ -98,22 +98,25 @@
         },
         {
             "name": "neoan3-apps/ops",
-            "version": "dev-master",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sroehrl/neoan3-ops.git",
-                "reference": "07938910e94d4023fd41fc9a9feebe177b628757"
+                "reference": "f0328e12755d13cae40bc2f01c25e35b28bdc743"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sroehrl/neoan3-ops/zipball/07938910e94d4023fd41fc9a9feebe177b628757",
-                "reference": "07938910e94d4023fd41fc9a9feebe177b628757",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-ops/zipball/f0328e12755d13cae40bc2f01c25e35b28bdc743",
+                "reference": "f0328e12755d13cae40bc2f01c25e35b28bdc743",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-openssl": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.3"
             },
             "type": "library",
             "autoload": {
@@ -122,8 +125,11 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "description": "neoan3 common string operations helper class",
-            "time": "2019-08-16T20:56:56+00:00"
+            "time": "2019-09-18T22:42:46+00:00"
         },
         {
             "name": "neoan3-apps/transformer",
@@ -200,7 +206,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "neoan3-apps/ops": 20,
         "neoan3-apps/transformer": 20
     },
     "prefer-stable": false,
