@@ -1,11 +1,11 @@
 <div class="container">
     <h1>< neoan3 /> running</h1>
     <p>Welcome to your new project</p>
-    <p>
-        <n-template for="require as inc => version">
-            {{inc}} ({{version}}) <br>
-        </n-template>
-    </p>
+    <div style="margin: 12px">
+        <p n-for="require as inc => version">
+            {{inc}} ({{version}})
+        </p>
+    </div>
 
     <section class="box">
         <h2>Documentation</h2>

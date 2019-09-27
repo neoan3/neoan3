@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "322b65259efb15183b7ff0395e3f62d9",
+    "content-hash": "008f924e154a03e537c289e0f4741721",
     "packages": [
         {
             "name": "mnsami/composer-custom-directory-installer",
@@ -98,19 +98,20 @@
         },
         {
             "name": "neoan3-apps/ops",
-            "version": "0.1.1",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sroehrl/neoan3-ops.git",
-                "reference": "f0328e12755d13cae40bc2f01c25e35b28bdc743"
+                "reference": "1480353f455f9ea3398f71f6148ea15d9f3e2eac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sroehrl/neoan3-ops/zipball/f0328e12755d13cae40bc2f01c25e35b28bdc743",
-                "reference": "f0328e12755d13cae40bc2f01c25e35b28bdc743",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-ops/zipball/1480353f455f9ea3398f71f6148ea15d9f3e2eac",
+                "reference": "1480353f455f9ea3398f71f6148ea15d9f3e2eac",
                 "shasum": ""
             },
             "require": {
+                "ext-dom": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-openssl": "*"
@@ -129,20 +130,20 @@
                 "MIT"
             ],
             "description": "neoan3 common string operations helper class",
-            "time": "2019-09-18T22:42:46+00:00"
+            "time": "2019-09-26T23:45:13+00:00"
         },
         {
             "name": "neoan3-apps/transformer",
-            "version": "dev-master",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sroehrl/neoan3-transformer.git",
-                "reference": "893d6e1702be47cedccfee7baf26841aaa2bd583"
+                "reference": "33aab77f070da46cb8008c27135e2ad12c5e1ae7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sroehrl/neoan3-transformer/zipball/893d6e1702be47cedccfee7baf26841aaa2bd583",
-                "reference": "893d6e1702be47cedccfee7baf26841aaa2bd583",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-transformer/zipball/33aab77f070da46cb8008c27135e2ad12c5e1ae7",
+                "reference": "33aab77f070da46cb8008c27135e2ad12c5e1ae7",
                 "shasum": ""
             },
             "require": {
@@ -153,6 +154,11 @@
                 "phpunit/phpunit": "^8.3"
             },
             "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Neoan3\\Apps\\": "./"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -164,7 +170,7 @@
                 }
             ],
             "description": "Model abstraction utilizing neoan3's model transformers",
-            "time": "2019-09-16T16:49:59+00:00"
+            "time": "2019-09-19T21:28:01+00:00"
         },
         {
             "name": "neoan3-model/index",
@@ -205,9 +211,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "neoan3-apps/transformer": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
