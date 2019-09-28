@@ -20,6 +20,12 @@ function sub($no)
     }
 }
 
+/**
+ * @param $link
+ * @param string $inner
+ * @param null $add
+ * @return string
+ */
 function a($link, $inner = '', $add = null)
 {
     if ($inner == '') {
@@ -28,6 +34,12 @@ function a($link, $inner = '', $add = null)
     return '<a href="' . $link . '" ' . $add . '>' . $inner . '</a>';
 }
 
+/**
+ * @param $src
+ * @param string $alt
+ * @param string $additional
+ * @return string
+ */
 function img($src, $alt = '', $additional = '')
 {
     if ($alt == '') {
@@ -44,6 +56,11 @@ function img($src, $alt = '', $additional = '')
     return '<img src="' . $src . '" alt="' . $alt . '" ' . $autoid . ' ' . $additional . ' />';
 }
 
+/**
+ * @param string $input
+ * @param bool $web
+ * @return string
+ */
 function neoan($input = '', $web = false)
 {
     if (!$web) {
@@ -53,6 +70,11 @@ function neoan($input = '', $web = false)
     }
 }
 
+/**
+ * @param string $input
+ * @param bool $web
+ * @return string
+ */
 function asset($input = '', $web = false)
 {
     if (!$web) {
@@ -62,6 +84,11 @@ function asset($input = '', $web = false)
     }
 }
 
+/**
+ * @param string $input
+ * @param bool $web
+ * @return string
+ */
 function frame($input = '', $web = false)
 {
     if (!$web) {
@@ -71,6 +98,12 @@ function frame($input = '', $web = false)
     }
 }
 
+/**
+ * @param mixed|string $where
+ * @param string $method
+ * @param bool $get
+ * @return bool|string
+ */
 function redirect($where = base, $method = 'php', $get = false)
 {
     if ($method == 'php') {
@@ -79,4 +112,17 @@ function redirect($where = base, $method = 'php', $get = false)
         return 'window.location = "' . base . '/' . $where . ($get ? '?' . $get : '') . '";';
     }
     return true;
+}
+
+/**
+ * @return mixed
+ * @throws Exception
+ */
+function getCredentials(){
+    $path = dirname(dirname(dirname(path))). DIRECTORY_SEPARATOR .'credentials'.DIRECTORY_SEPARATOR.'credentials.json';
+    if(file_exists($path)){
+        return json_decode(file_get_contents($path),true);
+    } else {
+        throw new Exception('Credential location not found');
+    }
 }
