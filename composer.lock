@@ -134,16 +134,16 @@
         },
         {
             "name": "neoan3-apps/transformer",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sroehrl/neoan3-transformer.git",
-                "reference": "33aab77f070da46cb8008c27135e2ad12c5e1ae7"
+                "reference": "49b825a47159887f17841f9927424a3c3acd419d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sroehrl/neoan3-transformer/zipball/33aab77f070da46cb8008c27135e2ad12c5e1ae7",
-                "reference": "33aab77f070da46cb8008c27135e2ad12c5e1ae7",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-transformer/zipball/49b825a47159887f17841f9927424a3c3acd419d",
+                "reference": "49b825a47159887f17841f9927424a3c3acd419d",
                 "shasum": ""
             },
             "require": {
@@ -170,7 +170,7 @@
                 }
             ],
             "description": "Model abstraction utilizing neoan3's model transformers",
-            "time": "2019-09-19T21:28:01+00:00"
+            "time": "2019-09-28T00:28:18+00:00"
         },
         {
             "name": "neoan3-model/index",
