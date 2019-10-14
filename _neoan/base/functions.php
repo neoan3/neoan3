@@ -119,7 +119,7 @@ function redirect($where = base, $method = 'php', $get = false)
  * @throws Exception
  */
 function getCredentials(){
-    $path = dirname(dirname(dirname(path))). DIRECTORY_SEPARATOR .'credentials'.DIRECTORY_SEPARATOR.'credentials.json';
+    $path = DIRECTORY_SEPARATOR .'credentials'.DIRECTORY_SEPARATOR.'credentials.json';
     if(file_exists($path)){
         return json_decode(file_get_contents($path),true);
     } else {
