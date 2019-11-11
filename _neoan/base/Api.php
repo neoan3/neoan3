@@ -76,7 +76,7 @@ class Api
         $target = '';
         $normalize = explode('-', $targetParts[0]);
         foreach ($normalize as $i => $part) {
-            $target .= ucfirst($part);
+            $target .= $i > 0 ? ucfirst($part) : $part;
         }
         $this->header['target'] = $target;
     }
