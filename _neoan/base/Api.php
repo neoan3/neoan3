@@ -73,7 +73,12 @@ class Api
     {
         $endpointParts = explode('/', $_SERVER['REQUEST_URI']);
         $targetParts = explode('?', end($endpointParts));
-        $this->header['target'] = $targetParts[0];
+        $target = '';
+        $normalize = explode('-', $targetParts[0]);
+        foreach ($normalize as $i => $part) {
+            $target .= $i > 0 ? ucfirst($part) : $part;
+        }
+        $this->header['target'] = $target;
     }
 
     /**
