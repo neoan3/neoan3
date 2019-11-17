@@ -7,7 +7,7 @@ html {
     margin: 0 auto;
 }
 
-h1, h2 {
+h1, h2, h3 {
     font-family: "Lucida Console", Monaco, monospace;
     color: #7EC52C;
 }
@@ -17,6 +17,11 @@ p {
 }
 p a{
     color: rgba(172, 247, 45, 0.95);
+}
+li{
+    color: #7EC52C;
+    list-style: square;
+    font-size: 110%;
 }
 .box{
     border: 3px dashed #7EC52C;

@@ -13,7 +13,7 @@ class ServerRoute
     {
         $this->appLevel = dirname(__DIR__);
         $this->queryString = $_SERVER["REQUEST_URI"];
-        $this->pureUri = strtok($this->queryString, '?');
+        $this->pureUri = strtok(str_replace('index.php/', '', $this->queryString), '?');
         $this->request = preg_replace('/^\//', '', $this->pureUri);
         return $this;
     }
