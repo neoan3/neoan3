@@ -295,8 +295,8 @@ class Serve
      */
     function addController($name)
     {
-        require_once(path . '/component/' . $name . '/' . $name . '.ctrl.php');
-        $this->ctrl[$name . 'Ctrl'] = new $name;
+        $ctrl = '\\Neoan3\\Components\\' . $name;
+        $this->ctrl[$name] = new $ctrl;
         return $this;
     }
 
