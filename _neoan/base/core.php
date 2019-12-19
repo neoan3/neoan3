@@ -24,6 +24,7 @@ $route = new Core\Route();
 #
 
 $consumer = __NAMESPACE__ . '\\Components\\' . $route->call;
+Core\Event::dispatch('Core::beforeInit', ['component' => $route->call]);
 $run = new $consumer;
 $run->init();
 
