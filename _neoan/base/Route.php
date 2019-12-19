@@ -1,5 +1,7 @@
 <?php
 
+namespace Neoan3\Core;
+
 class Route
 {
     public $call;

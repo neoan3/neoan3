@@ -14,7 +14,7 @@ function exception_error_handler($errno, $errstr, $errfile, $errline)
 
 
 require_once(dirname(__FILE__) . '/_includes.php');
-$route = new Route();
+$route = new Neoan3\Core\Route();
 
 ####################################################
 #
