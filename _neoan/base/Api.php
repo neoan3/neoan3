@@ -1,9 +1,11 @@
 <?php
+
+namespace Neoan3\Core;
+
 require_once(dirname(__FILE__) . '/_includes.php');
 
-use Neoan3\Core\RouteException;
 
-$route = new Route();
+new Route();
 $api = new Api();
 $api->apiRoute();
 
@@ -100,7 +102,7 @@ class Api
         }
 
         $function = strtolower($this->header['REQUEST_METHOD']) . ucfirst($this->header['target']);
-        $class = __NAMESPACE__ . '\\Neoan3\\Components\\' . $this->header['target'];
+        $class =  '\\Neoan3\\Components\\' . $this->header['target'];
         $this->checkErrors($class, $function);
         $c = new $class(false);
         $this->setResponseHeader(200);
@@ -129,21 +131,21 @@ class Api
         try {
             if (!file_exists($file)) {
                 $this->setResponseHeader(404);
-                throw new Exception('unknown endpoint');
+                throw new \Exception('unknown endpoint');
             } else {
                 require_once($file);
             }
             if (!method_exists($class, $function)) {
                 $this->setResponseHeader(405);
-                throw new Exception('method ' . $this->header['REQUEST_METHOD'] . ' is not supported at this endpoint');
+                throw new \Exception('method ' . $this->header['REQUEST_METHOD'] . ' is not supported at this endpoint');
             }
-            $r = new ReflectionMethod($class, $function);
+            $r = new \ReflectionMethod($class, $function);
             $params = $r->getParameters();
             if (isset($params[0]) && !$params[0]->isOptional() && empty($this->stream)) {
                 $this->setResponseHeader(400);
-                throw new Exception('request is empty');
+                throw new \Exception('request is empty');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             $this->exiting(['error' => $e->getMessage()]);
         }
