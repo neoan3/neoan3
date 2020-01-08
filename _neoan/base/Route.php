@@ -1,5 +1,7 @@
 <?php
 
+namespace Neoan3\Core;
+
 class Route
 {
     public $call;
@@ -48,6 +50,7 @@ class Route
         if (file_exists(path . '/component/' . $this->call . '/' . $className . '.ctrl.php')) {
             require_once(path . '/component/' . $this->call . '/' . $className . '.ctrl.php');
         } else {
+            Event::dispatch('Core\\Route::notFound', ['component' => $className]);
             require_once(neoan_path . '/base/error_404.core.php');
             $this->call = 'error_404';
         }

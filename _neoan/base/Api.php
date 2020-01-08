@@ -1,9 +1,11 @@
 <?php
+
+namespace Neoan3\Core;
+
 require_once(dirname(__FILE__) . '/_includes.php');
 
-use Neoan3\Core\RouteException;
 
-$route = new Route();
+new Route();
 $api = new Api();
 $api->apiRoute();
 
@@ -52,6 +54,7 @@ class Api
     private function requestMethod()
     {
         if (isset($_SERVER['REQUEST_METHOD'])) {
+            Event::dispatch('Core\\Api::incoming', $_SERVER);
             $this->header['REQUEST_METHOD'] = $_SERVER['REQUEST_METHOD'];
             if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                 header("Content-Type: application/json");
@@ -100,7 +103,7 @@ class Api
         }
 
         $function = strtolower($this->header['REQUEST_METHOD']) . ucfirst($this->header['target']);
-        $class = __NAMESPACE__ . '\\Neoan3\\Components\\' . $this->header['target'];
+        $class = '\\Neoan3\\Components\\' . $this->header['target'];
         $this->checkErrors($class, $function);
         $c = new $class(false);
         $this->setResponseHeader(200);
@@ -128,22 +131,25 @@ class Api
         $file = path . '/component/' . $this->header['target'] . '/' . ucfirst($this->header['target']) . '.ctrl.php';
         try {
             if (!file_exists($file)) {
+                Event::dispatch('Core\\Api::error', ['msg' => 'unknown endpoint']);
                 $this->setResponseHeader(404);
-                throw new Exception('unknown endpoint');
+                throw new \Exception('unknown endpoint');
             } else {
                 require_once($file);
             }
             if (!method_exists($class, $function)) {
+                Event::dispatch('Core\\Api::error', ['msg' => 'method not supported']);
                 $this->setResponseHeader(405);
-                throw new Exception('method ' . $this->header['REQUEST_METHOD'] . ' is not supported at this endpoint');
+                throw new \Exception('method ' . $this->header['REQUEST_METHOD'] . ' is not supported at this endpoint');
             }
-            $r = new ReflectionMethod($class, $function);
+            $r = new \ReflectionMethod($class, $function);
             $params = $r->getParameters();
             if (isset($params[0]) && !$params[0]->isOptional() && empty($this->stream)) {
+                Event::dispatch('Core\\Api::error', ['msg' => 'request is empty']);
                 $this->setResponseHeader(400);
-                throw new Exception('request is empty');
+                throw new \Exception('request is empty');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             $this->exiting(['error' => $e->getMessage()]);
         }
@@ -154,6 +160,7 @@ class Api
      */
     private function exiting($answer)
     {
+        Event::dispatch('Core\\Api::beforeAnswer', ['answer' => $answer, 'responseCode' => $this->responseCode]);
         http_response_code($this->responseCode);
         header('Content-type: application/json');
         echo json_encode($answer);
