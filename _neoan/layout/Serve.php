@@ -102,7 +102,7 @@ class Serve
     function assume($params = [])
     {
         $params = $this->ensureBase($params);
-        $test = $this->runComponent[0] . DIRECTORY_SEPARATOR . $this->runComponent[1];
+        $test = is_array($this->runComponent) ? $this->runComponent[0] . DIRECTORY_SEPARATOR . $this->runComponent[1] : 'no-a-path';
         if (file_exists($test . '.style.css')) {
             $this->style .= Ops::embrace(file_get_contents($test . '.style.css'), $params);
         }
