@@ -1,4 +1,7 @@
 <?php
+
+namespace Neoan3\Core;
+
 require_once(dirname(__FILE__) . '/_includes.php');
 
 $route = new Route();
