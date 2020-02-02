@@ -2,7 +2,7 @@
 
 namespace Neoan3\Core;
 
-use Neoan3\Apps\Ops;
+use Neoan3\Apps\Template;
 
 /**
  * Class Serve
@@ -104,10 +104,10 @@ class Serve
         $params = $this->ensureBase($params);
         $test = is_array($this->runComponent) ? $this->runComponent[0] . DIRECTORY_SEPARATOR . $this->runComponent[1] : 'no-a-path';
         if (file_exists($test . '.style.css')) {
-            $this->style .= Ops::embrace(file_get_contents($test . '.style.css'), $params);
+            $this->style .= Template::embrace(file_get_contents($test . '.style.css'), $params);
         }
         if (file_exists($test . '.ctrl.js')) {
-            $this->js .= Ops::embrace(file_get_contents($test . '.ctrl.js'), $params);
+            $this->js .= Template::embrace(file_get_contents($test . '.ctrl.js'), $params);
         }
         return $this;
     }
@@ -173,7 +173,7 @@ class Serve
     {
         if (strpos($style, base) !== false) {
             $file = file_get_contents(path . '/' . substr($style, strlen(base)));
-            $this->style .= Ops::embrace($file, ['base' => base]);
+            $this->style .= Template::embrace($file, ['base' => base]);
         } else {
             $this->importedStyles .= ' @import url(' . $style . '); ';
         }
@@ -201,7 +201,7 @@ class Serve
         if (empty($data)) {
             $this->scripts .= "\n" . '<script type="' . $type . '" src="' . $src . '"></script>';
         } else {
-            $cont = Ops::embrace(file_get_contents($src), $data);
+            $cont = Template::embrace(file_get_contents($src), $data);
             $btr = explode(DIRECTORY_SEPARATOR, $src);
             if ($type !== 'text/javascript') {
                 $this->scripts .= "\n" . '<script type="' . $type . '">';
@@ -266,7 +266,7 @@ class Serve
     function hook($hook, $view, $params = [])
     {
         $params = $this->ensureBase($params);
-        $this->$hook .= Ops::embrace(
+        $this->$hook .= Template::embrace(
             $this->fileContent(path . '/component/' . $view . '/' . $view . '.view.' . $this->viewExt, $params),
             $params
         );
@@ -406,7 +406,7 @@ class Serve
      */
     function fileContent($filePath, $params = [])
     {
-        return Ops::embrace(file_get_contents($filePath), $params);
+        return Template::embrace(file_get_contents($filePath), $params);
     }
 
 
@@ -417,7 +417,7 @@ class Serve
     function output($params = [])
     {
         $this->assume($params);
-        echo Ops::embrace($this->html, [
+        echo Template::embrace($this->html, [
             'head' => $this->head,
             'style' => $this->style,
             'importedStyles' => $this->importedStyles,
