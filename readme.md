@@ -8,7 +8,7 @@ neoan3 is all that and more.
 
 ## Requirements
 
-PHP7 (recommended min version is 7.2)
+PHP7 (recommended min version is 7.4)
 
 [composer](https://getcomposer.org/)
 

@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "008f924e154a03e537c289e0f4741721",
+    "content-hash": "36c7b637e844f8f25a0a5934f964ffe6",
     "packages": [
         {
             "name": "mnsami/composer-custom-directory-installer",
@@ -98,16 +98,16 @@
         },
         {
             "name": "neoan3-apps/ops",
-            "version": "1.0.2",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sroehrl/neoan3-ops.git",
-                "reference": "00e1f9939f59e0e3e6d1f1fa5ad72ebc07334174"
+                "reference": "1675d167b87e2af44cd3b93e53ecb0d3565dc4e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sroehrl/neoan3-ops/zipball/00e1f9939f59e0e3e6d1f1fa5ad72ebc07334174",
-                "reference": "00e1f9939f59e0e3e6d1f1fa5ad72ebc07334174",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-ops/zipball/1675d167b87e2af44cd3b93e53ecb0d3565dc4e8",
+                "reference": "1675d167b87e2af44cd3b93e53ecb0d3565dc4e8",
                 "shasum": ""
             },
             "require": {
@@ -130,7 +130,43 @@
                 "MIT"
             ],
             "description": "neoan3 common string operations helper class",
-            "time": "2019-11-17T02:03:42+00:00"
+            "time": "2020-02-02T04:06:35+00:00"
+        },
+        {
+            "name": "neoan3-apps/template",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sroehrl/neoan3-template.git",
+                "reference": "b9f2ca6c696faaa0128193f760402051de772473"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-template/zipball/b9f2ca6c696faaa0128193f760402051de772473",
+                "reference": "b9f2ca6c696faaa0128193f760402051de772473",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Neoan3\\Apps\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "neoan3 minimal template engine",
+            "time": "2020-02-02T17:56:39+00:00"
         },
         {
             "name": "neoan3-apps/transformer",
