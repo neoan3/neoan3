@@ -12,7 +12,7 @@ class NotFound extends Unicore
      */
     function init()
     {
-        $this->uni()->hook('main', 'notFound')->output();
+        $this->uni('demo')->hook('main', 'notFound')->output();
     }
 
 
