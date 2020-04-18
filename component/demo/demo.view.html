@@ -1,27 +1,41 @@
 <div class="container">
     <h1>&lt; neoan3 /> running</h1>
     <p>Welcome to your new project</p>
-    <div style="margin: 12px">
-        <p n-for="require as inc => version">
-            {{inc}} ({{version}})
-        </p>
+    <div class="grid">
+        <div class="box">
+            <h3>Currently installed composer packages</h3>
+            <ul>
+                <li n-for="require as inc => version">
+                    {{inc}} ({{version}})
+                </li>
+            </ul>
+
+        </div>
+        <section class="box">
+            <h2>Documentation</h2>
+            <p>The current documentation can be found @ <a class="btn" target="_blank" href="http://neoan3.rocks">http://neoan3.rocks</a></p>
+            <h2>Quick start</h2>
+            <h3>Creating your first route endpoint</h3>
+            <p>
+                When using the <a href="https://www.npmjs.com/package/neoan3-cli" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
+                navigate to this installation
+            </p>
+            <p>
+                <code>cd {{installation}}</code> and type
+            </p>
+            <p>
+                <code>neoan3 new component test</code>
+            </p>
+            <ul>
+                <li>Choose "Route component"</li>
+                <li>Yes to creating a view</li>
+                <li>Yes to using a frame</li>
+                <li>Choose "demo"</li>
+            </ul>
+            <p>Then, click <a href="{{base}}test/">here</a>.</p>
+        </section>
     </div>
 
-    <section class="box">
-        <h2>Documentation</h2>
-        <p>The current documentation can be found @ <a href="http://neoan.us/neoan3docs/">http://neoan.us/neoan3docs</a></p>
-        <h2>Quick start</h2>
-        <h3>Creating your first endpoint</h3>
-        <p>
-            When using the <a href="https://www.npmjs.com/package/neoan3-cli" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
-            navigate to this installation ({{installation}}) and type "neoan3 new component test".
-        </p>
-        <ul>
-            <li>Choose "Route component"</li>
-            <li>Yes to creating a view</li>
-            <li>Yes to using a frame</li>
-            <li>Choose "demo"</li>
-        </ul>
-        <p>Then, click <a href="{{base}}test/">here</a>.</p>
-    </section>
+
+
 </div>

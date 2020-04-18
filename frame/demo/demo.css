@@ -6,9 +6,30 @@ html {
     max-width: 900px;
     margin: 0 auto;
 }
+.grid{
+    display: grid;
+    grid-template-areas: 'installed documentation';
+    grid-gap: 10px;
+}
+.btn{
+    padding: 4px 7px;
+    border: 1px solid;
+    border-radius: 12px 3px;
+    text-decoration: none;
+    box-shadow: #436a1b 3px 3px 7px;
+}
+.btn:hover{
+    box-shadow: #436a1b 1px 1px 1px;
+}
 
+code{
+    padding: 2px;
+    margin: 6px 0;
+    background: #141711;
+}
 h1, h2, h3 {
     font-family: "Lucida Console", Monaco, monospace;
+    text-shadow: #141711 2px 3px;
     color: #7EC52C;
 }
 
@@ -24,10 +45,10 @@ li{
     font-size: 110%;
 }
 .box{
-    border: 3px dashed #7EC52C;
+    border: 1px solid #7EC52C;
     box-shadow: #436a1b 3px 3px 7px;
     padding: 7px;
-    animation: blink 1s step-end infinite alternate;
+    animation: blink 3s step-end infinite alternate;
 }
 @keyframes blink {
     50% { border-color: #959103; }
