@@ -1,9 +1,10 @@
 <div class="container">
-    <h1>&lt; neoan3 /> running</h1>
+    <h1>&lt; neoan<sup>3</sup> /> running</h1>
     <p>Welcome to your new project</p>
     <div class="grid">
         <div class="box">
-            <h3>Currently installed composer packages</h3>
+            <h2>CORE v{{version}}</h2>
+            <h3>Installed composer packages:</h3>
             <ul>
                 <li n-for="require as inc => version">
                     {{inc}} ({{version}})
