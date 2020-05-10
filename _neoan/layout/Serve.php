@@ -209,7 +209,7 @@ class Serve
                 $this->scripts .= $cont;
                 $this->scripts .= '</script>';
             } else {
-                $this->js .= $this->annotate(end($btr)) . $cont;
+                $this->js .= $this->annotate(end($btr)) . $cont . "\n";
             }
 
         }
