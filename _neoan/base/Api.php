@@ -59,7 +59,7 @@ class Api
             if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                 header("Content-Type: application/json");
                 if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
-                    header("Access-Control-Allow-Methods: GET, POST, PUSH, DELETE, OPTIONS");
+                    header("Access-Control-Allow-Methods: GET, POST, PUSH, PUT, PATCH, DELETE, OPTIONS");
                 }
                 if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
                     header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
@@ -70,18 +70,22 @@ class Api
     }
 
     /**
-     *
+     * Identify target
      */
     function requestHeader()
     {
         $endpointParts = explode('/', $_SERVER['REQUEST_URI']);
-        $targetParts = explode('?', end($endpointParts));
-        $target = '';
-        $normalize = explode('-', $targetParts[0]);
-        foreach ($normalize as $i => $part) {
-            $target .= $i > 0 ? ucfirst($part) : $part;
+        $next = false;
+        $function = false;
+        foreach ($endpointParts as $part){
+            if($next && !$function){
+                $function = $this->normalize(explode('?', $part));
+            }
+            if($part == 'api.v1'){
+                $next = true;
+            }
         }
-        $this->header['target'] = $target;
+        $this->header['target'] = $function;
     }
 
     /**
