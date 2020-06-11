@@ -70,6 +70,20 @@ class Api
     }
 
     /**
+     * @param $parts
+     * @return string
+     */
+    function normalize($parts)
+    {
+        $target = '';
+        $normalize = explode('-', $parts[0]);
+        foreach ($normalize as $i => $part) {
+            $target .= $i > 0 ? ucfirst($part) : $part;
+        }
+        return $target;
+    }
+
+    /**
      * Identify target
      */
     function requestHeader()
