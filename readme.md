@@ -12,13 +12,12 @@ PHP7 (recommended min version is 7.4)
 
 [composer](https://getcomposer.org/)
 
-[nodeJS](https://nodejs.org) (optional, but recommended)
 
 ## Download
 
 Easiest & fastest way is through the cli-tool:
 
-`npm install -g neoan3-cli`
+`composer global require neoan3/neoan3`
 
 ## Installation
 
