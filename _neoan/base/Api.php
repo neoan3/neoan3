@@ -89,11 +89,16 @@ class Api
     function requestHeader()
     {
         $endpointParts = explode('/', $_SERVER['REQUEST_URI']);
+        if(!isset($this->header['arguments'])){
+            $this->header['arguments'] = [];
+        }
         $next = false;
         $function = false;
         foreach ($endpointParts as $part){
             if($next && !$function){
                 $function = $this->normalize(explode('?', $part));
+            } elseif($next) {
+                $this->header['arguments'][] = $this->normalize(explode('?', $part));
             }
             if($part == 'api.v1'){
                 $next = true;
@@ -125,11 +130,14 @@ class Api
         $this->checkErrors($class, $function);
         $c = new $class(false);
         $this->setResponseHeader(200);
+
         try {
+//            $responseBody = $c->$function($this->constructParameters());
             if (!empty($this->stream)) {
-                $responseBody = $c->$function($this->stream);
+                $this->header['arguments'][] = $this->stream;
+                $responseBody = $c->$function(...$this->header['arguments']);
             } else {
-                $responseBody = $c->$function();
+                $responseBody = $c->$function(...$this->header['arguments']);
             }
 
         } catch (RouteException $e) {
@@ -138,6 +146,16 @@ class Api
         }
         $this->exiting($responseBody);
 
+    }
+    private function constructParameters(){
+        $functionParameters = [];
+        foreach ($this->header['arguments'] as $argument){
+            $functionParameters[] = $argument;
+        }
+        if (!empty($this->stream)) {
+            $functionParameters[] = $this->stream;
+        }
+        return $functionParameters;
     }
 
     /**
@@ -162,11 +180,29 @@ class Api
             }
             $r = new \ReflectionMethod($class, $function);
             $params = $r->getParameters();
-            if (isset($params[0]) && !$params[0]->isOptional() && empty($this->stream)) {
+            $counter = count($params);
+            // last: body/params
+            if(!array_pop($params)->isOptional() && empty($this->stream)) {
                 Event::dispatch('Core\\Api::error', ['msg' => 'request is empty']);
                 $this->setResponseHeader(400);
                 throw new \Exception('request is empty');
             }
+            // other (arguments)
+            foreach($params as $i => $param){
+                if(!isset($this->header['arguments'][$i])){
+                    if($param->isOptional()){
+                        $this->header['arguments'][$i] = $param->getDefaultValue();
+                    } else {
+                        Event::dispatch('Core\\Api::error', ['msg' => 'missing argument: ' . $param->getName()]);
+                        $this->setResponseHeader(400);
+                        throw new \Exception('missing argument: ' . $param->getName());
+                    }
+
+                }
+            }
+
+
+
         } catch (\Exception $e) {
 
             $this->exiting(['error' => $e->getMessage()]);
