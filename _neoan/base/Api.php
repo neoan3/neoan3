@@ -180,9 +180,9 @@ class Api
             }
             $r = new \ReflectionMethod($class, $function);
             $params = $r->getParameters();
-            $counter = count($params);
+            $lastParam = array_pop($params);
             // last: body/params
-            if(!array_pop($params)->isOptional() && empty($this->stream)) {
+            if(!$lastParam->isDefaultValueAvailable() && empty($this->stream)) {
                 Event::dispatch('Core\\Api::error', ['msg' => 'request is empty']);
                 $this->setResponseHeader(400);
                 throw new \Exception('request is empty');
@@ -190,7 +190,7 @@ class Api
             // other (arguments)
             foreach($params as $i => $param){
                 if(!isset($this->header['arguments'][$i])){
-                    if($param->isOptional()){
+                    if($param->isDefaultValueAvailable()){
                         $this->header['arguments'][$i] = $param->getDefaultValue();
                     } else {
                         Event::dispatch('Core\\Api::error', ['msg' => 'missing argument: ' . $param->getName()]);
