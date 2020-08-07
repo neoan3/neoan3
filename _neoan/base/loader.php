@@ -4,7 +4,7 @@ $ds = DIRECTORY_SEPARATOR;
 
 
 // Auto-load Neoan3 Core (in base)
-spl_autoload_register(function ($class) use ($ds) {
+/*spl_autoload_register(function ($class) use ($ds) {
     $prefix = 'Neoan3\\Core\\';
     $baseDir = path . $ds . '_neoan' . $ds;
     $len = strlen($prefix);
@@ -20,7 +20,7 @@ spl_autoload_register(function ($class) use ($ds) {
         }
     }
 
-});
+});*/
 
 // Auto-load Neoan3 Components
 spl_autoload_register(function ($class) use ($ds)  {

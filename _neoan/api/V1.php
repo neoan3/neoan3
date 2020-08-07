@@ -1,21 +1,14 @@
 <?php
 
-namespace Neoan3\Core;
+namespace Neoan3\Api;
 
-require_once (dirname(__DIR__) . '/');
-require_once(dirname(__FILE__) . '/_includes.php');
-
-
-new Route();
-$api = new Api();
-$api->apiRoute();
-
-exit();
+use Neoan3\Core\Event;
+use Neoan3\Core\RouteException;
 
 /**
  * Class Api
  */
-class Api
+class V1
 {
     /**
      * @var

@@ -40,7 +40,7 @@ RewriteRule ^node_modules/(.*)$    _neoan/base/Node.php?action=$1&%{QUERY_STRING
 
 # redirect to default API-endpoint:
 # {root}/api.v1/
-RewriteRule ^api.v1/(.*)$    _neoan/base/Api.php    [L,NC]
+RewriteRule ^api.(.*)$    _neoan/api/index.php    [L,NC]
 
 # redirect to fileserver:
 # {root}/serve.file/

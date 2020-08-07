@@ -11,6 +11,7 @@ class Demo extends Unicore
         $info = json_decode(file_get_contents(path.'/composer.json'),true);
         $info['installation'] = path;
         $this->uni('demo')
+            ->addHead('title','neoan3 default')
              ->hook('main', 'demo', $info)
              ->output();
     }
