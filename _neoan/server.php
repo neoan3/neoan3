@@ -27,8 +27,8 @@ class ServerRoute
     {
         if (file_exists($this->appLevel . $this->pureUri) && !is_dir($this->appLevel . $this->pureUri)) {
             echo file_get_contents($this->appLevel . $this->pureUri);
-        } elseif (preg_match('/api.v1\/(.*)$/', $this->queryString)) {
-            require_once $this->appLevel . '/_neoan/base/Api.php';
+        } elseif (preg_match('/api.(.*)$/', $this->queryString)) {
+            require_once $this->appLevel . '/_neoan/api/index.php';
         } elseif (preg_match('/serve.file\/(.*)$/', $this->queryString)) {
             $this->writeAction('/serve.file/');
             require_once $this->appLevel . '/_neoan/base/FileServe.php';

@@ -356,7 +356,7 @@ class Serve
      */
     private function secureCustomElementDefine()
     {
-        $this->js .= file_get_contents(__DIR__ . '/protectors.js');
+        $this->js .= file_get_contents(dirname(__DIR__) . '/layout/protectors.js');
     }
 
     /**

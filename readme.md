@@ -1,5 +1,7 @@
 # neoan3 PHP all purpose hybrid framework
 
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a3c9336dfc658b8f62dd/test_coverage)](https://codeclimate.com/github/sroehrl/neoan3/test_coverage)
+
 Rapid development, light-weight, lightning-fast, beginner-friendly yet limitlessly powerful? 
 
 neoan3 is all that and more. 
