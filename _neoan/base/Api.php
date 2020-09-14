@@ -2,7 +2,10 @@
 
 namespace Neoan3\Core;
 
-require_once (dirname(__DIR__) . '/');
+/*
+ * Legacy-file (deprecated)
+ * You may use this file for legacy compatibility via .htaccess
+ * */
 require_once(dirname(__FILE__) . '/_includes.php');
 
 
