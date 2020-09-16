@@ -6,6 +6,7 @@ namespace Neoan3\Core;
  * JS module bare imports were not implemented across browsers at the time of release of neoan3
  * the .htaccess contains a rewrite to this file to handle such issues
  * */
+require_once (dirname(dirname(__DIR__)) . '/vendor/autoload.php');
 require_once(dirname(__FILE__) . '/_includes.php');
 $route = new Route();
 
