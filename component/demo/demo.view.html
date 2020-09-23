@@ -19,11 +19,13 @@
         </section>
         <div class="grid-12">
             <template x-if="tab=='System'">
-                <div class="box b-1 b-rounded b-primary p-x-2 p-y-1 m-x-2">
+                <div class="box b-1 b-rounded b-primary p-4">
                     <div class="grid-2-10">
-                        <img class="pace-y-center" style="max-width: 50px" src="https://neoan3.rocks/asset/neoan3.webp" alt="n3-logo">
+                        <div class="place-y-center">
+                            <img style="max-width: 50px" src="https://neoan3.rocks/asset/neoan3.webp" alt="n3-logo">
+                        </div>
 
-                        <p class="text-primary text-md place-y-center">CORE v{{version}}</p>
+                        <p class="text-primary font-xl place-y-center"><strong>neoan3</strong> v{{version}}</p>
                     </div>
                     <h3>Installed composer packages:</h3>
                     <ul>
@@ -32,23 +34,23 @@
                         </li>
                     </ul>
                     <h2 class="text-primary">Documentation</h2>
-                    <p>The current documentation can be found @ <a class="btn" target="_blank" href="http://neoan3.rocks">http://neoan3.rocks</a></p>
+                    <p>The current documentation can be found @ <a class="text-decoration-none text-primary" target="_blank" href="http://neoan3.rocks">http://neoan3.rocks</a></p>
 
                 </div>
             </template>
             <template x-if="tab=='Quickstart'">
-                <section class="box b-1 b-rounded b-primary p-x-2 p-y-1 m-x-2">
+                <section class="box b-1 b-rounded b-primary p-4">
                     <h2 class="text-primary">Quick start</h2>
                     <h3>Creating your first route endpoint</h3>
                     <p>
-                        When using the <a href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
+                        When using the <a class="text-decoration-none text-primary" href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
                         navigate to this installation
                     </p>
                     <p>
-                        <code class="bg-black p-y-1 p-x-2 text-white">cd {{installation}}</code> and type
+                        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">cd {{installation}}</code> and type
                     </p>
                     <p>
-                        <code class="bg-black p-y-1 p-x-2 text-white">neoan3 new component firstComponent</code>
+                        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new component firstComponent</code>
                     </p>
                     <ul>
                         <li>Choose "Route component"</li>
@@ -56,7 +58,7 @@
                         <li>Yes to using a frame</li>
                         <li>Choose "demo"</li>
                     </ul>
-                    <p>Then, click <a href="{{base}}first-component/">here</a>.</p>
+                    <p>Then, click <a class="text-decoration-none text-primary" href="{{base}}first-component/">here</a>.</p>
                     <p>
                         A component becomes a HTML-route if it has an init-method. If the Unicore-Singleton is used,
                         a frame is optional or can be loaded dynamically. Looking at "/component/firstComponent/FirstComponent.ctrl.php"
@@ -64,21 +66,21 @@
                     </p>
                     <h3>Creating your first api endpoint</h3>
                     <p>
-                        When using the <a href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
+                        When using the <a class="text-decoration-none text-primary" href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
                         navigate to this installation
                     </p>
                     <p>
-                        <code class="bg-black p-y-1 p-x-2 text-white">cd {{installation}}</code> and type
+                        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">cd {{installation}}</code> and type
                     </p>
                     <p>
-                        <code class="bg-black p-y-1 p-x-2 text-white">neoan3 new component firstApi</code>
+                        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new component firstApi</code>
                     </p>
                     <ul>
                         <li>Choose "API component"</li>
                         <li>Yes to using a frame</li>
                         <li>Choose "demo"</li>
                     </ul>
-                    <p>Then, click <a href="{{base}}api.v1/first-api?some=value">here</a>.</p>
+                    <p>Then, click <a class="text-decoration-none text-primary" href="{{base}}api.v1/first-api?some=value">here</a>.</p>
                     <p>
                         A component is capable of receiving requests based on the method  + name.
                         Having a method getFirstApi, for instance, enables you to process GET-requests to
@@ -89,7 +91,7 @@
                 </section>
             </template>
             <template x-if="tab=='Changes'">
-                <section class="box b-1 b-rounded b-primary p-x-2 p-y-1 m-x-2">
+                <section class="box b-1 b-rounded b-primary p-4">
                     <h2 class="text-primary">Not your first neoan3 project? We've got some news.</h2>
                     <p>Once again we managed to keep changes non-breaking, so all your components & models are good to go.</p>
                     <p><span class="text-warning">NOTE:</span>

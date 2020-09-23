@@ -1,6 +1,6 @@
 {
     "name": "sroehrl/neoan3",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "the efficient PHP framework",
     "minimum-stability": "dev",
     "require": {

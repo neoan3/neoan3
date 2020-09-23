@@ -7,7 +7,7 @@ class ServerRoute
     private $appLevel;
     private $queryString;
     private $pureUri;
-    private $request;
+    public $request;
 
     function __construct()
     {

@@ -13,48 +13,16 @@
 function sub($no)
 {
     global $route;
-    if (!empty($route->url_parts[$no])) {
+    global $serve;
+    if ($route && !empty($route->url_parts[$no])) {
         return $route->url_parts[$no];
+    } elseif($serve && !empty($request = explode('/',$serve->request))){
+        return $request[$no] ?? false;
     } else {
         return false;
     }
 }
 
-/**
- * @param $link
- * @param string $inner
- * @param null $add
- * @return string
- */
-function a($link, $inner = '', $add = null)
-{
-    if ($inner == '') {
-        $inner = $link;
-    }
-    return '<a href="' . $link . '" ' . $add . '>' . $inner . '</a>';
-}
-
-/**
- * @param $src
- * @param string $alt
- * @param string $additional
- * @return string
- */
-function img($src, $alt = '', $additional = '')
-{
-    if ($alt == '') {
-        $alt = explode('/', $src);
-        $alt = explode('.', end($alt));
-        $alt = $alt[0];
-    }
-    if (strpos($additional, 'id="') === false) {
-        $autoId = 'id= "' . $alt . '_img"';
-    } else {
-        $autoId = '';
-    }
-
-    return '<img src="' . $src . '" alt="' . $alt . '" ' . $autoid . ' ' . $additional . ' />';
-}
 
 /**
  * @param string $input
