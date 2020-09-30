@@ -10,6 +10,7 @@ namespace Neoan3\Frame;
 
 use Neoan3\Core\Serve;
 use Neoan3\Provider\MySql\Database;
+use Neoan3\Provider\MySql\DatabaseWrapper;
 
 /**
  * Class Demo
@@ -17,18 +18,43 @@ use Neoan3\Provider\MySql\Database;
  */
 class Demo extends Serve
 {
+
     /**
-     * @var Database
+     * Name your credentials
+     * @var string
+     */
+    private string $dbCredentials = 'neoan3_db';
+    /**
+     * @var Database|DatabaseWrapper
      */
     protected Database $db;
 
     /**
      * Demo constructor.
      * @param Database|null $db
+     * @throws \Exception
      */
-    public function __construct(Database $db = null)
+    function __construct(Database $db = null)
     {
         parent::__construct();
+        if($db){
+            $this->db = $db;
+        } else {
+            $credentials = getCredentials();
+            if(isset($credentials[$this->dbCredentials])){
+                $this->db = new DatabaseWrapper($credentials['neoan3_db']);
+            }
+        }
+    }
+
+    /**
+     * @param $model
+     * @return mixed
+     */
+    function model($model)
+    {
+        $model::init($this->db);
+        return $model;
     }
 
     /**
