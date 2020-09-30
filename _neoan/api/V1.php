@@ -67,10 +67,10 @@ class V1
      * @param $parts
      * @return string
      */
-    function normalize($parts)
+    function normalize($part)
     {
         $target = '';
-        $normalize = explode('-', $parts[0]);
+        $normalize = explode('-', $part);
         foreach ($normalize as $i => $part) {
             $target .= $i > 0 ? ucfirst($part) : $part;
         }
@@ -82,7 +82,8 @@ class V1
      */
     function requestHeader()
     {
-        $endpointParts = explode('/', $_SERVER['REQUEST_URI']);
+        $cleanRequest = mb_substr($_SERVER['REQUEST_URI'], 0, (mb_strlen($_SERVER['QUERY_STRING'])+1)*-1 );
+        $endpointParts = explode('/', $cleanRequest);
         if(!isset($this->header['arguments'])){
             $this->header['arguments'] = [];
         }
@@ -90,11 +91,11 @@ class V1
         $function = false;
         foreach ($endpointParts as $part){
             if($next && !$function){
-                $function = $this->normalize(explode('?', $part));
+                $function = $this->normalize($part);
             } elseif($next) {
-                $this->header['arguments'][] = $this->normalize(explode('?', $part));
+                $this->header['arguments'][] = $this->normalize( $part);
             }
-            if($part == 'api.v1'){
+            if ($part == 'api.v1') {
                 $next = true;
             }
         }
