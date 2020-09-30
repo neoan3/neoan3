@@ -8,9 +8,8 @@
         "ext-json": "*",
         "mnsami/composer-custom-directory-installer": "1.1.*",
         "neoan3-apps/template":"^1",
-        "neoan3-apps/db": "^0.2.1",
+        "neoan3-apps/db": "^0.3",
         "neoan3-model/index": "^1",
-        "neoan3-apps/transformer": "^1",
         "ext-mbstring": "*"
     },
     "require-dev": {
@@ -27,7 +26,7 @@
         "psr-4": {
             "Neoan3\\Core\\": "./_neoan/base/",
             "Neoan3\\Api\\": "./_neoan/api/",
-            "Neoan3\\Provider": "./provider/"
+            "Neoan3\\Provider\\": "./provider/"
 
         },
         "files": [
