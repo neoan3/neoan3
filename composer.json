@@ -11,7 +11,7 @@
         "neoan3-apps/db": "^0.2.1",
         "neoan3-model/index": "^1",
         "neoan3-apps/transformer": "^1",
-      "ext-mbstring": "*"
+        "ext-mbstring": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.3"
@@ -26,7 +26,8 @@
     "autoload": {
         "psr-4": {
             "Neoan3\\Core\\": "./_neoan/base/",
-            "Neoan3\\Api\\": "./_neoan/api/"
+            "Neoan3\\Api\\": "./_neoan/api/",
+            "Neoan3\\Provider": "./provider/"
 
         },
         "files": [

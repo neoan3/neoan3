@@ -9,9 +9,31 @@
 namespace Neoan3\Frame;
 
 use Neoan3\Core\Serve;
+use Neoan3\Provider\MySql\Database;
 
+/**
+ * Class Demo
+ * @package Neoan3\Frame
+ */
 class Demo extends Serve
 {
+    /**
+     * @var Database
+     */
+    protected Database $db;
+
+    /**
+     * Demo constructor.
+     * @param Database|null $db
+     */
+    public function __construct(Database $db = null)
+    {
+        parent::__construct();
+    }
+
+    /**
+     * @return array
+     */
     function constants()
     {
         return [
