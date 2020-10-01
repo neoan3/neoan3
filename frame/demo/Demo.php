@@ -40,10 +40,15 @@ class Demo extends Serve
         if($db){
             $this->db = $db;
         } else {
-            $credentials = getCredentials();
-            if(isset($credentials[$this->dbCredentials])){
-                $this->db = new DatabaseWrapper($credentials['neoan3_db']);
+            try{
+                $credentials = getCredentials();
+                if(isset($credentials[$this->dbCredentials])){
+                    $this->db = new DatabaseWrapper($credentials['neoan3_db']);
+                }
+            } catch (\Exception $e) {
+                var_dump('No credentials found. Run "neoan3 credentials"');
             }
+
         }
     }
 
