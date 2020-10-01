@@ -9,9 +9,62 @@
 namespace Neoan3\Frame;
 
 use Neoan3\Core\Serve;
+use Neoan3\Provider\MySql\Database;
+use Neoan3\Provider\MySql\DatabaseWrapper;
 
+/**
+ * Class Demo
+ * @package Neoan3\Frame
+ */
 class Demo extends Serve
 {
+
+    /**
+     * Name your credentials
+     * @var string
+     */
+    private string $dbCredentials = 'neoan3_db';
+    /**
+     * @var Database|DatabaseWrapper
+     */
+    protected Database $db;
+
+    /**
+     * Demo constructor.
+     * @param Database|null $db
+     * @throws \Exception
+     */
+    function __construct(Database $db = null)
+    {
+        parent::__construct();
+        if($db){
+            $this->db = $db;
+        } else {
+            try{
+                $credentials = getCredentials();
+                if(isset($credentials[$this->dbCredentials])){
+                    $this->db = new DatabaseWrapper($credentials['testing']);
+                }
+            } catch (\Exception $e) {
+                $this->footer = 'No credentials found. Run "neoan3 credentials"';
+            }
+
+        }
+    }
+
+    /**
+     * @param $model
+     * @return mixed
+     */
+    function model($model)
+    {
+        $model::init($this->db);
+        return $model;
+    }
+
+    /**
+     * @return array
+     */
     function constants()
     {
         return [
