@@ -46,7 +46,7 @@ class Demo extends Serve
                     $this->db = new DatabaseWrapper($credentials['neoan3_db']);
                 }
             } catch (\Exception $e) {
-                var_dump('No credentials found. Run "neoan3 credentials"');
+                $this->footer = 'No credentials found. Run "neoan3 credentials"';
             }
 
         }
