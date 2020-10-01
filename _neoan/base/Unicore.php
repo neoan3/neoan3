@@ -15,9 +15,14 @@ namespace Neoan3\Core;
 class Unicore
 {
     /**
-     * @var
+     * @var array
      */
-    public $uniCore;
+    public array $injections = [];
+
+    /**
+     * @var Serve
+     */
+    public Serve $uniCore;
 
     /**
      * @param string $frame
@@ -27,7 +32,7 @@ class Unicore
     {
         if ($frame != '') {
             $class = '\\Neoan3\\Frame\\' . ucfirst($frame);
-            $this->uniCore = new $class();
+            $this->uniCore = new $class(...$this->injections);
         } else {
             $this->uniCore = new Serve();
         }
@@ -49,6 +54,16 @@ class Unicore
             $folder,
             $component
         ];
+    }
+
+    /**
+     * @param $provider
+     * @return $this
+     */
+    public function registerProvider($provider)
+    {
+        $this->injections[] = $provider;
+        return $this;
     }
 
 }
