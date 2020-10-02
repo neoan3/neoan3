@@ -43,7 +43,7 @@ class Demo extends Serve
             try{
                 $credentials = getCredentials();
                 if(isset($credentials[$this->dbCredentials])){
-                    $this->db = new DatabaseWrapper($credentials['testing']);
+                    $this->db = new DatabaseWrapper($credentials[$this->dbCredentials]);
                 }
             } catch (\Exception $e) {
                 $this->footer = 'No credentials found. Run "neoan3 credentials"';
