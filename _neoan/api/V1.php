@@ -64,7 +64,7 @@ class V1
     }
 
     /**
-     * @param $parts
+     * @param $part
      * @return string
      */
     function normalize($part)
@@ -82,8 +82,10 @@ class V1
      */
     function requestHeader()
     {
-        $queryString = $_SERVER['QUERY_STRING'] ?? '';
-        $cleanRequest = mb_substr($_SERVER['REQUEST_URI'], 0, (mb_strlen($queryString)+1)*-1 );
+        $cleanRequest = $_SERVER['REQUEST_URI'];
+        if(isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])){
+            $cleanRequest = mb_substr($_SERVER['REQUEST_URI'], 0, (mb_strlen($_SERVER['QUERY_STRING'])+1)*-1 );
+        }
         $endpointParts = explode('/', $cleanRequest);
         if(!isset($this->header['arguments'])){
             $this->header['arguments'] = [];
