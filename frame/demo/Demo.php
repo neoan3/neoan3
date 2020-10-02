@@ -27,7 +27,7 @@ class Demo extends Serve
     /**
      * @var Database|DatabaseWrapper
      */
-    protected Database $db;
+    public Database $db;
 
     /**
      * Demo constructor.
