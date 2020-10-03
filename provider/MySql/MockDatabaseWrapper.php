@@ -8,6 +8,13 @@ class MockDatabaseWrapper extends DatabaseWrapper
 {
     private array $results = [];
     private int $nextStep = 0;
+    private array $modelStructure;
+
+    public function __construct($environmentVariables = [], $modelStructure = [])
+    {
+        parent::__construct($environmentVariables);
+        $this->modelStructure = $modelStructure;
+    }
 
     function registerResult($any)
     {
@@ -28,7 +35,7 @@ class MockDatabaseWrapper extends DatabaseWrapper
     }
     function mockModel($model)
     {
-        $transform = new Transform($model, $this);
+        $transform = new Transform($model, $this, $this->modelStructure);
         $random = [];
         foreach ($transform->modelStructure as $table => $fields) {
             foreach ($transform->modelStructure[$table] as $field => $specs) {
@@ -72,13 +79,15 @@ class MockDatabaseWrapper extends DatabaseWrapper
         }
         return $random;
     }
+
     /**
+     * @param $modelName
      * @param null $entity
      * @return array|mixed
      */
-    function mockGet($entity=null)
+    function mockGet($modelName, $entity=null)
     {
-        $model = $this->mockModel('post');
+        $model = $this->mockModel($modelName);
         if($entity){
             $this->registerResult([$entity]);
         } else {
@@ -96,11 +105,13 @@ class MockDatabaseWrapper extends DatabaseWrapper
         }
         return $entity ? $entity : $model;
     }
+
     /**
+     * @param $modelName
      * @param $entity
      * @return array|mixed
      */
-    function mockUpdate($entity)
+    function mockUpdate($modelName, $entity)
     {
         foreach ($entity as $potential => $values){
             if(is_array($values)){
@@ -111,6 +122,6 @@ class MockDatabaseWrapper extends DatabaseWrapper
         }
         $this->registerResult('update main');
 
-        return $this->mockGet($entity);
+        return $this->mockGet($modelName, $entity);
     }
 }

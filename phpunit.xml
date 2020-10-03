@@ -22,6 +22,7 @@
         <testsuite name="unit">
             <directory suffix="Test.php">./component</directory>
             <directory suffix="Test.php">./model</directory>
+            <directory suffix="Test.php">./provider</directory>
         </testsuite>
     </testsuites>
     <php>
