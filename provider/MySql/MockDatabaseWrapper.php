@@ -20,7 +20,12 @@ class MockDatabaseWrapper extends DatabaseWrapper
         $this->nextStep++;
         return $result;
     }
-
+    function smart($selectString, $conditions = [], $callFunctions = [])
+    {
+        $result = $this->results[$this->nextStep];
+        $this->nextStep++;
+        return $result;
+    }
     function mockModel($model)
     {
         $transform = new Transform($model, $this);
@@ -33,7 +38,7 @@ class MockDatabaseWrapper extends DatabaseWrapper
                         if ($table == $model) {
                             $random[$field] = $val;
                         } else {
-                            $random[$table][$field] = $val;
+                            $random[$table][0][$field] = $val;
                         }
                         break;
                     case 'timestamp':
@@ -43,7 +48,7 @@ class MockDatabaseWrapper extends DatabaseWrapper
                         if ($table == $model) {
                             $random[$field] = $val;
                         } else {
-                            $random[$table][$field] = $val;
+                            $random[$table][0][$field] = $val;
                         }
                         break;
                     case 'int':
@@ -52,7 +57,7 @@ class MockDatabaseWrapper extends DatabaseWrapper
                         if ($table == $model) {
                             $random[$field] = $val;
                         } else {
-                            $random[$table][$field] = $val;
+                            $random[$table][0][$field] = $val;
                         }
                         break;
                     default:
@@ -60,11 +65,52 @@ class MockDatabaseWrapper extends DatabaseWrapper
                         if ($table == $model) {
                             $random[$field] = $val;
                         } else {
-                            $random[$table][$field] = $val;
+                            $random[$table][0][$field] = $val;
                         }
                 }
             }
         }
         return $random;
+    }
+    /**
+     * @param null $entity
+     * @return array|mixed
+     */
+    function mockGet($entity=null)
+    {
+        $model = $this->mockModel('post');
+        if($entity){
+            $this->registerResult([$entity]);
+        } else {
+            $this->registerResult([$model]);
+        }
+        foreach ($model as $key => $value){
+            if(is_array($value)){
+                if($entity){
+                    $this->registerResult($entity[$key]);
+                } else {
+                    $this->registerResult($model[$key]);
+                }
+
+            }
+        }
+        return $entity ? $entity : $model;
+    }
+    /**
+     * @param $entity
+     * @return array|mixed
+     */
+    function mockUpdate($entity)
+    {
+        foreach ($entity as $potential => $values){
+            if(is_array($values)){
+                for($i = 0; $i < count($values); $i++){
+                    $this->registerResult('update');
+                }
+            }
+        }
+        $this->registerResult('update main');
+
+        return $this->mockGet($entity);
     }
 }

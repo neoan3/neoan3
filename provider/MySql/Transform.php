@@ -67,10 +67,10 @@ class Transform
     }
     function find($condition)
     {
-        $join = '$'. $this->modelName . '.id:id ';
+        $join = $this->modelName . '.id';
         foreach ($this->modelStructure as $table => $fields){
             if($table !== $this->modelName){
-                $join .= "$table.id:${table}_id";
+                $join .= " $table.id:${table}_id";
             }
         }
         $hits = $this->db->easy($join, $condition);
