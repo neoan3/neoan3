@@ -15,10 +15,20 @@ class Transform
      */
     private Database $db;
 
-    function __construct($model, Database $db)
+    /**
+     * Transform constructor.
+     * @param $model
+     * @param Database $db
+     * @param array $modelStructure
+     */
+    function __construct($model, Database $db, array $modelStructure = [])
     {
         $this->modelName = $model;
-        $this->readMigrate();
+        if(empty($modelStructure)){
+            $this->readMigrate();
+        } else {
+            $this->modelStructure = $modelStructure;
+        }
         $this->db = $db;
     }
     function get($id)
@@ -97,9 +107,9 @@ class Transform
         }
         return $returnArray;
     }
-    private function readMigrate()
+    public function readMigrate()
     {
-        $this->modelStructure = json_decode(file_get_contents(path . "/model/$this->modelName/migrate.json"), true);
+         $this->modelStructure = json_decode(file_get_contents(path . "/model/$this->modelName/migrate.json"), true);
     }
     private function readSql()
     {
