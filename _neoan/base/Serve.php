@@ -13,63 +13,63 @@ class Serve
     /**
      * @var string
      */
-    private $html = '';
+    private string $html = '';
     /**
      * @var string
      */
-    public $head = '';
+    public string $head = '';
     /**
      * @var string
      */
-    public $header = '';
+    public string $header = '';
     /**
      * @var string
      */
-    public $main = '';
+    public string $main = '';
     /**
      * @var string
      */
-    public $footer = '';
+    public string $footer = '';
     /**
      * @var string
      */
-    public $style = '';
+    public string $style = '';
     /**
      * @var string
      */
-    public $importedStyles = '';
+    public string $importedStyles = '';
     /**
      * @var string
      */
-    public $scripts = '';
+    public string $scripts = '';
     /**
      * @var string
      */
-    public $importedScripts = '';
+    public string $importedScripts = '';
     /**
      * @var string
      */
-    public $modules = '';
+    public string $modules = '';
     /**
      * @var string
      */
-    public $js = '';
+    public string $js = '';
     /**
      * @var string
      */
-    public $viewExt = 'html';
+    public string $viewExt = 'html';
     /**
      * @var string
      */
-    public $styleExt = 'css';
+    public string $styleExt = 'css';
     /**
      * @var string
      */
-    public $feExt = 'js';
+    public string $feExt = 'js';
     /**
      * @var
      */
-    public $runComponent;
+    public  $runComponent;
     /**
      * @var
      */
@@ -77,11 +77,13 @@ class Serve
     /**
      * @var array
      */
-    public $methods = [];
+    public array $methods = [];
     /**
      * @var array
      */
-    public $ctrl = [];
+    public array $ctrl = [];
+
+    public array $provider = [];
 
     /**
      * Serve constructor.
@@ -92,6 +94,15 @@ class Serve
         $this->secureCustomElementDefine();
         $this->initFrame();
         $this->startHtml();
+
+    }
+    function assignProvider($name, $provided, $callback)
+    {
+        if($provided){
+            $this->provider[$name] = $provided;
+        } else {
+            $callback();
+        }
 
     }
 

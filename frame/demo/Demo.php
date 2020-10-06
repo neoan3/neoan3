@@ -9,6 +9,8 @@
 namespace Neoan3\Frame;
 
 use Neoan3\Core\Serve;
+use Neoan3\Provider\Auth\Auth;
+use Neoan3\Provider\Auth\JwtWrapper;
 use Neoan3\Provider\MySql\Database;
 use Neoan3\Provider\MySql\DatabaseWrapper;
 
@@ -23,34 +25,33 @@ class Demo extends Serve
      * Name your credentials
      * @var string
      */
-    private string $dbCredentials = 'neoan3_db';
-    /**
-     * @var Database|DatabaseWrapper
-     */
-    public Database $db;
+    private string $dbCredentials = 'testing_db';
 
     /**
      * Demo constructor.
      * @param Database|null $db
-     * @throws \Exception
+     * @param Auth|null $jwt
      */
-    function __construct(Database $db = null)
+    function __construct(Database $db = null, Auth $jwt = null)
     {
         parent::__construct();
-        if($db){
-            $this->db = $db;
-        } else {
+        $this->assignProvider('jwt', $jwt, function (){
+            $this->provider['jwt'] = new JwtWrapper();
+            $this->provider['jwt']->setSecret('my-secret');
+        });
+        $this->assignProvider('db', $db, function(){
             try{
                 $credentials = getCredentials();
                 if(isset($credentials[$this->dbCredentials])){
-                    $this->db = new DatabaseWrapper($credentials[$this->dbCredentials]);
+                    $this->provider['db'] = new DatabaseWrapper($credentials[$this->dbCredentials]);
                 }
             } catch (\Exception $e) {
                 $this->footer = 'No credentials found. Run "neoan3 credentials"';
             }
+        });
 
-        }
     }
+
 
     /**
      * @param $model
@@ -58,7 +59,7 @@ class Demo extends Serve
      */
     function model($model)
     {
-        $model::init($this->db);
+        $model::init($this->provider['db']);
         return $model;
     }
 
@@ -79,7 +80,7 @@ class Demo extends Serve
             ],
             'stylesheet' => [
                 '' . base . 'frame/demo/demo.css',
-                'https://cdn.jsdelivr.net/npm/gaudiamus-css@1.1.0/css/gaudiamus.min.css',
+                'https://cdn.jsdelivr.net/npm/gaudiamus-css@1.2.0/css/gaudiamus.min.css',
             ]
         ];
     }
