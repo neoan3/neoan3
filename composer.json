@@ -26,6 +26,8 @@
         "psr-4": {
             "Neoan3\\Core\\": "./_neoan/base/",
             "Neoan3\\Api\\": "./_neoan/api/",
+            "Neoan3\\Model\\": "./model/",
+            "Neoan3\\Component\\": "./component/",
             "Neoan3\\Provider\\": "./provider/"
 
         },

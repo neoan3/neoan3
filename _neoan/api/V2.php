@@ -2,13 +2,15 @@
 
 namespace Neoan3\Api;
 
+use Exception;
 use Neoan3\Core\Event;
 use Neoan3\Core\RouteException;
+use ReflectionMethod;
 
 /**
  * Class Api
  */
-class V1
+class V2
 {
     /**
      * @var
@@ -17,11 +19,11 @@ class V1
     /**
      * @var array
      */
-    public $header = [];
+    public array $header = [];
     /**
-     * @var
+     * @var int
      */
-    private $responseCode;
+    private int $responseCode;
 
     /**
      * Api constructor.
@@ -72,7 +74,7 @@ class V1
         $target = '';
         $normalize = explode('-', $part);
         foreach ($normalize as $i => $part) {
-            $target .= $i > 0 ? ucfirst($part) : $part;
+            $target .= ucfirst($part);
         }
         return $target;
     }
@@ -83,22 +85,22 @@ class V1
     function requestHeader()
     {
         $cleanRequest = $_SERVER['REQUEST_URI'];
-        if(isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])){
-            $cleanRequest = mb_substr($_SERVER['REQUEST_URI'], 0, (mb_strlen($_SERVER['QUERY_STRING'])+1)*-1 );
+        if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
+            $cleanRequest = mb_substr($_SERVER['REQUEST_URI'], 0, (mb_strlen($_SERVER['QUERY_STRING']) + 1) * -1);
         }
         $endpointParts = explode('/', $cleanRequest);
-        if(!isset($this->header['arguments'])){
+        if (!isset($this->header['arguments'])) {
             $this->header['arguments'] = [];
         }
         $next = false;
         $function = false;
-        foreach ($endpointParts as $part){
-            if($next && !$function){
+        foreach ($endpointParts as $part) {
+            if ($next && !$function) {
                 $function = $this->normalize($part);
-            } elseif($next) {
-                $this->header['arguments'][] = $this->normalize( $part);
+            } elseif ($next) {
+                $this->header['arguments'][] = $this->normalize($part);
             }
-            if ($part == 'api.v1') {
+            if ($part == 'api.v2') {
                 $next = true;
             }
         }
@@ -110,7 +112,7 @@ class V1
      */
     function setResponseHeader($number)
     {
-        $this->responseCode = $number;
+        $this->responseCode = (int)$number;
     }
 
     /**
@@ -124,7 +126,7 @@ class V1
         }
 
         $function = strtolower($this->header['REQUEST_METHOD']) . ucfirst($this->header['target']);
-        $class = '\\Neoan3\\Components\\' . $this->header['target'];
+        $class = '\\Neoan3\\Component\\' . $this->header['target'] . '\\' . $this->header['target'] . 'Controller';
         $this->checkErrors($class, $function);
         $c = new $class();
         $this->setResponseHeader(200);
@@ -143,16 +145,6 @@ class V1
         $this->exiting($responseBody);
 
     }
-    private function constructParameters(){
-        $functionParameters = [];
-        foreach ($this->header['arguments'] as $argument){
-            $functionParameters[] = $argument;
-        }
-        if (!empty($this->stream)) {
-            $functionParameters[] = $this->stream;
-        }
-        return $functionParameters;
-    }
 
     /**
      * @param $class
@@ -160,47 +152,39 @@ class V1
      */
     private function checkErrors($class, $function)
     {
-        $file = path . '/component/' . $this->header['target'] . '/' . ucfirst($this->header['target']) . '.ctrl.php';
         try {
-            if (!file_exists($file)) {
+            if (!class_exists($class)) {
                 Event::dispatch('Core\\Api::error', ['msg' => 'unknown endpoint']);
                 $this->setResponseHeader(404);
-                throw new \Exception('unknown endpoint');
-            } else {
-                require_once($file);
-            }
-            if (!method_exists($class, $function)) {
+                throw new Exception('unknown endpoint');
+            } elseif (!method_exists($class, $function)) {
                 Event::dispatch('Core\\Api::error', ['msg' => 'method not supported']);
                 $this->setResponseHeader(405);
-                throw new \Exception('method ' . $this->header['REQUEST_METHOD'] . ' is not supported at this endpoint');
+                throw new Exception('method ' . $this->header['REQUEST_METHOD'] . ' is not supported at this endpoint');
             }
-            $r = new \ReflectionMethod($class, $function);
+            $r = new ReflectionMethod($class, $function);
             $params = $r->getParameters();
             $lastParam = array_pop($params);
             // last: body/params
-            if(!$lastParam->isDefaultValueAvailable() && empty($this->stream)) {
+            if (!$lastParam->isDefaultValueAvailable() && empty($this->stream)) {
                 Event::dispatch('Core\\Api::error', ['msg' => 'request is empty']);
                 $this->setResponseHeader(400);
-                throw new \Exception('request is empty');
+                throw new Exception('request is empty');
             }
             // other (arguments)
-            foreach($params as $i => $param){
-                if(!isset($this->header['arguments'][$i])){
-                    if($param->isDefaultValueAvailable()){
+            foreach ($params as $i => $param) {
+                if (!isset($this->header['arguments'][$i])) {
+                    if ($param->isDefaultValueAvailable()) {
                         $this->header['arguments'][$i] = $param->getDefaultValue();
                     } else {
                         Event::dispatch('Core\\Api::error', ['msg' => 'missing argument: ' . $param->getName()]);
                         $this->setResponseHeader(400);
-                        throw new \Exception('missing argument: ' . $param->getName());
+                        throw new Exception('missing argument: ' . $param->getName());
                     }
 
                 }
             }
-
-
-
-        } catch (\Exception $e) {
-
+        } catch (Exception $e) {
             $this->exiting(['error' => $e->getMessage()]);
         }
     }
@@ -214,6 +198,7 @@ class V1
         http_response_code($this->responseCode);
         header('Content-type: application/json');
         echo json_encode($answer);
+        Event::dispatch('Core\\Api::afterAnswer', ['answer' => $answer, 'responseCode' => $this->responseCode]);
         exit();
     }
 }

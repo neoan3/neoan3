@@ -3,12 +3,14 @@
 namespace Neoan3;
 
 // catch all errors?
+use ErrorException;
+
 function exception_error_handler($errno, $errstr, $errfile, $errline)
 {
     if (!(error_reporting() & $errfile)) {
         return;
     }
-    throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
+    throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
 
 }
 
@@ -22,8 +24,8 @@ $route = new Core\Route();
 #
 # RUN
 #
-
-$consumer = __NAMESPACE__ . '\\Components\\' . $route->call;
+$namespace = $route->call;
+$consumer = __NAMESPACE__ . "\\Component\\$namespace\\${namespace}Controller";
 Core\Event::dispatch('Core::beforeInit', ['component' => $route->call]);
 $run = new $consumer;
 $run->init();
