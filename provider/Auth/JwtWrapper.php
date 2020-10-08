@@ -30,6 +30,9 @@ class JwtWrapper implements Auth
      */
     public function validate(?string $jwt): array
     {
+        if($jwt){
+            Stateless::setAuthorization($jwt);
+        }
         try{
             return Stateless::validate();
         } catch (Exception $e) {

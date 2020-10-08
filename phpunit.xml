@@ -12,6 +12,7 @@
             <directory>./_neoan</directory>
             <directory>./asset</directory>
             <directory>./_template</directory>
+            <directory suffix="Test.php">./</directory>
         </exclude>
         <report>
             <clover outputFile="tests/clover.xml"/>
