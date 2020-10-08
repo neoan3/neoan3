@@ -12,7 +12,7 @@ spl_autoload_register(function ($class) use ($ds)  {
     }
     $relativeClass = substr($class, $len);
     $className = str_replace('\\', $ds, $relativeClass);
-    $file = $baseDir . lcfirst($className) . $ds . ucfirst($className) . '.php';
+    $file = $baseDir . ucfirst($className) . $ds . ucfirst($className) . '.php';
 
     if (file_exists($file)) {
         require $file;

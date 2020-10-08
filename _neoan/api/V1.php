@@ -10,7 +10,7 @@ use ReflectionMethod;
 /**
  * Class Api
  */
-class V2
+class V1
 {
     /**
      * @var
@@ -100,7 +100,7 @@ class V2
             } elseif ($next) {
                 $this->header['arguments'][] = $this->normalize($part);
             }
-            if ($part == 'api.v2') {
+            if ($part == 'api.v1') {
                 $next = true;
             }
         }
