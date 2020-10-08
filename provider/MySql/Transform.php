@@ -14,10 +14,10 @@ class Transform
      */
     private Database $db;
 
-    function __construct($model, Database $db)
+    function __construct($model, Database $db, $modelStructure = null)
     {
         $this->modelName = $model;
-        $this->readMigrate();
+        $this->modelStructure = $modelStructure ?? $this->readMigrate();
         $this->db = $db;
     }
     private function formatResult(&$result, $runner, $row)
@@ -109,7 +109,7 @@ class Transform
         foreach ($this->modelStructure as $table => $fields){
             if($table !== $this->modelName && in_array($table, $joinTables)){
                 $join .= " $table.id:${table}_id";
-            } elseif(!empty($condition) && !in_array($table, $joinTables)) {
+            } elseif(!empty($condition) && (!in_array($table, $joinTables) && $table !== $this->modelName)) {
                 return [];
             }
         }
@@ -139,7 +139,7 @@ class Transform
     }
     private function readMigrate()
     {
-        $this->modelStructure = json_decode(file_get_contents(path . "/model/$this->modelName/migrate.json"), true);
+        return json_decode(file_get_contents(path . "/model/$this->modelName/migrate.json"), true);
     }
     private function readSql()
     {

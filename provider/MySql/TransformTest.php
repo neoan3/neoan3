@@ -4,10 +4,10 @@ namespace Neoan3\Provider\MySql;
 
 use PHPUnit\Framework\TestCase;
 
-function file_get_contents($ins)
+/*function file_get_contents($ins)
 {
     return '{"mock":{"id":{"type": "binary(16)", "key":"primary"}},"mock_sub":{"id":{"type": "binary(16)", "key":"primary"},{"mock_id":{"type": "binary(16)", "key":false}}}';
-}
+}*/
 
 class TransformTest extends TestCase
 {
@@ -30,6 +30,7 @@ class TransformTest extends TestCase
     public function testUpdate()
     {
         $this->dbMock->mockUpdate('mock', $this->mockMock);
+
         $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
         $actual = $transform->update($this->mockMock);
         $this->assertArrayHasKey('id', $actual);
@@ -48,10 +49,10 @@ class TransformTest extends TestCase
     public function testFind()
     {
         $this->dbMock->registerResult([['id' => '123']]);
-        $this->dbMock->mockModel('mock');
+        $model = $this->dbMock->mockModel('mock');
         $this->dbMock->mockGet('mock');
         $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
-        $actual = $transform->find(['any'=>'thing']);
+        $actual = $transform->find(['mock_sub.mock_id'=>'123456789']);
         $this->assertArrayHasKey('id', $actual[0]);
         $this->assertArrayHasKey('mock_sub', $actual[0]);
     }

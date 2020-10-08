@@ -8,6 +8,13 @@ class MockDatabaseWrapper extends DatabaseWrapper
 {
     private array $results = [];
     private int $nextStep = 0;
+    private ?array $mockModelStructure;
+
+    public function __construct($environmentVariables = [], $mockModelStructure = null)
+    {
+        parent::__construct($environmentVariables);
+        $this->mockModelStructure = $mockModelStructure;
+    }
 
     function registerResult($any)
     {
@@ -28,7 +35,7 @@ class MockDatabaseWrapper extends DatabaseWrapper
     }
     function mockModel($model)
     {
-        $transform = new Transform($model, $this);
+        $transform = new Transform($model, $this, $this->mockModelStructure);
         $random = [];
         foreach ($transform->modelStructure as $table => $fields) {
             foreach ($transform->modelStructure[$table] as $field => $specs) {
