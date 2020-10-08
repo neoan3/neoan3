@@ -4,27 +4,36 @@ namespace Neoan3\Provider\MySql;
 
 use PHPUnit\Framework\TestCase;
 
-/*function file_get_contents($ins)
-{
-    return '{"mock":{"id":{"type": "binary(16)", "key":"primary"}},"mock_sub":{"id":{"type": "binary(16)", "key":"primary"},{"mock_id":{"type": "binary(16)", "key":false}}}';
-}*/
 
 class TransformTest extends TestCase
 {
-    private array $mockStructure = [
-        'mock' => ['id' => ['type' => 'binary(16)', 'key' => 'primary']],
-        'mock_sub' => ['id' => ['type' => 'binary(16)', 'key' => 'primary'],'mock_id' => ['type' => 'binary(16)', 'key' => false]]
-    ];
+    private array $mockStructure = [];
     private array $mockMock = [
         'id' => 'abc',
+        'a_stamp' => '123456789',
+        'a_stamp_st' => '123456789',
+        'an_int' => 1,
+        'a_string' => 'some',
         'mock_sub' => [
-            ['id' => 'cde', 'mock_id' => 'abc']
+            [
+                'id' => 'cde',
+                'mock_id' => 'abc',
+                'a_stamp' => '123456789',
+                'a_stamp_st' => '123456789',
+                'an_int' => 1,
+                'a_string' => 'some',
+                'delete_date' => '123456',
+                'delete_date_st' => '123456'
+            ]
         ]
     ];
     private DatabaseWrapper $dbMock;
+
     protected function setUp(): void
     {
+        $this->mockStructure = json_decode(file_get_contents(__DIR__ . '/mockMigrate.json'), true);
         $this->dbMock = new MockDatabaseWrapper([], $this->mockStructure);
+
     }
 
     public function testUpdate()
@@ -35,6 +44,27 @@ class TransformTest extends TestCase
         $actual = $transform->update($this->mockMock);
         $this->assertArrayHasKey('id', $actual);
         $this->assertArrayHasKey('mock_sub', $actual);
+
+    }
+    public function testUpdateAddedSub()
+    {
+        $mockMockCopy = $this->mockMock;
+        unset($mockMockCopy['mock_sub'][0]['id']);
+
+        foreach ($mockMockCopy as $potential => $values){
+            if(is_array($values)){
+                for($i = 0; $i < count($values); $i++){
+                    $this->dbMock->registerResult('update');
+                }
+            }
+        }
+        $this->dbMock->registerResult('update main');
+        // reattach id
+        $this->dbMock->mockGet('mock', $this->mockMock);
+        $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
+        $newSub = $transform->update($mockMockCopy);
+        $this->assertArrayHasKey('id', $newSub);
+        $this->assertArrayHasKey('mock_sub', $newSub);
     }
 
     public function testGet()
@@ -46,15 +76,22 @@ class TransformTest extends TestCase
         $this->assertArrayHasKey('mock_sub', $actual);
     }
 
+
     public function testFind()
     {
         $this->dbMock->registerResult([['id' => '123']]);
-        $model = $this->dbMock->mockModel('mock');
         $this->dbMock->mockGet('mock');
         $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
-        $actual = $transform->find(['mock_sub.mock_id'=>'123456789']);
+        $actual = $transform->find(['mock_sub.mock_id' => '123456789']);
         $this->assertArrayHasKey('id', $actual[0]);
         $this->assertArrayHasKey('mock_sub', $actual[0]);
+    }
+
+    public function testFindReturnHook()
+    {
+        $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
+        $actual = $transform->find(['mock_unknown.mock_unknown' => '123456789']);
+        $this->assertEmpty($actual);
     }
 
     public function testCreate()
