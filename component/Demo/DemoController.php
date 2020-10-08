@@ -1,6 +1,6 @@
 <?php
 
-namespace Neoan3\Components;
+namespace Neoan3\Component\Demo;
 
 use Neoan3\Provider\MySql\Database;
 use Neoan3\Core\Unicore;
@@ -9,7 +9,7 @@ use Neoan3\Core\Unicore;
  * Class Demo
  * @package Neoan3\Components
  */
-class Demo extends Unicore
+class DemoController extends Unicore
 {
     /**
      * @var Database|null

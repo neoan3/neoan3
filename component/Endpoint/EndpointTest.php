@@ -1,15 +1,15 @@
 <?php
 
-namespace Neoan3\Components;
+namespace Neoan3\Component\Endpoint;
 
 use PHPUnit\Framework\TestCase;
 
 class EndpointTest extends TestCase
 {
-    private Endpoint $instance;
+    private EndpointController $instance;
     function setUp(): void
     {
-        $this->instance = new Endpoint();
+        $this->instance = new EndpointController();
     }
 
     function testGetEndpoint()
