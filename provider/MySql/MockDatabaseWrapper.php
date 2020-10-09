@@ -127,4 +127,10 @@ class MockDatabaseWrapper extends DatabaseWrapper
 
         return $this->mockGet($modelName, $entity);
     }
+
+    function mockFind($modelName, $entity=null)
+    {
+        $this->registerResult([['id' => $entity ? $entity['id'] : 'someUUId']]);
+        return $this->mockGet($modelName, $entity);
+    }
 }
