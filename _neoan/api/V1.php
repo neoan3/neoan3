@@ -166,7 +166,7 @@ class V1
             $params = $r->getParameters();
             $lastParam = array_pop($params);
             // last: body/params
-            if (!$lastParam->isDefaultValueAvailable() && empty($this->stream)) {
+            if ($lastParam && !$lastParam->isDefaultValueAvailable() && empty($this->stream)) {
                 Event::dispatch('Core\\Api::error', ['msg' => 'request is empty']);
                 $this->setResponseHeader(400);
                 throw new Exception('request is empty');
