@@ -119,6 +119,7 @@ class Transform
             }
         }
         $hits = $this->db->easy($join, $condition, ['groupBy' => [$this->modelName . '.id',$this->modelName . '.insert_date']]);
+
         $return = [];
         foreach ($this->getGenerator($hits) as $hit){
             $return[] = $hit;

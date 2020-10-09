@@ -87,11 +87,11 @@ class TransformTest extends TestCase
         $this->assertArrayHasKey('mock_sub', $actual[0]);
     }
 
-    public function testFindReturnHook()
+    public function testFindException()
     {
-        $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
-        $actual = $transform->find(['mock_unknown.mock_unknown' => '123456789']);
-        $this->assertEmpty($actual);
+        $transform = new Transform('mock', new DatabaseWrapper(), $this->mockStructure);
+        $this->expectException(\Exception::class);
+        $transform->find(['mock_unknown.mock_unknown' => '123456789']);
     }
 
     public function testCreate()

@@ -25,12 +25,12 @@ class Unicore
     public Serve $uniCore;
 
     /**
-     * @param string $frame
+     * @param ?string $frame
      * @return Serve
      */
-    function uni($frame = '')
+    function uni($frame = null)
     {
-        if ($frame != '') {
+        if ($frame) {
             $class = '\\Neoan3\\Frame\\' . ucfirst($frame);
             $this->uniCore = new $class(...$this->injections);
         } else {
@@ -38,22 +38,8 @@ class Unicore
         }
 
         $track = debug_backtrace();
-        $this->setRunComponent($track[0]['file']);
+        $this->uniCore->renderer->setComponentName($track[1]['class']);
         return $this->uniCore;
-    }
-
-    /**
-     * @param $file
-     */
-    function setRunComponent($file)
-    {
-        $folder = substr($file, 0, strrpos($file, DIRECTORY_SEPARATOR));
-        $fParts = explode(DIRECTORY_SEPARATOR, $folder);
-        $component = end($fParts);
-        $this->uniCore->runComponent = [
-            $folder,
-            $component
-        ];
     }
 
     /**

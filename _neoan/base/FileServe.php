@@ -2,17 +2,17 @@
 
 namespace Neoan3\Core;
 
+require_once (dirname(dirname(__DIR__)) . '/vendor/autoload.php');
 require_once(dirname(__FILE__) . '/_includes.php');
-
-$route = new Route();
-$serve = new FileServe($_GET['action']);
+new Route();
+new FileServe($_GET['action']);
 
 use Neoan3\Apps\Template;
 
 class FileServe
 {
-    private $supported;
-    private $substitutes = [];
+    private array $supported;
+    private array $substitutes = [];
 
     function __construct($action)
     {
@@ -27,7 +27,7 @@ class FileServe
         // important: file-serve requires custom delimiter in file-name
         if (isset($parts[1])) {
             foreach ($this->supported as $type) {
-                $this->setSubtitutes($folder . '/' . $parts[0] . '.' . $parts[1] . '.' . $type, $type);
+                $this->setSubstitutes($folder . '/' . $parts[0] . '.' . $parts[1] . '.' . $type, $type);
             }
             $keys = array_keys($this->substitutes);
             $this->mimeType(end($keys));
@@ -53,7 +53,7 @@ class FileServe
         header('Content-Type: ' . $type);
     }
 
-    private function setSubtitutes($path, $type)
+    private function setSubstitutes($path, $type)
     {
         if (file_exists($path)) {
             $this->substitutes[$type] = file_get_contents($path);
