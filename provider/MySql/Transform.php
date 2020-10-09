@@ -5,6 +5,8 @@ namespace Neoan3\Provider\MySql;
 
 
 
+use Neoan3\Apps\Db;
+
 class Transform
 {
     private string $modelName;
@@ -13,6 +15,8 @@ class Transform
      * @var Database
      */
     private Database $db;
+
+    private ?array $getReader = null;
 
     function __construct($model, Database $db, $modelStructure = null)
     {
@@ -48,10 +52,13 @@ class Transform
 
     function get($id)
     {
-        $reader = $this->readSql();
+        if(!$this->getReader){
+            $this->getReader = $this->readSql();
+        }
         $result = [];
-        $reader['condition'][$this->modelName .'.id'] = '$' . $id;
-        $pureResult = $this->db->easy($this->modelName .'.id '. $reader['query'], $reader['condition']);
+        $sql = $this->getReader['query'] . $this->getReader['joins'] . ' WHERE post.id = UNHEX({{id}})' . $this->getReader['condition'];
+        $pureResult = $this->db->smart('>'.$sql, ['id' => $id]);
+
         foreach ($pureResult as $i => $row){
             $this->formatResult($result, $i, $row);
         }
@@ -109,8 +116,6 @@ class Transform
         foreach ($this->modelStructure as $table => $fields){
             if($table !== $this->modelName && in_array($table, $joinTables)){
                 $join .= " $table.id:${table}_id";
-            } elseif(!empty($condition) && (!in_array($table, $joinTables) && $table !== $this->modelName)) {
-                return [];
             }
         }
         $hits = $this->db->easy($join, $condition, ['groupBy' => [$this->modelName . '.id',$this->modelName . '.insert_date']]);
@@ -118,6 +123,7 @@ class Transform
         foreach ($this->getGenerator($hits) as $hit){
             $return[] = $hit;
         }
+
         return $return;
     }
 
@@ -143,31 +149,34 @@ class Transform
     }
     private function readSql()
     {
-        $queryString = '';
-        $conditionArray = [];
+        $pureQueryString = 'SELECT ';
+        $joins = ' FROM ' . $this->modelName;
+        $condition = '';
+        $modelName = $this->modelName;
         foreach ($this->modelStructure as $table => $any){
+            if($table !== $modelName){
+                $joins .= " LEFT JOIN `$table` ON `$table`.`${modelName}_id` = `$modelName`.`id` ";
+            }
             foreach ($this->modelStructure[$table] as $field => $specs){
                 switch ($this->cleanType($specs['type'])){
                     case 'binary':
-                        $queryString .= '$' . "${table}.${field}:${table}_$field ";
+                        $pureQueryString .= "HEX(`${table}`.`${field}`) as ${table}_$field, ";
                         break;
                     case 'timestamp':
                     case 'date':
                     case 'datetime':
-                        $queryString .= "${table}.$field:${table}_$field ";
-                        $queryString .= "#${table}.${field}:${table}_${field}_st ";
-                        if($field == 'delete_date' || $field == 'deleteDate'){
-                            $conditionArray[] = '^' . $table.'.'.$field;
+                        if(($field == 'delete_date' || $field == 'deleteDate') && $table !== $modelName){
+                            $condition .= " AND `$table`.`$field` IS NULL ";
                         }
-                        break;
+                        $pureQueryString .= "UNIX_TIMESTAMP(`${table}`.`${field}`)*1000 as ${table}_${field}_st, ";
                     default:
-                        $queryString .= "${table}.$field:${table}_$field ";
+                        $pureQueryString .= "`${table}`.`${field}` as ${table}_${field}, ";
                         break;
                 }
 
             }
         }
-        return ['query' => substr($queryString, 0 , -1), 'condition' => $conditionArray];
+        return ['query' => substr($pureQueryString, 0 , -2), 'joins' => $joins, 'condition' => $condition];
     }
     private function cleanType($type)
     {
