@@ -106,6 +106,12 @@ class Serve
 
     }
 
+    function loadModel($modelClass)
+    {
+        $modelClass::init($this->provider['db']);
+        return $modelClass;
+    }
+
     /**
      * @param array $params
      * @return $this

@@ -54,16 +54,6 @@ class Demo extends Serve
 
 
     /**
-     * @param $model
-     * @return mixed
-     */
-    function model($model)
-    {
-        $model::init($this->provider['db']);
-        return $model;
-    }
-
-    /**
      * @return array
      */
     function constants()

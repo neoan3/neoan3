@@ -6,7 +6,7 @@
         </div>
 
     </nav>
-    <div class="container" x-data="{tab:'System', tabs:['System','Quickstart','Changes']}">
+    <div class="container" x-data="{tab:'System', tabs:['System','Introduction','Quickstart','Changes']}">
         <section class="b-primary b-1 b-rounded m-y-2" style="display:flex; justify-content: space-between">
             <template x-for="x in tabs">
                 <a href="#" x-on:click.prevent="tab=x" style="flex: auto"
@@ -25,7 +25,7 @@
                             <img style="max-width: 50px" src="https://neoan3.rocks/asset/neoan3.webp" alt="n3-logo">
                         </div>
 
-                        <p class="text-primary font-xl place-y-center"><strong>neoan3</strong> v{{version}}</p>
+                        <div style="cursor: pointer" x-on:click="tab='Introduction'" class="text-primary font-xl place-y-center"><strong>neoan3</strong> v{{version}}</div>
                     </div>
                     <h3>Installed composer packages:</h3>
                     <ul>
@@ -41,7 +41,21 @@
             <template x-if="tab=='Quickstart'">
                 <section class="box b-1 b-rounded b-primary p-4">
                     <h2 class="text-primary">Quick start</h2>
-                    <h3>Creating your first route endpoint</h3>
+                    <ul>
+                        <li>
+                            <a href="#route-endpoint">Creating your first server side rendered (route) endpoint</a>
+                        </li>
+                        <li>
+                            <a href="#api-endpoint">Creating your first api endpoint</a>
+                        </li>
+                        <li>
+                            <a href="#model">Creating your first database model</a>
+                        </li>
+                        <li>
+                            <a href="#test">Creating your first test</a>
+                        </li>
+                    </ul>
+                    <h3 id="route-endpoint">Creating your first route endpoint</h3>
                     <p>
                         When using the <a class="text-decoration-none text-primary" href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
                         navigate to this installation
@@ -64,7 +78,7 @@
                         a frame is optional or can be loaded dynamically. Looking at "/component/firstComponent/FirstComponent.ctrl.php"
                         should give you an overview of what is happening.
                     </p>
-                    <h3>Creating your first api endpoint</h3>
+                    <h3 id="api-endpoint">Creating your first api endpoint</h3>
                     <p>
                         When using the <a class="text-decoration-none text-primary" href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
                         navigate to this installation
