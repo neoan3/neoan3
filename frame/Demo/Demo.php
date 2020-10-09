@@ -8,6 +8,7 @@
 
 namespace Neoan3\Frame;
 
+use Exception;
 use Neoan3\Core\Serve;
 use Neoan3\Provider\Auth\Auth;
 use Neoan3\Provider\Auth\JwtWrapper;
@@ -45,8 +46,8 @@ class Demo extends Serve
                 if(isset($credentials[$this->dbCredentials])){
                     $this->provider['db'] = new DatabaseWrapper($credentials[$this->dbCredentials]);
                 }
-            } catch (\Exception $e) {
-                $this->footer = 'No credentials found. Run "neoan3 credentials"';
+            } catch (Exception $e) {
+                echo 'No credentials found. Run "neoan3 credentials"';
             }
         });
 
@@ -60,6 +61,7 @@ class Demo extends Serve
     {
         return [
             'base' => [base],
+            'title' => ['Default Title'],
             'link' => [
                 [
                     'sizes' => '32x32',
