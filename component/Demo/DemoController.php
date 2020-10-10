@@ -2,7 +2,7 @@
 
 namespace Neoan3\Component\Demo;
 
-use Neoan3\Provider\MySql\Database;
+use Neoan3\Apps\Template;
 use Neoan3\Core\Unicore;
 
 /**
@@ -12,21 +12,6 @@ use Neoan3\Core\Unicore;
 class DemoController extends Unicore
 {
     /**
-     * @var Database|null
-     */
-    private ?DataBase $db;
-
-    /**
-     * Demo constructor.
-     * This constructor is only necessary if providers a decoupled
-     * @param Database|null $db
-     */
-    public function __construct(DataBase $db = null)
-    {
-        $this->db = $db;
-    }
-
-    /**
      * Route call (Singleton style)
      */
     function init()
@@ -34,9 +19,15 @@ class DemoController extends Unicore
         $info = json_decode(file_get_contents(path . '/composer.json'), true);
         $info['installation'] = path;
         $this
-            ->registerProvider($this->db)
             ->uni('demo')
-            ->addHead('title', 'neoan3 default')
+            ->setTitle('neoan3')
+            ->addRenderParameter('tabs', function () use ($info) {
+                $renderParams = [];
+                foreach (['system', 'introduction', 'quickstart', 'changes'] as $tab) {
+                    $renderParams[$tab] = Template::embraceFromFile('/component/Demo/' . $tab . '.tab.html', $info);
+                }
+                return $renderParams;
+            })
             ->hook('main', 'demo', $info)
             ->output();
     }

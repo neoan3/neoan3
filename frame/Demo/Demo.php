@@ -50,7 +50,7 @@ class Demo extends Serve
                 echo 'No credentials found. Run "neoan3 credentials"';
             }
         });
-
+        $this->renderer->includeElement('customElement');
     }
 
 
@@ -72,7 +72,7 @@ class Demo extends Serve
             ],
             'stylesheet' => [
                 '' . base . 'frame/demo/demo.css',
-                'https://cdn.jsdelivr.net/npm/gaudiamus-css@1.2.0/css/gaudiamus.min.css',
+                'https://cdn.jsdelivr.net/npm/gaudiamus-css@1.2.1/css/gaudiamus.min.css',
             ]
         ];
     }

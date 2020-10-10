@@ -37,9 +37,9 @@ class Render implements Renderer
 
     private array $viewParams = [];
 
-    private string $componentName;
+    private ?string $componentName = null;
 
-    private string $title;
+    private ?string $title = null;
 
     private bool $usesCustomElements = false;
 

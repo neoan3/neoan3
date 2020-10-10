@@ -18,145 +18,21 @@
             </template>
         </section>
         <div class="grid-12">
-            <template x-if="tab=='System'">
-                <div class="box b-1 b-rounded b-primary p-4">
-                    <div class="grid-2-10">
-                        <div class="place-y-center">
-                            <img style="max-width: 50px" src="https://neoan3.rocks/asset/neoan3.webp" alt="n3-logo">
-                        </div>
-
-                        <div style="cursor: pointer" x-on:click="tab='Introduction'" class="text-primary font-xl place-y-center"><strong>neoan3</strong> v{{version}}</div>
-                    </div>
-                    <h3>Installed composer packages:</h3>
-                    <ul>
-                        <li n-for="require as inc => version">
-                            {{inc}} ({{version}})
-                        </li>
-                    </ul>
-                    <h2 class="text-primary">Documentation</h2>
-                    <p>The current documentation can be found @ <a class="text-decoration-none text-primary" target="_blank" href="http://neoan3.rocks">http://neoan3.rocks</a></p>
-
-                </div>
-            </template>
-            <template x-if="tab=='Quickstart'">
-                <section class="box b-1 b-rounded b-primary p-4">
-                    <h2 class="text-primary">Quick start</h2>
-                    <ul>
-                        <li>
-                            <a href="#route-endpoint">Creating your first server side rendered (route) endpoint</a>
-                        </li>
-                        <li>
-                            <a href="#api-endpoint">Creating your first api endpoint</a>
-                        </li>
-                        <li>
-                            <a href="#model">Creating your first database model</a>
-                        </li>
-                        <li>
-                            <a href="#test">Creating your first test</a>
-                        </li>
-                    </ul>
-                    <h3 id="route-endpoint">Creating your first route endpoint</h3>
-                    <p>
-                        When using the <a class="text-decoration-none text-primary" href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
-                        navigate to this installation
-                    </p>
-                    <p>
-                        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">cd {{installation}}</code> and type
-                    </p>
-                    <p>
-                        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new component firstComponent</code>
-                    </p>
-                    <ul>
-                        <li>Choose "Route component"</li>
-                        <li>Yes to creating a view</li>
-                        <li>Yes to using a frame</li>
-                        <li>Choose "demo"</li>
-                    </ul>
-                    <p>Then, click <a class="text-decoration-none text-primary" href="{{base}}first-component/">here</a>.</p>
-                    <p>
-                        A component becomes a HTML-route if it has an init-method. If the Unicore-Singleton is used,
-                        a frame is optional or can be loaded dynamically. Looking at "/component/firstComponent/FirstComponent.ctrl.php"
-                        should give you an overview of what is happening.
-                    </p>
-                    <h3 id="api-endpoint">Creating your first api endpoint</h3>
-                    <p>
-                        When using the <a class="text-decoration-none text-primary" href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
-                        navigate to this installation
-                    </p>
-                    <p>
-                        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">cd {{installation}}</code> and type
-                    </p>
-                    <p>
-                        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new component firstApi</code>
-                    </p>
-                    <ul>
-                        <li>Choose "API component"</li>
-                        <li>Yes to using a frame</li>
-                        <li>Choose "demo"</li>
-                    </ul>
-                    <p>Then, click <a class="text-decoration-none text-primary" href="{{base}}api.v1/first-api?some=value">here</a>.</p>
-                    <p>
-                        A component is capable of receiving requests based on the method  + name.
-                        Having a method getFirstApi, for instance, enables you to process GET-requests to
-                        <code>{{base}}api.v1/first-api</code>
-                        Looking at "/component/firstApi/FirstApi.ctrl.php"
-                        should give you an overview of what is happening.
-                    </p>
-                </section>
-            </template>
-            <template x-if="tab=='Changes'">
-                <section class="box b-1 b-rounded b-primary p-4">
-                    <h2 class="text-primary">Not your first neoan3 project? We've got some news.</h2>
-                    <p>Once again we managed to keep changes non-breaking, so all your components & models are good to go.</p>
-                    <p><span class="text-warning">NOTE:</span>
-                        The only change that might affect you is the requirement to use stable neoan3-app versions (so update your composer.json)
-                    </p>
-                    <h3>Providers</h3>
-                    <p>
-                        Decoupling is important for testing & CI. Neoan3 now enables Models, Components and even frames to be completely decoupled from a database wrapper (or any other coupling)
-                    </p>
-                    <h3>Transform</h3>
-                    <p>
-                        Working with models has never been easier. The MySql provider holds a Transform-class you can use to nearly completely automate
-                        your database transactions.
-                    </p>
-                    <h3>API-routing</h3>
-                    <p>
-                        Preparing for custom and alternative APIs, api-routing is now done via script-side loading.
-                        More importantly, you can now add whatever parameters you want (creating a API component with the cli will deliver more clarity on that)
-                    </p>
-                    <h3>Testing</h3>
-                    <p>
-                        neoan3 has always been very modular. As such, unit testing was performed on the component or model level.
-                        As many people have asked for a more global approach, we now include a phpunit.xml that is ready to run your tests,
-                        while your independent components can still be tested outside of a neoan3 installation.
-                        Test-files are supposed to be in the component or model itself.
-                        We also included a .travis.yml file for travis & codeclimate to prepare for your CI
-                    </p>
-                    <h3>Auto-Loading</h3>
-                    <p>
-                        Some structural changes made it possible to facilitate more PSR-4 based auto loading.
-                        <strong>Important:</strong> This means that overwriting the _neoan-folder is not sufficient to update.
-                        Instead, in order to seamlessly update, exchange/update the following files additionally:
-                    </p>
-                    <ul>
-                        <li>index.php</li>
-                        <li>phpunit.xml</li>
-                        <li>composer.json</li>
-                    </ul>
-                    <h3>SEO</h3>
-                    <p>
-                        From this version on, we will ship neoan3 apps with an updated sitemap.xml. Please review and use it prior to deployment.
-                    </p>
-
-                </section>
-            </template>
-
+            <section class="box b-1 b-rounded b-primary p-4">
+                <template x-if="tab=='System'">
+                    {{tabs.system}}
+                </template>
+                <template x-if="tab=='Introduction'">
+                    {{tabs.introduction}}
+                </template>
+                <template x-if="tab=='Quickstart'">
+                    {{tabs.quickstart}}
+                </template>
+                <template x-if="tab=='Changes'">
+                    {{tabs.changes}}
+                </template>
+            </section>
         </div>
-
-
-
     </div>
-
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js" defer></script>
 </div>
