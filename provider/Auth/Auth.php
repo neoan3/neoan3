@@ -7,7 +7,8 @@ namespace Neoan3\Provider\Auth;
 interface Auth
 {
     public function setSecret(string $string): void;
-    public function validate(?string $jwt):array;
-    public function restrict(?string $scope):array;
-    public function assign($id, $scope, $payload = []):string;
+    public function validate(?string $provided = null): AuthObjectDeclaration;
+    public function restrict($scope = []): AuthObjectDeclaration;
+    public function assign($id, $scope, $payload = []): AuthObjectDeclaration;
+    public function logout(): bool;
 }

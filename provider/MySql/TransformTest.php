@@ -94,6 +94,18 @@ class TransformTest extends TestCase
         $transform->find(['mock_unknown.mock_unknown' => '123456789']);
     }
 
+    public function testDelete()
+    {
+        // soft
+        $this->dbMock->mockDelete('mock');
+        // hard
+        $this->dbMock->mockDelete('mock');
+        $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
+        $this->assertTrue($transform->delete('abc'));
+        $this->assertTrue($transform->delete('abc', true));
+
+    }
+
     public function testCreate()
     {
         $this->dbMock->mockModel('mock');

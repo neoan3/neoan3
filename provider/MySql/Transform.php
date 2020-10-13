@@ -4,26 +4,48 @@
 namespace Neoan3\Provider\MySql;
 
 
-
-use Neoan3\Apps\Db;
-
+/**
+ * Class Transform
+ * @package Neoan3\Provider\MySql
+ */
 class Transform
 {
+    /**
+     * @var string
+     */
     private string $modelName;
+    /**
+     * @var array|mixed
+     */
     public array $modelStructure;
     /**
      * @var Database
      */
     private Database $db;
 
+    /**
+     * @var array|null
+     */
     private ?array $getReader = null;
 
+    /**
+     * Transform constructor.
+     * @param $model
+     * @param Database $db
+     * @param null $modelStructure
+     */
     function __construct($model, Database $db, $modelStructure = null)
     {
         $this->modelName = $model;
         $this->modelStructure = $modelStructure ?? $this->readMigrate();
         $this->db = $db;
     }
+
+    /**
+     * @param $result
+     * @param $runner
+     * @param $row
+     */
     private function formatResult(&$result, $runner, $row)
     {
         foreach ($this->modelStructure as $table => $fields){
@@ -44,12 +66,21 @@ class Transform
 
         }
     }
+
+    /**
+     * @param $ids
+     * @return \Generator
+     */
     function getGenerator($ids){
         foreach ($ids as $id){
             yield $this->get($id['id']);
         }
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     function get($id)
     {
         if(!$this->getReader){
@@ -64,6 +95,11 @@ class Transform
         }
         return $result;
     }
+
+    /**
+     * @param $inserts
+     * @return array
+     */
     function create($inserts)
     {
         $id = $this->db->getNextId();
@@ -82,6 +118,11 @@ class Transform
         $this->db->smart($this->modelName, $this->validate($this->modelName, $main));
         return $this->get($id);
     }
+
+    /**
+     * @param $entity
+     * @return array
+     */
     function update($entity)
     {
         $main = [];
@@ -103,7 +144,35 @@ class Transform
         $this->db->smart($this->modelName, $this->validate($this->modelName, $main), ['id' => '$' . $entity['id']]);
         return $this->get($entity['id']);
     }
-    function find($condition)
+
+    /**
+     * @param string $id
+     * @param bool $hard
+     * @return bool
+     */
+    function delete(string $id, bool $hard = false): bool
+    {
+        $entity = $this->get($id);
+        // main
+        $this->deleteRow($entity, $hard);
+        // subs
+        foreach ($entity as $tableOrField => $fieldOrFields){
+            if(is_array($fieldOrFields)){
+                foreach ($fieldOrFields as $row){
+                    $this->deleteRow($row, $hard);
+                }
+
+            }
+        }
+        return !empty($entity);
+    }
+
+    /**
+     * @param $condition
+     * @param array $callFunctions
+     * @return array
+     */
+    function find($condition, $callFunctions = [])
     {
         $joinTables = [];
         foreach ($condition as $tableField => $value){
@@ -118,7 +187,11 @@ class Transform
                 $join .= " $table.id:${table}_id";
             }
         }
-        $hits = $this->db->easy($join, $condition, ['groupBy' => [$this->modelName . '.id',$this->modelName . '.insert_date']]);
+        $callFunctions = array_merge([
+            'orderBy'=>[$this->modelName . '.id', 'DESC']],
+            $callFunctions
+        );
+        $hits = $this->db->easy($join, $condition, $callFunctions);
 
         $return = [];
         foreach ($this->getGenerator($hits) as $hit){
@@ -128,6 +201,24 @@ class Transform
         return $return;
     }
 
+    /**
+     * @param array $row
+     * @param bool $hard
+     */
+    private function deleteRow(array $row, bool $hard)
+    {
+        if(!isset($row['delete_date']) || $hard){
+            $this->db->smart('>DELETE FROM `' . $this->modelName . '` WHERE id = UNHEX({{}})',['id'=>$row['id']]);
+        } else {
+            $this->db->smart($this->modelName, ['delete_date'=>'.']);
+        }
+    }
+
+    /**
+     * @param $table
+     * @param $fieldValueArray
+     * @return array
+     */
     private function validate($table, $fieldValueArray)
     {
         $returnArray = [];
@@ -144,10 +235,18 @@ class Transform
         }
         return $returnArray;
     }
+
+    /**
+     * @return mixed
+     */
     private function readMigrate()
     {
         return json_decode(file_get_contents(path . "/model/$this->modelName/migrate.json"), true);
     }
+
+    /**
+     * @return array
+     */
     private function readSql()
     {
         $pureQueryString = 'SELECT ';
@@ -179,6 +278,11 @@ class Transform
         }
         return ['query' => substr($pureQueryString, 0 , -2), 'joins' => $joins, 'condition' => $condition];
     }
+
+    /**
+     * @param $type
+     * @return string|string[]|null
+     */
     private function cleanType($type)
     {
         return preg_replace('/[^a-z]/','', $type);

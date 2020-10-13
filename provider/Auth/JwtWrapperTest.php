@@ -32,21 +32,21 @@ class JwtWrapperTest extends TestCase
     public function testAssign()
     {
         $this->jwtWrapper->setSecret('my-secret');
-        $working = $this->jwtWrapper->assign('123', 'all');
+        $working = $this->jwtWrapper->assign('123', 'all', ['any'=>'payload']);
         $this->assertMatchesRegularExpression('/[a-z0-9]+\.[a-z0-9]+/i', $working);
     }
 
     public function testRestrictFail()
     {
         $this->expectException(RouteException::class);
-        $this->jwtWrapper->restrict('all');
+        $this->jwtWrapper->restrict(['superAdmin']);
     }
     public function testRestrict()
     {
         $this->jwtWrapper->setSecret('my-secret');
-        Stateless::setAuthorization($this->jwtWrapper->assign('123', 'all'));
-        $get = $this->jwtWrapper->restrict('all');
-        $this->assertSame('123', $get['jti']);
+        Stateless::setAuthorization($this->jwtWrapper->assign('123', ['all']));
+        $get = $this->jwtWrapper->restrict(['all']);
+        $this->assertSame('123', $get->getUserId());
     }
     public function testValidateFail()
     {
@@ -56,8 +56,14 @@ class JwtWrapperTest extends TestCase
     public function testValidate()
     {
         $this->jwtWrapper->setSecret('my-secret');
-        $jwt = $this->jwtWrapper->assign('123', 'all');
-        $get = $this->jwtWrapper->validate($jwt);
-        $this->assertSame('123', $get['jti']);
+        $jwt = $this->jwtWrapper->assign('123', ['all']);
+        $get = $this->jwtWrapper->validate($jwt->getToken());
+        $this->assertSame('123', $get->getUserId());
+    }
+    public function testLogout()
+    {
+        $this->jwtWrapper->setSecret('my-secret');
+        $jwt = $this->jwtWrapper->assign('123', ['all']);
+        $this->assertFalse($this->jwtWrapper->logout());
     }
 }

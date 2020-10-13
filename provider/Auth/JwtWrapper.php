@@ -24,31 +24,41 @@ class JwtWrapper implements Auth
     }
 
     /**
-     * @param string|null $jwt
-     * @return array
+     * @param string|null $provided
+     * @return AuthObjectDeclaration
      * @throws RouteException
      */
-    public function validate(?string $jwt): array
+    public function validate(?string $provided = null): AuthObjectDeclaration
     {
-        if($jwt){
-            Stateless::setAuthorization($jwt);
+        if($provided){
+            Stateless::setAuthorization($provided);
         }
         try{
-            return Stateless::validate();
+            $decoded =  Stateless::validate();
+            $payload = [];
+            foreach ($decoded as $key => $value){
+                if(!in_array($key,['iss','aud','iat','jti','scope'])){
+                    $payload[$key] = $value;
+                }
+            }
+            $authObject = new AuthObject($decoded['jti'],$decoded['scope'], $payload);
+            $authObject->setToken(Stateless::getAuthorization());
+            return $authObject;
         } catch (Exception $e) {
             throw new RouteException($e->getMessage(), $e->getCode());
         }
     }
 
     /**
-     * @param string|null $scope
-     * @return array
+     * @param ?array $scope
+     * @return AuthObjectDeclaration
      * @throws RouteException
      */
-    public function restrict(string $scope = null): array
+    public function restrict($scope = []): AuthObjectDeclaration
     {
         try{
-            return Stateless::restrict($scope);
+            Stateless::restrict($scope);
+            return $this->validate();
         } catch (Exception $e) {
             throw new RouteException($e->getMessage(), $e->getCode());
         }
@@ -58,15 +68,21 @@ class JwtWrapper implements Auth
      * @param $id
      * @param $scope
      * @param array $payload
-     * @return string
+     * @return AuthObjectDeclaration
      * @throws RouteException
      */
-    public function assign($id, $scope, $payload = []): string
+    public function assign($id, $scope, $payload = []): AuthObjectDeclaration
     {
         try{
-            return Stateless::assign($id, $scope, $payload);
+            $jwt = Stateless::assign($id, $scope, $payload);
+            return $this->validate($jwt);
         } catch (Exception $e) {
             throw new RouteException($e->getMessage(), $e->getCode());
         }
+    }
+
+    public function logout(): bool
+    {
+        return false;
     }
 }

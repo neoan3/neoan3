@@ -133,4 +133,15 @@ class MockDatabaseWrapper extends DatabaseWrapper
         $this->registerResult([['id' => $entity ? $entity['id'] : 'someUUId']]);
         return $this->mockGet($modelName, $entity);
     }
+    function mockDelete($modelName, $entity=null)
+    {
+        $old = $this->mockGet($modelName, $entity);
+        $this->registerResult('delete main');
+        foreach ($old as $potential => $values){
+            if(is_array($values)){
+                $this->registerResult('delete sub');
+            }
+        }
+
+    }
 }
