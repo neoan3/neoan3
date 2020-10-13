@@ -75,7 +75,7 @@ class Demo extends Serve
                 ]
             ],
             'stylesheet' => [
-                '' . base . 'frame/demo/demo.css',
+                '' . base . 'frame/Demo/demo.css',
                 'https://cdn.jsdelivr.net/npm/gaudiamus-css@1.2.1/css/gaudiamus.min.css',
             ]
         ];
