@@ -11,13 +11,14 @@ namespace Neoan3\Frame;
 use Exception;
 use Neoan3\Core\Serve;
 use Neoan3\Provider\Auth\Auth;
-use Neoan3\Provider\Auth\JwtWrapper;
+use Neoan3\Provider\Auth\SessionWrapper;
 use Neoan3\Provider\MySql\Database;
 use Neoan3\Provider\MySql\DatabaseWrapper;
 
 /**
  * Class Demo
  * @package Neoan3\Frame
+ * @property Auth $auth
  */
 class Demo extends Serve
 {
@@ -28,18 +29,21 @@ class Demo extends Serve
      */
     private string $dbCredentials = 'testing_db';
 
+    public Auth $Auth;
+
     /**
      * Demo constructor.
      * @param Database|null $db
-     * @param Auth|null $jwt
+     * @param Auth|null $auth
      */
-    function __construct(Database $db = null, Auth $jwt = null)
+    function __construct(Database $db = null, Auth $auth = null)
     {
         parent::__construct();
-        $this->assignProvider('jwt', $jwt, function (){
-            $this->provider['jwt'] = new JwtWrapper();
-            $this->provider['jwt']->setSecret('my-secret');
+        $this->assignProvider('auth', $auth, function (){
+            $this->provider['auth'] = new SessionWrapper();
+            $this->provider['auth']->setSecret('my-secret');
         });
+        $this->Auth = $this->provider['auth'];
         $this->assignProvider('db', $db, function(){
             try{
                 $credentials = getCredentials();
