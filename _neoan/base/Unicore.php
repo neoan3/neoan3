@@ -19,6 +19,8 @@ class Unicore
      */
     public array $injections = [];
 
+    private array $providerHooks = [];
+
     /**
      * @var Serve
      */
@@ -39,7 +41,20 @@ class Unicore
 
         $track = debug_backtrace();
         $this->uniCore->renderer->setComponentName($track[1]['class']);
+        foreach ($this->providerHooks as $provider => $calls){
+            foreach ($calls as $call){
+                $function = array_shift($call);
+                $this->uniCore->provider[$provider]->$function(...$call);
+            }
+
+        }
         return $this->uniCore;
+    }
+
+    public function onProvidersLoaded($providerName, $function, ...$args)
+    {
+        $this->providerHooks[$providerName][] = [$function, ...$args];
+        return $this;
     }
 
     /**

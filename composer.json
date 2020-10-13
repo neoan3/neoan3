@@ -10,6 +10,7 @@
         "neoan3-apps/template":"^1",
         "neoan3-apps/db": "0.3.*",
         "neoan3-apps/stateless": "^2",
+        "neoan3-apps/session": "1.0.*",
         "ext-mbstring": "*"
     },
     "require-dev": {

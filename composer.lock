@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b29f6eda9d764a42b07fa8d1cf09d61",
+    "content-hash": "9327e6ea317f2be16b1b7795bc4ca095",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -110,22 +110,22 @@
         },
         {
             "name": "neoan3-apps/db",
-            "version": "0.3.0",
+            "version": "0.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sroehrl/neoan3-db.git",
-                "reference": "f2ef387f9e4433c770767e18b5242a1b5d44dc1d"
+                "reference": "2e919abfb7883cf8e7b3e1af1d6a56f6b02274af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sroehrl/neoan3-db/zipball/f2ef387f9e4433c770767e18b5242a1b5d44dc1d",
-                "reference": "f2ef387f9e4433c770767e18b5242a1b5d44dc1d",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-db/zipball/2e919abfb7883cf8e7b3e1af1d6a56f6b02274af",
+                "reference": "2e919abfb7883cf8e7b3e1af1d6a56f6b02274af",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-mysqli": "*",
-                "php": "^7.0"
+                "php": "^7"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9.3"
@@ -147,7 +147,7 @@
                 }
             ],
             "description": "neoan3 mysqli class",
-            "time": "2020-09-26T16:11:45+00:00"
+            "time": "2020-10-07T23:48:08+00:00"
         },
         {
             "name": "neoan3-apps/jwt",
@@ -184,6 +184,36 @@
             ],
             "description": "neoan3 wrapper for JSON WEB TOKEN using Firebase",
             "time": "2020-01-22T17:26:15+00:00"
+        },
+        {
+            "name": "neoan3-apps/session",
+            "version": "v1.0.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sroehrl/neoan3-session.git",
+                "reference": "d4924ba8367868fdcf4402d3cf6b9e73b80c3a2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-session/zipball/d4924ba8367868fdcf4402d3cf6b9e73b80c3a2f",
+                "reference": "d4924ba8367868fdcf4402d3cf6b9e73b80c3a2f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "9.4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Neoan3\\Apps\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "neoan3 session class",
+            "time": "2020-10-13T17:26:24+00:00"
         },
         {
             "name": "neoan3-apps/stateless",
@@ -758,12 +788,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "53a4b737e83be724efd2bc4e7b929b9a30c48972"
+                "reference": "ece0c3ceee73810bd95226401bbfaea9e0f64de7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/53a4b737e83be724efd2bc4e7b929b9a30c48972",
-                "reference": "53a4b737e83be724efd2bc4e7b929b9a30c48972",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ece0c3ceee73810bd95226401bbfaea9e0f64de7",
+                "reference": "ece0c3ceee73810bd95226401bbfaea9e0f64de7",
                 "shasum": ""
             },
             "require": {
@@ -823,7 +853,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-10-02T03:37:32+00:00"
+            "time": "2020-10-09T14:34:55+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1056,12 +1086,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "977a70658cd1b9a7da7ae69320f1e2889af8a047"
+                "reference": "8b79c2a70ae855e582cef1ca63a849fe07bdb01d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/977a70658cd1b9a7da7ae69320f1e2889af8a047",
-                "reference": "977a70658cd1b9a7da7ae69320f1e2889af8a047",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8b79c2a70ae855e582cef1ca63a849fe07bdb01d",
+                "reference": "8b79c2a70ae855e582cef1ca63a849fe07bdb01d",
                 "shasum": ""
             },
             "require": {
@@ -1147,7 +1177,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-10-06T09:41:30+00:00"
+            "time": "2020-10-11T07:43:20+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -1433,12 +1463,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "ffc949a1a2aae270ea064453d7535b82e4c32092"
+                "reference": "e3ec6059b3fe483d42fbaf1fe6eefa201f7b4a6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/ffc949a1a2aae270ea064453d7535b82e4c32092",
-                "reference": "ffc949a1a2aae270ea064453d7535b82e4c32092",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/e3ec6059b3fe483d42fbaf1fe6eefa201f7b4a6d",
+                "reference": "e3ec6059b3fe483d42fbaf1fe6eefa201f7b4a6d",
                 "shasum": ""
             },
             "require": {
@@ -1487,7 +1517,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-28T05:32:55+00:00"
+            "time": "2020-10-13T11:48:30+00:00"
         },
         {
             "name": "sebastian/environment",
