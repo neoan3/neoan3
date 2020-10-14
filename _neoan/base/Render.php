@@ -199,12 +199,15 @@ class Render implements Renderer
         $this->attachParameters($params);
         if($this->componentName){
             preg_match('/\\\Component\\\([a-z0-9]+)/i', $this->componentName, $matches);
-            $folder = path . DIRECTORY_SEPARATOR . $matches[1] . DIRECTORY_SEPARATOR;
-            if (file_exists($folder . '.style.css')) {
-                $this->style .= Template::embrace(file_get_contents($folder . '.style.css'), $params);
-            }
-            if (file_exists($folder. '.ctrl.js')) {
-                $this->js .= Template::embrace(file_get_contents($folder . '.ctrl.js'), $params);
+            $folder = path . DIRECTORY_SEPARATOR . 'component' . DIRECTORY_SEPARATOR . $matches[1] . DIRECTORY_SEPARATOR;
+            foreach (['style' => '.style.css','js' => '.ctrl.js'] as $type => $assumable){
+                $potential = $folder . lcfirst($matches[1]) . $assumable;
+                if (file_exists($potential)) {
+                    $this->$type .= Template::embrace(
+                        file_get_contents($potential),
+                        $params
+                    );
+                }
             }
         }
 
