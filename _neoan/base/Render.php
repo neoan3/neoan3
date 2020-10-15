@@ -205,7 +205,7 @@ class Render implements Renderer
                 if (file_exists($potential)) {
                     $this->$type .= Template::embrace(
                         file_get_contents($potential),
-                        $params
+                        $this->viewParams
                     );
                 }
             }
