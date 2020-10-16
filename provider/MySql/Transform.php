@@ -87,7 +87,7 @@ class Transform
             $this->getReader = $this->readSql();
         }
         $result = [];
-        $sql = $this->getReader['query'] . $this->getReader['joins'] . ' WHERE post.id = UNHEX({{id}})' . $this->getReader['condition'];
+        $sql = $this->getReader['query'] . $this->getReader['joins'] . ' WHERE `'. $this->modelName .'`.`id` = UNHEX({{id}})' . $this->getReader['condition'];
         $pureResult = $this->db->smart('>'.$sql, ['id' => $id]);
 
         foreach ($pureResult as $i => $row){
