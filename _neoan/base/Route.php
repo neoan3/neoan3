@@ -21,7 +21,8 @@ class Route
     {
         $string = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http');
         $string .= '://' . $_SERVER['SERVER_NAME'] . $this->protocol;
-        $string .= dirname($_SERVER['PHP_SELF']);
+        preg_match('/.+?(?=index\.php)/', $_SERVER['PHP_SELF'], $matches);
+        $string .= $matches[0] ?? '';
         $string = str_replace(['\\','_neoan/base'],['',''],$string);
 
         if (substr($string, -2) === '//') {
