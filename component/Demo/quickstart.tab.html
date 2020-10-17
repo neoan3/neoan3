@@ -65,18 +65,7 @@
     <p>
         Let's get a little more complex, shall we? In a tool of your choice, let's create the following database
     </p>
-    <pre class="bg-black b-rounded p-y-1 p-x-2 text-white">
-    CREATE DATABASE neoan;
-    use neoan;
-    CREATE TABLE post
-    (
-        id          binary(16)                             not null     primary key,
-        name        varchar(200)                           not null,
-        text        text                                   null,
-        insert_date timestamp  default current_timestamp() null,
-        delete_date datetime                               null
-    );
-    </pre>
+
     <p>
         When using the <a class="text-decoration-none text-primary" href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
         navigate to this installation
@@ -85,17 +74,38 @@
         <code class="bg-black b-rounded p-y-1 p-x-2 text-white">cd {{installation}}</code> and type
     </p>
     <p>
-        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new model post</code> <br>
-        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 migrate models down</code>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new database neoan</code>
     </p>
     <p>
+        Follow the instructions. Since this is the first time you are dealing with credentials,
+        you might have to create the file "credentials.json" in a folder "credentials" on the root directory of your system.
+        Make sure it's writable by PHP. Depending on your OS, you might need to create a softlink for that. <br>
         The cli tool will walk you through several steps. You will create new credentials and name them testing_db.
         After setting your login credentials (usually 'root' and no password),
         the tool is going to ask you for a database name. The value we want to enter in our case is "neoan".
         The rest of the settings can be left to default (simply hit enter).
+        Once your database is created, let's create a model:
     </p>
     <p>
-        You are done. You read that right: You can now CRUD to the table post.
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new model post</code>
+    </p>
+    <p>
+        There are many tools for database management. To offer a unified approach, let's design our model using the shipped
+        <a href="{{base}}migrate/" class="text-decoration-none text-primary" target="_blank">migration tool</a>.
+        Add the following fields:
+    </p>
+    <ul>
+        <li>name | varchar(90)</li>
+        <li>text | text</li>
+    </ul>
+    <p>
+        And click the button "write out". You can now execute the migration against your database:
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 migrate models up</code>
+    </p>
+    <p>
+        You are done! You read that right: You can now CRUD to the table post.
         In order to try it out, create (or reuse) a route-component. In there, make the following changes:
     </p>
     <pre class="bg-black b-rounded p-y-1 p-x-2 text-white">

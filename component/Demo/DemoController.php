@@ -18,6 +18,7 @@ class DemoController extends Unicore
     {
         $info = json_decode(file_get_contents(path . '/composer.json'), true);
         $info['installation'] = path;
+        $info['base'] = base;
         $this
             ->uni('demo')
             ->setTitle('neoan3')
