@@ -250,7 +250,7 @@ class Transform
     private function readSql()
     {
         $pureQueryString = 'SELECT ';
-        $joins = ' FROM ' . $this->modelName;
+        $joins = ' FROM `' . $this->modelName .'`';
         $condition = '';
         $modelName = $this->modelName;
         foreach ($this->modelStructure as $table => $any){
