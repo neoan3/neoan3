@@ -50,6 +50,9 @@ class Transform
     {
         foreach ($this->modelStructure as $table => $fields){
             if(empty($row[$table.'_id'])){
+                if(!isset($result[$table])){
+                    $result[$table] = [];
+                }
                 continue;
             }
             foreach ($fields as $fieldName => $specs){

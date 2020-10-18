@@ -27,7 +27,7 @@ class MigrateController extends Serve
             ->output();
     }
 
-    function postMigrate($body)
+    function postMigrate(array $body)
     {
 
         file_put_contents(path . '/model/' . $body['name'] . '/migrate.json', json_encode($body['migrate']));
