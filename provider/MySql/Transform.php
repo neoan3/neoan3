@@ -49,6 +49,9 @@ class Transform
     private function formatResult(&$result, $runner, $row)
     {
         foreach ($this->modelStructure as $table => $fields){
+            if(empty($row[$table.'_id'])){
+                continue;
+            }
             foreach ($fields as $fieldName => $specs){
 
                 if($table == $this->modelName){
