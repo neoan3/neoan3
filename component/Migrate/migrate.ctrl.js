@@ -40,7 +40,7 @@ function migrate() {
             outputJson: ''
         },
         addField(table) {
-            this.data.currentModel.migrate[table][this.data.newFieldName] = this.baseTemplate.new;
+            this.data.currentModel.migrate[table][this.data.newFieldName] = {...this.baseTemplate.new};
             this.data.newFieldName = '';
         },
         removeField(table, field) {
