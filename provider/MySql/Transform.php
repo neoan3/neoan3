@@ -63,6 +63,9 @@ class Transform
                         $result[$fieldName . '_st'] = $row[$table .'_' . $fieldName . '_st'];
                     }
                 } else {
+                    if(isset($result[$table]) && $this->duplicationCheck($result[$table], $row[$table . '_id'])){
+                        continue;
+                    }
                     $result[$table][$runner][$fieldName] = $row[$table .'_' . $fieldName];
                     if(in_array($this->cleanType($specs['type']),['timestamp','date','datetime'])){
                         $result[$table][$runner][$fieldName . '_st'] = $row[$table .'_' . $fieldName . '_st'];
@@ -292,5 +295,20 @@ class Transform
     private function cleanType($type)
     {
         return preg_replace('/[^a-z]/','', $type);
+    }
+
+    /**
+     * @param $subModelResults
+     * @param $id
+     * @return bool
+     */
+    private function duplicationCheck($subModelResults, $id)
+    {
+        foreach ($subModelResults as $existing){
+            if($existing['id'] === $id){
+                return true;
+            }
+        }
+        return false;
     }
 }
