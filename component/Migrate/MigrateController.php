@@ -29,8 +29,10 @@ class MigrateController extends Serve
 
     function postMigrate(array $body)
     {
-
-        file_put_contents(path . '/model/' . $body['name'] . '/migrate.json', json_encode($body['migrate']));
+        $folder = path . '/model/' . ucfirst($body['name']);
+        if(file_exists($folder)){
+            file_put_contents($folder. '/migrate.json', json_encode($body['migrate']));
+        }
         return $body;
     }
 

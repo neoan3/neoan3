@@ -38,9 +38,9 @@ class MigrateTest extends TestCase
 
     function testPostMigrate()
     {
-        $response = $this->instance->postMigrate([]);
+        $response = $this->instance->postMigrate(['name'=>'notModel']);
         $this->assertIsArray($response);
-        $this->assertSame([], $response);
+        $this->assertSame(['name'=>'notModel'], $response);
     }
 
 }
