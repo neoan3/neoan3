@@ -65,7 +65,7 @@ class Serve
      */
     public function loadModel($modelClass)
     {
-        $modelClass::init($this->provider['db']);
+        $modelClass::init($this->provider);
         return $modelClass;
     }
 
