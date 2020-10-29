@@ -2,8 +2,10 @@
 
 namespace Neoan3\Component\Migrate;
 
+use Neoan3\Core\Renderer;
 use Neoan3\Core\Serve;
-use Neoan3\Frame\Demo;
+use Neoan3\Provider\FileSystem\File;
+use Neoan3\Provider\FileSystem\Native;
 
 /**
  * Class MigrateController
@@ -13,6 +15,14 @@ use Neoan3\Frame\Demo;
  */
 class MigrateController extends Serve
 {
+    public function __construct(Renderer $renderer = null, Native $fileSystem= null)
+    {
+        parent::__construct($renderer);
+        $this->assignProvider('file', $fileSystem, function (){
+            $this->provider['file'] = new File();
+        });
+    }
+
     /**
      * Route: Migrate
      */
@@ -30,8 +40,8 @@ class MigrateController extends Serve
     function postMigrate(array $body)
     {
         $folder = path . '/model/' . ucfirst($body['name']);
-        if(file_exists($folder)){
-            file_put_contents($folder. '/migrate.json', json_encode($body['migrate']));
+        if($this->provider['file']->exists($folder) ){
+            $this->provider['file']->putContents($folder. '/migrate.json', json_encode($body['migrate']));
         }
         return $body;
     }
@@ -39,11 +49,11 @@ class MigrateController extends Serve
     private function migrateFiles()
     {
         $models = [];
-        foreach (glob(path . '/model/*/migrate.json') as $migrate) {
+        foreach ($this->provider['file']->glob(path . '/model/*/migrate.json') as $migrate) {
             preg_match('/model\/([^\/]+)/', $migrate, $name);
             $models[] = [
                 'name' => $name[1],
-                'migrate' => json_decode(file_get_contents($migrate), true)
+                'migrate' => json_decode($this->provider['file']->getContents($migrate), true)
             ];
         }
         return json_encode($models);

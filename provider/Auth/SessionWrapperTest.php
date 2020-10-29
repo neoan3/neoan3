@@ -1,9 +1,7 @@
 <?php
 
-namespace Auth;
+namespace Neoan3\Provider\Auth;
 
-use Neoan3\Apps\Session;
-use Neoan3\Provider\Auth\SessionWrapper;
 use PHPUnit\Framework\TestCase;
 
 class SessionWrapperTest extends TestCase
@@ -45,8 +43,7 @@ class SessionWrapperTest extends TestCase
     public function testValidateFail()
     {
         $this->expectException(\Exception::class);
-        $failInstance = new SessionWrapper();
-        $failInstance->setSecret('another');
+        $failInstance = new SessionWrapper('another');
         $failInstance->logout();
         $authObj = $failInstance->validate();
     }

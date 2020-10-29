@@ -2,6 +2,8 @@
 
 namespace Neoan3\Component\Migrate;
 
+use Neoan3\Provider\FileSystem\MockFile;
+use Neoan3\Provider\FileSystem\Native;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -12,35 +14,32 @@ use PHPUnit\Framework\TestCase;
 class MigrateTest extends TestCase
 {
     private MigrateController $instance;
+    private Native $fileSystem;
     function setUp(): void
     {
-        $this->instance = new MigrateController();
+        $this->fileSystem = new MockFile();
+        $this->instance = new MigrateController(null, $this->fileSystem);
     }
         /**
      *  Route output shall have no errors
      */
     public function testInit()
     {
-        /**
-         * Using models?
-         * You can use the same mock-helpers as the models themselves.
-         *
-         * e.g. to mock a ::find call
-         * $mockDb = new \Neoan3\Provider\MySql\MockDatabaseWrapper([]);
-         * $mockDb->mockFind('component');
-         * // don't forget to register your mock provider(s in the right order)
-         * $this->instance->registerProvider($mockDb);
-         *
-         */
+
+        $this->fileSystem->putContents(path.'/model/NotModel/migrate.json',"{}");
+        $this->fileSystem->putContents(path.'/model/NotModel/migrate.json',"{}");
         $this->expectOutputRegex('/^<!doctype html>/');
         $this->instance->init();
     }
 
     function testPostMigrate()
     {
-        $response = $this->instance->postMigrate(['name'=>'notModel']);
+        $mock =['migrate'=>['test'=>'me'],'name'=>'notModel'];
+        $this->fileSystem->putContents(path . '/model/NotModel','');
+        $this->fileSystem->putContents(path.'/model/NotModel/migrate.json',"{}");
+        $response = $this->instance->postMigrate($mock);
         $this->assertIsArray($response);
-        $this->assertSame(['name'=>'notModel'], $response);
+        $this->assertSame(['test'=>'me'], $mock['migrate']);
     }
 
 }

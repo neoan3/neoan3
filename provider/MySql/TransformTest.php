@@ -24,6 +24,16 @@ class TransformTest extends TestCase
                 'a_string' => 'some',
                 'delete_date' => '123456',
                 'delete_date_st' => '123456'
+            ],
+            [
+                'id' => 'cde',
+                'mock_id' => 'abc',
+                'a_stamp' => '123456789',
+                'a_stamp_st' => '123456789',
+                'an_int' => 1,
+                'a_string' => 'some',
+                'delete_date' => '123456',
+                'delete_date_st' => '123456'
             ]
         ]
     ];
@@ -104,6 +114,28 @@ class TransformTest extends TestCase
         $this->assertTrue($transform->delete('abc'));
         $this->assertTrue($transform->delete('abc', true));
 
+    }
+    public function testFormatResult()
+    {
+        $model = $this->dbMock->mockModel('mock');
+        $sqlResult = ['id' => $model['id']];
+
+        foreach ($model as $key => $value){
+            if(is_array($value)){
+                foreach ($value[0] as $subKey => $subValue){
+                    $sqlResult[$key.'_'.$subKey] = $subValue;
+                }
+            } else {
+                $sqlResult['mock_'.$key] = $value;
+            }
+        }
+        $notDup = $sqlResult;
+        $notDup['mock_sub_id'] = 'else';
+        $this->dbMock->registerResult([$sqlResult, $sqlResult, $notDup]);
+        $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
+        $actual = $transform->get('123');
+        $this->assertArrayHasKey('id', $actual);
+        $this->assertArrayHasKey('mock_sub', $actual);
     }
 
     public function testCreate()
