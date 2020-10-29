@@ -49,29 +49,18 @@ class Transform
     private function formatResult(&$result, $runner, $row)
     {
         foreach ($this->modelStructure as $table => $fields){
+            // account for empty sub model
             if(empty($row[$table.'_id'])){
                 if(!isset($result[$table])){
                     $result[$table] = [];
                 }
                 continue;
             }
-            foreach ($fields as $fieldName => $specs){
-
-                if($table == $this->modelName){
-                    $result[$fieldName] = $row[$table .'_' . $fieldName];
-                    if(in_array($this->cleanType($specs['type']),['timestamp','date','datetime'])){
-                        $result[$fieldName . '_st'] = $row[$table .'_' . $fieldName . '_st'];
-                    }
-                } else {
-                    if(isset($result[$table]) && $this->duplicationCheck($result[$table], $row[$table . '_id'])){
-                        continue;
-                    }
-                    $result[$table][$runner][$fieldName] = $row[$table .'_' . $fieldName];
-                    if(in_array($this->cleanType($specs['type']),['timestamp','date','datetime'])){
-                        $result[$table][$runner][$fieldName . '_st'] = $row[$table .'_' . $fieldName . '_st'];
-                    }
-                }
+            // avoid duplication in complex models
+            if($table !== $this->modelName && isset($result[$table]) && $this->duplicationCheck($result[$table], $row[$table . '_id'])){
+                continue;
             }
+            $this->assignResult($result, $table, $fields, $row, $runner);
 
         }
     }
@@ -310,5 +299,30 @@ class Transform
             }
         }
         return false;
+    }
+
+    /**
+     * @param $result
+     * @param $table
+     * @param $fields
+     * @param $row
+     * @param $runner
+     */
+    private function assignResult(&$result, string $table, array $fields, array $row, int $runner)
+    {
+        foreach ($fields as $fieldName => $specs){
+
+            if($table == $this->modelName){
+                $result[$fieldName] = $row[$table .'_' . $fieldName];
+                if(in_array($this->cleanType($specs['type']),['timestamp','date','datetime'])){
+                    $result[$fieldName . '_st'] = $row[$table .'_' . $fieldName . '_st'];
+                }
+            } else {
+                $result[$table][$runner][$fieldName] = $row[$table .'_' . $fieldName];
+                if(in_array($this->cleanType($specs['type']),['timestamp','date','datetime'])){
+                    $result[$table][$runner][$fieldName . '_st'] = $row[$table .'_' . $fieldName . '_st'];
+                }
+            }
+        }
     }
 }
