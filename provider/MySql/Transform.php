@@ -239,7 +239,7 @@ class Transform
      */
     private function readMigrate()
     {
-        return json_decode(file_get_contents(path . "/model/$this->modelName/migrate.json"), true);
+        return json_decode(file_get_contents(path . "/model/" . ucfirst($this->modelName) . "/migrate.json"), true);
     }
 
     /**
