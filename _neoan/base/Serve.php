@@ -3,6 +3,8 @@
 namespace Neoan3\Core;
 
 
+use Neoan3\Provider\Model\Model;
+
 /**
  * Class Serve
  * @package Neoan3\Core
@@ -61,7 +63,7 @@ class Serve
 
     /**
      * @param $modelClass
-     * @return mixed
+     * @return Model
      */
     public function loadModel($modelClass)
     {
