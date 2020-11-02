@@ -152,14 +152,13 @@ class Transform
     {
         $entity = $this->get($id);
         // main
-        $this->deleteRow($entity, $hard);
+        $this->deleteRow($this->modelName, $entity, $hard);
         // subs
         foreach ($entity as $tableOrField => $fieldOrFields){
             if(is_array($fieldOrFields)){
                 foreach ($fieldOrFields as $row){
-                    $this->deleteRow($row, $hard);
+                    $this->deleteRow($tableOrField, $row, $hard);
                 }
-
             }
         }
         return !empty($entity);
@@ -200,15 +199,16 @@ class Transform
     }
 
     /**
+     * @param string $table
      * @param array $row
      * @param bool $hard
      */
-    private function deleteRow(array $row, bool $hard)
+    private function deleteRow(string $table, array $row, bool $hard)
     {
-        if(!isset($row['delete_date']) || $hard){
-            $this->db->smart('>DELETE FROM `' . $this->modelName . '` WHERE id = UNHEX({{}})',['id'=>$row['id']]);
+        if(!array_key_exists('delete_date', $row)  || $hard){
+            $this->db->smart('>DELETE FROM `' . $table . '` WHERE id = UNHEX({{id}})',['id'=>$row['id']]);
         } else {
-            $this->db->smart($this->modelName, ['delete_date'=>'.']);
+            $this->db->smart($table, ['delete_date'=>'.'], ['id'=> '$' . $row['id']]);
         }
     }
 
