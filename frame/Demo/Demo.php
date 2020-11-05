@@ -51,7 +51,7 @@ class Demo extends Serve
                     $this->provider['db'] = new DatabaseWrapper($credentials[$this->dbCredentials]);
                 }
             } catch (Exception $e) {
-                echo 'No credentials found. Run "neoan3 new database '. $this->dbCredentials .'"';
+                $this->renderer->addToHead('title', '! No credentials found! Run "neoan3 new database '. $this->dbCredentials .'"');
             }
         });
         $this->renderer->includeElement('customElement');
