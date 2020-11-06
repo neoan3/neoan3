@@ -67,17 +67,17 @@ function frame($input = '', $web = false)
 }
 
 /**
- * @param mixed|string $where
+ * @param null|string $where
  * @param string $method
  * @param bool $get
  * @return bool|string
  */
-function redirect($where = base, $method = 'php', $get = false)
+function redirect($where = null, $method = 'php', $get = false)
 {
     if ($method == 'php') {
-        header('location: ' . base . '/' . $where . ($get ? '?' . $get : ''));
+        header('location: ' . base . $where . ($get ? '?' . $get : ''));
     } elseif ($method == 'js') {
-        return 'window.location = "' . base . '/' . $where . ($get ? '?' . $get : '') . '";';
+        return 'window.location = "' . base . $where . ($get ? '?' . $get : '') . '";';
     }
     return true;
 }

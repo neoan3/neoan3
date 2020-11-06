@@ -1,0 +1,104 @@
+<div class="m-5" x-data="migrate()" x-init="$watch('data.currentModelIndex',()=>start())">
+    <div class="grid-3-9">
+        <div class="b-primary b-r-1">
+
+            <div >
+                <h3>Your migrate.json</h3>
+                <textarea style="min-height: 300px" class="b-primary b-rounded w-75p" x-text="JSON.stringify(data.currentModel.migrate)"></textarea>
+                <button class="b-rounded p-1 b-0 bg-primary text-white hover:raise-1-gray font-md" x-on:click="finish" type="button">write out</button>
+            </div>
+
+        </div>
+        <div class="p-l-5">
+            <h2>Model</h2>
+            <form x-on:submit.prevent="start" >
+                <select class="b-0 b-b-1 b-primary font-md p-y-1 w-100p" x-model="data.currentModelIndex">
+                    <option selected disabled value="-1">select model</option>
+                    <template x-for="(model,i) in data.models">
+                        <option x-bind:key="i" x-bind:value="i" x-text="model.name"></option>
+                    </template>
+                </select>
+<!--                <button class="b-rounded p-1 b-0 bg-accent text-white font-md hover:raise-1-gray" type="submit">select</button>-->
+            </form>
+            <template x-if="data.started">
+                <div>
+                    <template x-for="(table,i) in Object.keys(data.currentModel.migrate)">
+                        <div class="m-y-2 b-rounded b-primary b-1 raise-1-primary p-2">
+                            <template x-if="i>0">
+                                <button style="right: 30px; cursor: pointer" x-on:click="removeTable(table)" class="position-absolute m-r-2 m-t-2 text-red b-0 b-rounded bg-transparent">x</button>
+                            </template>
+                            <p class="font-md" x-text="table"></p>
+                            <div class="grid-4-3-2-3">
+                                <p class="text-primary">name</p>
+                                <p class="text-primary">type</p>
+                                <p class="text-primary">nullable</p>
+                                <p class="text-primary">default</p>
+                            </div>
+                            <template x-for="(field,j) in Object.keys(data.currentModel.migrate[table])">
+                                <div>
+                                    <template x-if="!editable(field)">
+                                        <div class="grid-4-3-2-3">
+                                            <p x-text="field"></p>
+                                            <p x-text="data.currentModel.migrate[table][field].type"></p>
+                                            <p x-text="data.currentModel.migrate[table][field].nullable"></p>
+                                            <p x-text="data.currentModel.migrate[table][field].default"></p>
+                                        </div>
+                                    </template>
+                                    <template x-if="editable(field)">
+                                        <div class="grid-4-3-2-2-1">
+                                            <p class="p-r-2" x-text="field">
+                                            </p>
+                                            <p class="p-r-2">
+                                                <input class="b-0 b-b-1 b-primary font-md w-75p" type="text"
+                                                       x-model="data.currentModel.migrate[table][field].type">
+                                            </p>
+                                            <p>
+                                                <input type="checkbox" x-model="data.currentModel.migrate[table][field].nullable">
+                                            </p>
+                                            <p>
+                                                <input class="b-0 b-b-1 b-primary font-md w-75p" type="text"
+                                                       x-model="data.currentModel.migrate[table][field].default">
+                                            </p>
+                                            <p>
+                                                <button style="cursor: pointer" class="bg-transparent b-0 text-red" x-on:click="removeField(table,field)">X</button>
+                                            </p>
+
+                                        </div>
+                                    </template>
+                                </div>
+
+                            </template>
+                            <form class="grid-8-4" x-on:submit.prevent="addField(table)">
+                                <p>
+                                    <input
+                                            pattern="[a-z_]+"
+                                            title="use snake_case, use lower case, use singular"
+                                            placeholder="new_field"
+                                            required
+                                            class="b-0 b-b-1 b-primary font-md w-100p" type="text" x-model="data.newFieldName">
+                                </p>
+                                <div class="place-x-center place-y-center">
+                                    <button type="submit" class="b-rounded p-1 b-0 bg-accent text-white hover:raise-1-gray font-md">+ field</button>
+                                </div>
+                            </form>
+                        </div>
+                    </template>
+                     <form class="m-t-5" x-on:submit.prevent="addSub">
+                         <div class="grid-2-4-6">
+                             <span class="place-x-end p-t-2" x-text="data.currentModel.name.toLowerCase()+'_'"></span>
+                             <input class="b-0 b-b-1 b-primary font-md p-y-1" placeholder="submodel" type="text" x-model="data.subName">
+                             <div class="p-t-1 place-x-end">
+                                 <button class="b-rounded p-1 b-0 bg-accent text-white hover:raise-1-gray font-md" x-bind:disabled="data.subName==''" type="submit">add submodel</button>
+
+                             </div>
+
+                         </div>
+                     </form>
+                </div>
+            </template>
+        </div>
+    </div>
+
+</div>
+
+

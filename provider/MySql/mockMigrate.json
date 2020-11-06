@@ -1,0 +1,72 @@
+{
+  "mock": {
+    "id": {
+      "type": "binary(16)",
+      "key": "primary"
+    },
+    "a_stamp": {
+      "type": "timestamp",
+      "key": null
+    },
+    "an_int": {
+      "type": "int(11)",
+      "key": null
+    },
+    "a_string": {
+      "type": "varchar(255)",
+      "key": null
+    }
+  },
+  "mock_sub": {
+    "id": {
+      "type": "binary(16)",
+      "key": "primary"
+    },
+    "mock_id": {
+      "type": "binary(16)",
+      "key": null
+    },
+    "a_stamp": {
+      "type": "timestamp",
+      "key": null
+    },
+    "an_int": {
+      "type": "int(11)",
+      "key": null
+    },
+    "a_string": {
+      "type": "varchar(255)",
+      "key": null
+    },
+    "delete_date": {
+      "type": "datetime",
+      "key": null
+    }
+  },
+  "mock_sub_two": {
+    "id": {
+      "type": "binary(16)",
+      "key": "primary"
+    },
+    "mock_id": {
+      "type": "binary(16)",
+      "key": null
+    },
+    "a_stamp": {
+      "type": "timestamp",
+      "key": null
+    },
+    "an_int": {
+      "type": "int(11)",
+      "key": null
+    },
+    "a_string": {
+      "type": "varchar(255)",
+      "key": null
+    },
+    "delete_date": {
+      "type": "datetime",
+      "key": null
+    }
+  }
+}

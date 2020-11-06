@@ -1,0 +1,155 @@
+<div>
+    <h2 class="text-primary">Quick start</h2>
+    <ul>
+        <li>
+            <a class="text-secondary text-decoration-none" href="#route-endpoint">Creating your first server side rendered (route) endpoint</a>
+        </li>
+        <li>
+            <a class="text-secondary text-decoration-none" href="#api-endpoint">Creating your first api endpoint</a>
+        </li>
+        <li>
+            <a class="text-secondary text-decoration-none" href="#model">Creating your first database model</a>
+        </li>
+        <li>
+            <a class="text-secondary text-decoration-none" href="#test">Creating your first test</a>
+        </li>
+    </ul>
+    <h3 id="route-endpoint">Creating your first route endpoint</h3>
+    <p>
+        When using the <a class="text-decoration-none text-primary" href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
+        navigate to this installation
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">cd {{installation}}</code> and type
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new component firstComponent</code>
+    </p>
+    <ul>
+        <li>Choose "Route component"</li>
+        <li>Yes to creating a view</li>
+        <li>Yes to using a frame</li>
+        <li>Choose "demo"</li>
+    </ul>
+    <p>Then, click <a class="text-decoration-none text-primary" href="{{base}}first-component/">here</a>.</p>
+    <p>
+        A component becomes a HTML-route if it has an init-method. If the Unicore-Singleton is used,
+        a frame is optional or can be loaded dynamically. Looking at "/component/firstComponent/FirstComponent.ctrl.php"
+        should give you an overview of what is happening.
+    </p>
+    <h3 id="api-endpoint">Creating your first api endpoint</h3>
+    <p>
+        When using the <a class="text-decoration-none text-primary" href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
+        navigate to this installation
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">cd {{installation}}</code> and type
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new component firstApi</code>
+    </p>
+    <ul>
+        <li>Choose "API component"</li>
+        <li>Yes to using a frame</li>
+        <li>Choose "demo"</li>
+    </ul>
+    <p>Then, click <a class="text-decoration-none text-primary" href="{{base}}api.v1/first-api?some=value">here</a>.</p>
+    <p>
+        A component is capable of receiving requests based on the method  + name.
+        Having a method getFirstApi, for instance, enables you to process GET-requests to
+        <code>{{base}}api.v1/first-api</code>
+        Looking at "/component/firstApi/FirstApi.ctrl.php"
+        should give you an overview of what is happening.
+    </p>
+    <h3 id="model">Creating your first database model</h3>
+    <p>
+        Let's get a little more complex, shall we? In a tool of your choice, let's create the following database
+    </p>
+
+    <p>
+        When using the <a class="text-decoration-none text-primary" href="https://packagist.org/packages/neoan3/neoan3" target="_blank">neoan3-cli tool</a>, open a terminal (e.g. cmd on windows),
+        navigate to this installation
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">cd {{installation}}</code> and type
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new database neoan</code>
+    </p>
+    <p>
+        Follow the instructions. Since this is the first time you are dealing with credentials,
+        you might have to create the file "credentials.json" in a folder "credentials" on the root directory of your system.
+        Make sure it's writable by PHP. Depending on your OS, you might need to create a softlink for that. <br>
+        The cli tool will walk you through several steps. You will create new credentials and name them testing_db.
+        After setting your login credentials (usually 'root' and no password),
+        the tool is going to ask you for a database name. The value we want to enter in our case is "neoan".
+        The rest of the settings can be left to default (simply hit enter).
+        Once your database is created, let's create a model:
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new model post</code>
+    </p>
+    <p>
+        There are many tools for database management. To offer a unified approach, let's design our model using the shipped
+        <a href="{{base}}migrate/" class="text-decoration-none text-primary" target="_blank">migration tool</a>.
+        Add the following fields:
+    </p>
+    <ul>
+        <li>name | varchar(90)</li>
+        <li>text | text</li>
+    </ul>
+    <p>
+        And click the button "write out". You can now execute the migration against your database:
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 migrate models up</code>
+    </p>
+    <p>
+        You are done! You read that right: You can now CRUD to the table post.
+        In order to try it out, create (or reuse) a route-component. In there, make the following changes:
+    </p>
+    <pre class="bg-black b-rounded p-y-1 p-x-2 text-white">
+    // e.g. in a Unicore style component
+    ...
+    function init(): void
+    {
+        $this
+            ->uni('Demo')
+            ->addRenderParameter('post', function ($serve){
+                return $serve->loadModel(PostModel::class)::create([
+                    'name'=>'First post',
+                    'text'=>'What a day!',
+                ]);
+            })
+            ->hook('main', 'firstComponent')
+            ->output();
+    }
+    ...
+    </pre>
+    <p>
+        And in your view (e.g. /component/FirstComponent/firstComponent.view.html), make the following addition:
+    </p>
+    <pre class="bg-black b-rounded p-y-1 p-x-2 text-white">
+    ...
+    &lt;h2>New post: {{post.name}}&lt;/h2>
+    &lt;p>{{post.text}}&lt;/p>
+    ...
+    </pre>
+    <h3 id="test">Creating your first test</h3>
+    <p>
+        Testing is a crucial part of developing. Neglected by many, the industry rightfully demands testable code.
+        The neoan3 cli tool comes with intelligent helpers to alleviate to associated "pain".
+        In order to create a unit test, let's look at the model we created in the last step. Does everything work as expected?
+
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 new test model post</code>
+    </p>
+    <p>
+        Examine the file "/model/Post/PostTest.php". You will see that the tests make use of several mock-functions at your disposal in order
+        to test everything but the actual database transaction itself. Assuming you didn't make any changes, we can probably run tests for the complete application now:
+    </p>
+    <p>
+        <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 test</code>
+    </p>
+</div>

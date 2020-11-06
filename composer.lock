@@ -4,8 +4,58 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b250080d6686308d1e8115a607b705a",
+    "content-hash": "9327e6ea317f2be16b1b7795bc4ca095",
     "packages": [
+        {
+            "name": "firebase/php-jwt",
+            "version": "v5.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "feb0e820b8436873675fd3aca04f3728eb2185cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/feb0e820b8436873675fd3aca04f3728eb2185cb",
+                "reference": "feb0e820b8436873675fd3aca04f3728eb2185cb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.8 <=9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/firebase/php-jwt",
+            "keywords": [
+                "jwt",
+                "php"
+            ],
+            "time": "2020-03-25T18:49:23+00:00"
+        },
         {
             "name": "mnsami/composer-custom-directory-installer",
             "version": "dev-master",
@@ -60,22 +110,22 @@
         },
         {
             "name": "neoan3-apps/db",
-            "version": "0.3.0",
+            "version": "0.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sroehrl/neoan3-db.git",
-                "reference": "f2ef387f9e4433c770767e18b5242a1b5d44dc1d"
+                "reference": "2e919abfb7883cf8e7b3e1af1d6a56f6b02274af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sroehrl/neoan3-db/zipball/f2ef387f9e4433c770767e18b5242a1b5d44dc1d",
-                "reference": "f2ef387f9e4433c770767e18b5242a1b5d44dc1d",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-db/zipball/2e919abfb7883cf8e7b3e1af1d6a56f6b02274af",
+                "reference": "2e919abfb7883cf8e7b3e1af1d6a56f6b02274af",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-mysqli": "*",
-                "php": "^7.0"
+                "php": "^7"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9.3"
@@ -97,7 +147,113 @@
                 }
             ],
             "description": "neoan3 mysqli class",
-            "time": "2020-09-26T16:11:45+00:00"
+            "time": "2020-10-07T23:48:08+00:00"
+        },
+        {
+            "name": "neoan3-apps/jwt",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sroehrl/neoan3-jwt.git",
+                "reference": "aacaabfd46bdb209705fa279fd660f5baf18a3ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-jwt/zipball/aacaabfd46bdb209705fa279fd660f5baf18a3ae",
+                "reference": "aacaabfd46bdb209705fa279fd660f5baf18a3ae",
+                "shasum": ""
+            },
+            "require": {
+                "firebase/php-jwt": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Neoan3\\Apps\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Roehrl",
+                    "homepage": "http://neoan.us"
+                }
+            ],
+            "description": "neoan3 wrapper for JSON WEB TOKEN using Firebase",
+            "time": "2020-01-22T17:26:15+00:00"
+        },
+        {
+            "name": "neoan3-apps/session",
+            "version": "v1.0.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sroehrl/neoan3-session.git",
+                "reference": "d4924ba8367868fdcf4402d3cf6b9e73b80c3a2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-session/zipball/d4924ba8367868fdcf4402d3cf6b9e73b80c3a2f",
+                "reference": "d4924ba8367868fdcf4402d3cf6b9e73b80c3a2f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "9.4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Neoan3\\Apps\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "neoan3 session class",
+            "time": "2020-10-13T17:26:24+00:00"
+        },
+        {
+            "name": "neoan3-apps/stateless",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sroehrl/neoan3-stateless.git",
+                "reference": "30eb076f71dd75b616c72a55c45827f71ec4bfd8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sroehrl/neoan3-stateless/zipball/30eb076f71dd75b616c72a55c45827f71ec4bfd8",
+                "reference": "30eb076f71dd75b616c72a55c45827f71ec4bfd8",
+                "shasum": ""
+            },
+            "require": {
+                "neoan3-apps/jwt": "^1"
+            },
+            "require-dev": {
+                "neoan3-apps/template": "^1.0.5",
+                "phpunit/phpunit": "^9.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Neoan3\\Apps\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "neoan",
+                    "email": "neoan@neoan.us"
+                }
+            ],
+            "description": "stateless Json Webtoken (JWT) authentication / verification for PHP",
+            "time": "2020-10-06T02:25:42+00:00"
         },
         {
             "name": "neoan3-apps/template",
@@ -135,41 +291,6 @@
             ],
             "description": "neoan3 minimal template engine",
             "time": "2020-05-08T02:59:29+00:00"
-        },
-        {
-            "name": "neoan3-model/index",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sroehrl/neoan3-indexModel.git",
-                "reference": "cdddde2d3df10f9858bbba979d14b977b7bb53eb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sroehrl/neoan3-indexModel/zipball/cdddde2d3df10f9858bbba979d14b977b7bb53eb",
-                "reference": "cdddde2d3df10f9858bbba979d14b977b7bb53eb",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "mnsami/composer-custom-directory-installer": "1.1.*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "9.2.6"
-            },
-            "type": "library",
-            "extra": {
-                "installer-paths": {
-                    "./frame/{$name}": [],
-                    "./model/{$name}": [],
-                    "./component/{$name}": []
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "time": "2020-08-05T03:37:38+00:00"
         }
     ],
     "packages-dev": [
@@ -249,12 +370,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "a3409d10079990eeb489c3fead0ac070b5b38895"
+                "reference": "00aba97fc36feabc8d94667eebd5d43959e60008"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/a3409d10079990eeb489c3fead0ac070b5b38895",
-                "reference": "a3409d10079990eeb489c3fead0ac070b5b38895",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/00aba97fc36feabc8d94667eebd5d43959e60008",
+                "reference": "00aba97fc36feabc8d94667eebd5d43959e60008",
                 "shasum": ""
             },
             "require": {
@@ -295,7 +416,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-28T16:31:07+00:00"
+            "time": "2020-10-01T09:35:15+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -667,12 +788,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "a6037d775070cc82732c21809664c63fb4f19916"
+                "reference": "ece0c3ceee73810bd95226401bbfaea9e0f64de7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/a6037d775070cc82732c21809664c63fb4f19916",
-                "reference": "a6037d775070cc82732c21809664c63fb4f19916",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ece0c3ceee73810bd95226401bbfaea9e0f64de7",
+                "reference": "ece0c3ceee73810bd95226401bbfaea9e0f64de7",
                 "shasum": ""
             },
             "require": {
@@ -732,7 +853,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-27T04:42:46+00:00"
+            "time": "2020-10-09T14:34:55+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -965,12 +1086,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6099c5eefccfda860c889f575d58b5fe6cc10c83"
+                "reference": "8b79c2a70ae855e582cef1ca63a849fe07bdb01d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6099c5eefccfda860c889f575d58b5fe6cc10c83",
-                "reference": "6099c5eefccfda860c889f575d58b5fe6cc10c83",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8b79c2a70ae855e582cef1ca63a849fe07bdb01d",
+                "reference": "8b79c2a70ae855e582cef1ca63a849fe07bdb01d",
                 "shasum": ""
             },
             "require": {
@@ -985,23 +1106,23 @@
                 "phar-io/manifest": "^2.0.1",
                 "phar-io/version": "^3.0.2",
                 "php": ">=7.3",
-                "phpspec/prophecy": "^1.11.1",
+                "phpspec/prophecy": "^1.12.1",
                 "phpunit/php-code-coverage": "^9.2",
-                "phpunit/php-file-iterator": "^3.0.4",
-                "phpunit/php-invoker": "^3.1",
-                "phpunit/php-text-template": "^2.0.2",
-                "phpunit/php-timer": "^5.0.1",
-                "sebastian/cli-parser": "^1.0",
-                "sebastian/code-unit": "^1.0.5",
-                "sebastian/comparator": "^4.0.3",
-                "sebastian/diff": "^4.0.2",
-                "sebastian/environment": "^5.1.2",
-                "sebastian/exporter": "^4.0.2",
-                "sebastian/global-state": "^5.0",
-                "sebastian/object-enumerator": "^4.0.2",
-                "sebastian/resource-operations": "^3.0.2",
-                "sebastian/type": "^2.2.1",
-                "sebastian/version": "^3.0.1"
+                "phpunit/php-file-iterator": "^3.0.5",
+                "phpunit/php-invoker": "^3.1.1",
+                "phpunit/php-text-template": "^2.0.3",
+                "phpunit/php-timer": "^5.0.2",
+                "sebastian/cli-parser": "^1.0.1",
+                "sebastian/code-unit": "^1.0.6",
+                "sebastian/comparator": "^4.0.5",
+                "sebastian/diff": "^4.0.3",
+                "sebastian/environment": "^5.1.3",
+                "sebastian/exporter": "^4.0.3",
+                "sebastian/global-state": "^5.0.1",
+                "sebastian/object-enumerator": "^4.0.3",
+                "sebastian/resource-operations": "^3.0.3",
+                "sebastian/type": "^2.3",
+                "sebastian/version": "^3.0.2"
             },
             "require-dev": {
                 "ext-pdo": "*",
@@ -1017,7 +1138,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "9.4-dev"
+                    "dev-master": "9.5-dev"
                 }
             },
             "autoload": {
@@ -1056,7 +1177,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-28T09:56:46+00:00"
+            "time": "2020-10-11T07:43:20+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -1116,12 +1237,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/code-unit.git",
-                "reference": "d3a241b6028ff9d8e97d2b6ebd4090d01f92fad8"
+                "reference": "59236be62b1bb9919e6d7f60b0b832dc05cef9ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/code-unit/zipball/d3a241b6028ff9d8e97d2b6ebd4090d01f92fad8",
-                "reference": "d3a241b6028ff9d8e97d2b6ebd4090d01f92fad8",
+                "url": "https://api.github.com/repos/sebastianbergmann/code-unit/zipball/59236be62b1bb9919e6d7f60b0b832dc05cef9ab",
+                "reference": "59236be62b1bb9919e6d7f60b0b832dc05cef9ab",
                 "shasum": ""
             },
             "require": {
@@ -1160,7 +1281,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-28T05:28:46+00:00"
+            "time": "2020-10-02T14:47:54+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -1342,12 +1463,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "ffc949a1a2aae270ea064453d7535b82e4c32092"
+                "reference": "e3ec6059b3fe483d42fbaf1fe6eefa201f7b4a6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/ffc949a1a2aae270ea064453d7535b82e4c32092",
-                "reference": "ffc949a1a2aae270ea064453d7535b82e4c32092",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/e3ec6059b3fe483d42fbaf1fe6eefa201f7b4a6d",
+                "reference": "e3ec6059b3fe483d42fbaf1fe6eefa201f7b4a6d",
                 "shasum": ""
             },
             "require": {
@@ -1396,7 +1517,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-28T05:32:55+00:00"
+            "time": "2020-10-13T11:48:30+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -1863,12 +1984,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/type.git",
-                "reference": "e494dcaeb89d1458c9ccd8c819745245a1669aea"
+                "reference": "fa592377f3923946cb90bf1f6a71ba2e5f229909"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/e494dcaeb89d1458c9ccd8c819745245a1669aea",
-                "reference": "e494dcaeb89d1458c9ccd8c819745245a1669aea",
+                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/fa592377f3923946cb90bf1f6a71ba2e5f229909",
+                "reference": "fa592377f3923946cb90bf1f6a71ba2e5f229909",
                 "shasum": ""
             },
             "require": {
@@ -1880,7 +2001,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -1907,7 +2028,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-28T06:01:38+00:00"
+            "time": "2020-10-06T08:41:03+00:00"
         },
         {
             "name": "sebastian/version",

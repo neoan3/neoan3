@@ -6,6 +6,10 @@ if(isset($version[1])){
     require_once(dirname(dirname(__FILE__)) . '/base/_includes.php');
 
     $apiClass = '\\Neoan3\\Api\\' . ucfirst($version[1]);
+    if(!class_exists($apiClass)){
+        echo "API version $version[1] not installed";
+        die();
+    }
 
     new \Neoan3\Core\Route();
     $api = new $apiClass();

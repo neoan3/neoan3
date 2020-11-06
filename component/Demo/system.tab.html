@@ -1,0 +1,21 @@
+<div>
+    <div class="grid-2-10">
+        <div class="place-y-center">
+            <img style="max-width: 50px" src="https://neoan3.rocks/asset/neoan3.webp" alt="n3-logo">
+        </div>
+
+        <div style="cursor: pointer" x-on:click="tab='Introduction'" class="text-primary font-xl place-y-center"><strong>neoan3</strong> v{{version}}</div>
+    </div>
+    <h3>Installed composer packages:</h3>
+    <div>
+        <ul>
+            <li n-for="require as inc => version">
+                {{inc}} ({{version}})
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<h2 class="text-primary">Documentation</h2>
+<p>The current documentation can be found @ <a class="text-decoration-none text-primary" target="_blank" href="http://neoan3.rocks">http://neoan3.rocks</a></p>

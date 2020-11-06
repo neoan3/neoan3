@@ -8,12 +8,12 @@ class MockDatabaseWrapper extends DatabaseWrapper
 {
     private array $results = [];
     private int $nextStep = 0;
-    private array $modelStructure;
+    private ?array $mockModelStructure;
 
-    public function __construct($environmentVariables = [], $modelStructure = [])
+    public function __construct($environmentVariables = [], $mockModelStructure = null)
     {
         parent::__construct($environmentVariables);
-        $this->modelStructure = $modelStructure;
+        $this->mockModelStructure = $mockModelStructure;
     }
 
     function registerResult($any)
@@ -35,7 +35,7 @@ class MockDatabaseWrapper extends DatabaseWrapper
     }
     function mockModel($model)
     {
-        $transform = new Transform($model, $this, $this->modelStructure);
+        $transform = new Transform($model, $this, $this->mockModelStructure);
         $random = [];
         foreach ($transform->modelStructure as $table => $fields) {
             foreach ($transform->modelStructure[$table] as $field => $specs) {
@@ -49,13 +49,17 @@ class MockDatabaseWrapper extends DatabaseWrapper
                         }
                         break;
                     case 'timestamp':
+                    case 'date':
                     case 'datetime':
                         $now = time();
                         $val = date('Y-m-d H:i:s', $now);
                         if ($table == $model) {
                             $random[$field] = $val;
+                            $random[$field."_st"] = $now;
+
                         } else {
                             $random[$table][0][$field] = $val;
+                            $random[$table][0][$field.'_st'] = $now;
                         }
                         break;
                     case 'int':
@@ -88,21 +92,20 @@ class MockDatabaseWrapper extends DatabaseWrapper
     function mockGet($modelName, $entity=null)
     {
         $model = $this->mockModel($modelName);
-        if($entity){
-            $this->registerResult([$entity]);
-        } else {
-            $this->registerResult([$model]);
-        }
-        foreach ($model as $key => $value){
-            if(is_array($value)){
-                if($entity){
-                    $this->registerResult($entity[$key]);
-                } else {
-                    $this->registerResult($model[$key]);
-                }
+        $iterator = $entity ?? $model;
+        $sqlResult = ['id' => $iterator['id']];
 
+        foreach ($iterator as $key => $value){
+            if(is_array($value)){
+                foreach ($value[0] as $subKey => $subValue){
+                    $sqlResult[$key.'_'.$subKey] = $subValue;
+                }
+            } else {
+                $sqlResult[$modelName.'_'.$key] = $value;
             }
         }
+        $this->registerResult([$sqlResult]);
+
         return $entity ? $entity : $model;
     }
 
@@ -111,7 +114,7 @@ class MockDatabaseWrapper extends DatabaseWrapper
      * @param $entity
      * @return array|mixed
      */
-    function mockUpdate($modelName, $entity)
+    function mockUpdate($modelName,$entity)
     {
         foreach ($entity as $potential => $values){
             if(is_array($values)){
@@ -123,5 +126,22 @@ class MockDatabaseWrapper extends DatabaseWrapper
         $this->registerResult('update main');
 
         return $this->mockGet($modelName, $entity);
+    }
+
+    function mockFind($modelName, $entity=null)
+    {
+        $this->registerResult([['id' => $entity ? $entity['id'] : 'someUUId']]);
+        return $this->mockGet($modelName, $entity);
+    }
+    function mockDelete($modelName, $entity=null)
+    {
+        $old = $this->mockGet($modelName, $entity);
+        $this->registerResult('delete main');
+        foreach ($old as $potential => $values){
+            if(is_array($values)){
+                $this->registerResult('delete sub');
+            }
+        }
+
     }
 }

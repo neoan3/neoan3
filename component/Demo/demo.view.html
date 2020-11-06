@@ -1,0 +1,38 @@
+<div>
+    <nav class="bg-primary text-white">
+        <div class="container p-y-2">
+            <h1>&lt; neoan<sup>3</sup> /> running</h1>
+            <p>Welcome to your new project</p>
+        </div>
+
+    </nav>
+    <div class="container" x-data="{tab:'System', tabs:['System','Introduction','Quickstart','Changes']}">
+        <section class="b-primary b-1 b-rounded m-y-2" style="display:flex; justify-content: space-between">
+            <template x-for="x in tabs">
+                <a href="#" x-on:click.prevent="tab=x" style="flex: auto"
+                   class="text-decoration-none p-y-2 p-x-4 b-0 hover:bg-primary hover:text-white font-md"
+                   x-text="x"
+                   x-bind:class="{'text-primary':tab==x,'text-black':tab!=x}">
+                    Welcome
+                </a>
+            </template>
+        </section>
+        <div class="grid-12">
+            <section class="box b-1 b-rounded b-primary p-4">
+                <template x-if="tab=='System'">
+                    {{tabs.system}}
+                </template>
+                <template x-if="tab=='Introduction'">
+                    {{tabs.introduction}}
+                </template>
+                <template x-if="tab=='Quickstart'">
+                    {{tabs.quickstart}}
+                </template>
+                <template x-if="tab=='Changes'">
+                    {{tabs.changes}}
+                </template>
+            </section>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js" defer></script>
+</div>

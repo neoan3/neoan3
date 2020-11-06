@@ -16,13 +16,13 @@ class DatabaseWrapperTest extends TestCase
 
     public function testGetNextId()
     {
-        $this->expectException(DbException::class);
+        $this->expectException(\Exception::class);
         $this->db->getNextId();
     }
 
     public function testPure()
     {
-        $this->expectException(DbException::class);
+        $this->expectException(\Exception::class);
         $this->db->pure('A sql string');
     }
 }

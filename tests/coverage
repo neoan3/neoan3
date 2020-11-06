@@ -1,0 +1,28 @@
+<?php
+$base = dirname(__FILE__) . '/report/';
+$request = $_SERVER["REQUEST_URI"];
+if(!empty($request) && trim($request) !== '/' && file_exists($base . $request)){
+    simple_header($request);
+    echo file_get_contents($base . $request);
+} else {
+    echo file_get_contents($base . 'index.html');
+}
+
+function simple_header($request){
+    $parts = explode('.', $request);
+    $fileType = end($parts);
+    switch ($fileType){
+        case 'css':
+        case 'map':
+            header("Content-Type: text/css; charset=utf-8");
+            break;
+        case 'js':
+            header("Content-Type: application/javascript; charset=utf-8");
+            break;
+        case 'svg':
+            header("Content-Type: image/svg+xml; charset=utf-8");
+            break;
+        default:
+            header("Content-Type: text/html; charset=utf-8");
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Neoan3\Components;
+namespace Neoan3\Component\Demo;
 
 use PHPUnit\Framework\TestCase;
 
@@ -8,7 +8,7 @@ class DemoTest extends TestCase
 {
     public function testInit()
     {
-        $st = new Demo();
+        $st = new DemoController();
         $this->expectOutputRegex('/^<!doctype html>/');
         $st->init();
     }

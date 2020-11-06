@@ -1,13 +1,25 @@
 # neoan3 PHP all purpose hybrid framework
 
-[![Build Status](https://travis-ci.com/sroehrl/neoan3.svg?branch=master)](https://travis-ci.com/sroehrl/neoan3)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/a3c9336dfc658b8f62dd/test_coverage)](https://codeclimate.com/github/sroehrl/neoan3/test_coverage)
+[![Build Status](https://travis-ci.com/sroehrl/neoan3.svg?branch=master)](https://travis-ci.com/neoan3/neoan3)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a3c9336dfc658b8f62dd/test_coverage)](https://codeclimate.com/github/neoan3/neoan3/test_coverage)
+[![google page speed](https://img.shields.io/badge/100%25%20page%20speed-lighthouse-blue.svg?style=flat&colorA=555)](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fneoan3.rocks%2Fgetting-started%2F)
+[![Discord](https://img.shields.io/discord/701820506671677580?label=discord&style=flat)](https://discord.gg/vjRgWUG)
+[![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/neoan3/neoan3)](https://codeclimate.com/github/neoan3/neoan3/)
+![GitHub repo size](https://img.shields.io/github/repo-size/neoan3/neoan3)
 
 Rapid development, light-weight, lightning-fast, beginner-friendly yet limitlessly powerful? 
 
 neoan3 is all that and more. 
 
 [See documentation](http://neoan3.rocks/getting-started/) (work in progress)
+
+<h1>Version 3</h1>
+
+## Give it 5 minutes
+
+Yet another thing to learn? Here is our theory: Give it a shot! After 5 minutes you will be interested. 
+After another 5 minutes you will start to understand. After another 5 minutes you will be writing your first application.
+
 
 ## Requirements
 
@@ -28,9 +40,8 @@ Easiest & fastest way is through the cli-tool:
 _via cli_
 
 1. Run `neoan3 new app [base]`
-2. Run `composer install` (only when prompted; should run automatically)
-3. Run `npm init`(this is not a requirement if you do not plan to use any npm packages)
-4. that's it, you are good to go
+2. Run `neoan3 develop`
+3. that's it, you are good to go
 
 _via fork or download_
 
@@ -49,9 +60,4 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# What is neoan3?
 
-Neoan3 is a complete rewrite of [neoanPHP](https://github.com/sroehrl/neoanPHP) and modernizes the approach greatly.
-This version is in its infancy and not intended for production-projects yet.
-
-However, I enjoy comments, contributions & critique.
