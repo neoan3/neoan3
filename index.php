@@ -1,17 +1,11 @@
 <?php
 
-// debugging
-/*
-ini_set('error_reporting', E_ALL ^E_NOTICE);
-ini_set('display_errors', true);
-ini_set('display_startup_errors',true);
-error_reporting(E_ALL);
-*/
 
 /********************COPYRIGHT**NOTICE***********************
  
  This script was created by NEOAN under MIT License
- Visit https://neoan.us
+ Visit https://neoan.us for author &
+ * https://neoan3.rocks for docs
  
  ***********************************************************************/
 $start = microtime(true);
