@@ -6,6 +6,7 @@ env:
 language: php
 php:
   - '7.4'
+  - '8.0'
 
 before_script:
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist

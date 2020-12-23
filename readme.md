@@ -15,6 +15,8 @@ neoan3 is all that and more.
 
 <h1>Version 3</h1>
 
+### _supports PHP 8!_
+
 ## Give it 5 minutes
 
 Yet another thing to learn? Here is our theory: Give it a shot! After 5 minutes you will be interested. 
