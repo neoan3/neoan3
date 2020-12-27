@@ -15,7 +15,7 @@ neoan3 is all that and more.
 
 <h1>Version 3</h1>
 
-### _supports PHP 8!_
+### _supports PHP 8!_ (delivering SSR content in ~ 0.004 seconds)
 
 ## Give it 5 minutes
 
