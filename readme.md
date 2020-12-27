@@ -25,7 +25,7 @@ After another 5 minutes you will start to understand. After another 5 minutes yo
 
 ## Requirements
 
-PHP ^7.4 
+PHP ^7.4 || PHP ^8
 (as of version 2.0, we officially dropped 7.2+ support)
 
 [composer](https://getcomposer.org/)
