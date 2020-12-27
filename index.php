@@ -20,5 +20,5 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 require_once(dirname(__FILE__).'/_neoan/base/core.php');
 $done = microtime(true)- $start;
-echo '<!-- delivered in ' . number_format($done,2) . ' seconds -->';
+echo '<!-- delivered in ' . number_format($done,3) . ' seconds -->';
 exit();
