@@ -1,6 +1,6 @@
 # neoan3 PHP all purpose hybrid framework
 
-[![Build Status](https://travis-ci.com/sroehrl/neoan3.svg?branch=master)](https://travis-ci.com/neoan3/neoan3)
+[![Build Status](https://travis-ci.com/neoan3/neoan3.svg?branch=master)](https://travis-ci.com/neoan3/neoan3)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a3c9336dfc658b8f62dd/test_coverage)](https://codeclimate.com/github/neoan3/neoan3/test_coverage)
 [![google page speed](https://img.shields.io/badge/100%25%20page%20speed-lighthouse-blue.svg?style=flat&colorA=555)](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fneoan3.rocks%2Fgetting-started%2F)
 [![Discord](https://img.shields.io/discord/701820506671677580?label=discord&style=flat)](https://discord.gg/vjRgWUG)
