@@ -69,7 +69,8 @@ class Transform
      * @param $ids
      * @return \Generator
      */
-    function getGenerator($ids){
+    function getGenerator($ids): \Generator
+    {
         foreach ($ids as $id){
             yield $this->get($id['id']);
         }
@@ -97,8 +98,9 @@ class Transform
     /**
      * @param $inserts
      * @return array
+     * @throws \Exception
      */
-    function create($inserts)
+    function create($inserts): array
     {
         $id = $this->db->getNextId();
         $main = [];
@@ -121,7 +123,7 @@ class Transform
      * @param $entity
      * @return array
      */
-    function update($entity)
+    function update($entity): array
     {
         $main = [];
         foreach ($entity as $potential => $values){
@@ -169,7 +171,7 @@ class Transform
      * @param array $callFunctions
      * @return array
      */
-    function find($condition, $callFunctions = [])
+    function find($condition, $callFunctions = []): array
     {
         $joinTables = [];
         foreach ($condition as $tableField => $value){
@@ -217,7 +219,7 @@ class Transform
      * @param $fieldValueArray
      * @return array
      */
-    private function validate($table, $fieldValueArray)
+    private function validate($table, $fieldValueArray): array
     {
         $returnArray = [];
         foreach ($fieldValueArray as $field => $value){
@@ -245,7 +247,7 @@ class Transform
     /**
      * @return array
      */
-    private function readSql()
+    private function readSql(): array
     {
         $pureQueryString = 'SELECT ';
         $joins = ' FROM `' . $this->modelName .'`';
@@ -264,7 +266,7 @@ class Transform
                     case 'date':
                     case 'datetime':
                         if(($field == 'delete_date' || $field == 'deleteDate') && $table !== $modelName){
-                            $condition .= " AND `$table`.`$field` IS NULL ";
+                            $joins .= " AND `$table`.`$field` IS NULL ";
                         }
                         $pureQueryString .= "UNIX_TIMESTAMP(`${table}`.`${field}`)*1000 as ${table}_${field}_st, ";
                     default:
@@ -291,7 +293,7 @@ class Transform
      * @param $id
      * @return bool
      */
-    private function duplicationCheck($subModelResults, $id)
+    private function duplicationCheck($subModelResults, $id): bool
     {
         foreach ($subModelResults as $existing){
             if($existing['id'] === $id){
