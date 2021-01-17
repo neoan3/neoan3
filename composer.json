@@ -1,6 +1,6 @@
 {
     "name": "sroehrl/neoan3",
-    "version": "3.0.2",
+    "version": "3.0.4",
     "description": "the efficient PHP framework",
     "minimum-stability": "dev",
     "require": {
@@ -14,7 +14,7 @@
         "ext-mbstring": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^9.5"
     },
     "license": "MIT",
     "authors": [

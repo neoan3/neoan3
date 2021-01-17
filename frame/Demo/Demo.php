@@ -61,7 +61,7 @@ class Demo extends Serve
     /**
      * @return array
      */
-    function constants()
+    function constants(): array
     {
         return [
             'base' => [base],
