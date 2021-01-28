@@ -83,11 +83,11 @@ function redirect($where = null, $method = 'php', $get = false)
 }
 
 /**
+ * @param string $path
  * @return mixed
  * @throws Exception
  */
-function getCredentials(){
-    $path = DIRECTORY_SEPARATOR .'credentials'.DIRECTORY_SEPARATOR.'credentials.json';
+function getCredentials($path = DIRECTORY_SEPARATOR .'credentials'.DIRECTORY_SEPARATOR.'credentials.json'){
     if(file_exists($path)){
         return json_decode(file_get_contents($path),true);
     } else {
