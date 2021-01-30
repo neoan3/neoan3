@@ -129,9 +129,9 @@ class V1
         $function = strtolower($this->header['REQUEST_METHOD']) . ucfirst($this->header['target']);
         $class = '\\Neoan3\\Component\\' . $this->header['target'] . '\\' . $this->header['target'] . 'Controller';
         $this->checkErrors($class, $function);
-        $c = new $class();
-        $this->setResponseHeader(200);
         try {
+            $c = new $class();
+            $this->setResponseHeader(200);
             if (!empty($this->stream)) {
                 $this->header['arguments'][] = $this->stream;
                 $responseBody = $c->$function(...$this->header['arguments']);
