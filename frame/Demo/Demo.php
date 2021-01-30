@@ -10,7 +10,9 @@ namespace Neoan3\Frame;
 
 use Exception;
 use Neoan3\Core\Serve;
+use Neoan3\Provider\Attributes\UseAttributes;
 use Neoan3\Provider\Auth\Auth;
+use Neoan3\Provider\Auth\AuthObject;
 use Neoan3\Provider\Auth\SessionWrapper;
 use Neoan3\Provider\MySql\Database;
 use Neoan3\Provider\MySql\DatabaseWrapper;
@@ -31,6 +33,8 @@ class Demo extends Serve
 
     public Auth $Auth;
 
+    public ?AuthObject $authObject;
+
     /**
      * Demo constructor.
      * @param Database|null $db
@@ -43,7 +47,7 @@ class Demo extends Serve
             $this->provider['auth'] = new SessionWrapper();
             $this->provider['auth']->setSecret('my-secret');
         });
-        $this->Auth = $this->provider['auth'];
+
         $this->assignProvider('db', $db, function(){
             try{
                 $credentials = getCredentials();
@@ -54,6 +58,17 @@ class Demo extends Serve
                 $this->renderer->addToHead('title', '! No credentials found! Run "neoan3 new database '. $this->dbCredentials .'"');
             }
         });
+        $this->Auth = $this->provider['auth'];
+
+        /*
+         * PHP8 Attributes
+         * */
+        if(PHP_MAJOR_VERSION >= 8){
+            $phpAttributes = new UseAttributes();
+            $phpAttributes->hookAttributes($this->provider);
+            $this->authObject = $phpAttributes->authObject;
+        }
+
         $this->renderer->includeElement('customElement');
     }
 
@@ -76,7 +91,7 @@ class Demo extends Serve
             ],
             'stylesheet' => [
                 '' . base . 'frame/Demo/demo.css',
-                'https://cdn.jsdelivr.net/npm/gaudiamus-css@1.2.1/css/gaudiamus.min.css',
+                'https://cdn.jsdelivr.net/npm/gaudiamus-css@latest/css/gaudiamus.min.css',
             ]
         ];
     }

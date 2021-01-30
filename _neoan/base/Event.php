@@ -13,11 +13,11 @@ class Event
     /**
      * @var array
      */
-    private static $registeredEvents = [];
+    private static array $registeredEvents = [];
     /**
      * @var array
      */
-    private static $firedEvents = [];
+    private static array $firedEvents = [];
     /**
      * @var null
      */
@@ -43,7 +43,7 @@ class Event
     /**
      * @return array
      */
-    public static function getRegisteredListeners()
+    public static function getRegisteredListeners(): array
     {
         return self::$registeredEvents;
     }
@@ -51,7 +51,7 @@ class Event
     /**
      * @return array
      */
-    public static function getFiredEvents()
+    public static function getFiredEvents(): array
     {
         return self::$firedEvents;
     }
@@ -62,7 +62,7 @@ class Event
      */
     public static function dispatch(string $eventName, $params = [])
     {
-        self::$firedEvents[] = $eventName;
+        self::$firedEvents[] = ['name'=>$eventName, 'params' => $params];
         if (self::$globalListener) {
             call_user_func(self::$globalListener, ['params' => $params, 'event' => $eventName]);
         }
@@ -77,5 +77,13 @@ class Event
             }
         }
 
+    }
+    public static function hook($eventName, $callback)
+    {
+        foreach (self::$firedEvents as $firedEvent){
+            if($firedEvent['name'] == $eventName){
+                call_user_func($callback, $firedEvent['params']);
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 <div class="m-5" x-data="migrate()" x-init="$watch('data.currentModelIndex',()=>start())">
-    <div class="grid-3-9">
+    <div class="grid-2-10">
         <div class="b-primary b-r-1">
 
             <div >
@@ -18,7 +18,6 @@
                         <option x-bind:key="i" x-bind:value="i" x-text="model.name"></option>
                     </template>
                 </select>
-<!--                <button class="b-rounded p-1 b-0 bg-accent text-white font-md hover:raise-1-gray" type="submit">select</button>-->
             </form>
             <template x-if="data.started">
                 <div>
@@ -28,24 +27,29 @@
                                 <button style="right: 30px; cursor: pointer" x-on:click="removeTable(table)" class="position-absolute m-r-2 m-t-2 text-red b-0 b-rounded bg-transparent">x</button>
                             </template>
                             <p class="font-md" x-text="table"></p>
-                            <div class="grid-4-3-2-3">
+                            <div class="grid-3-2-2-2-2">
                                 <p class="text-primary">name</p>
                                 <p class="text-primary">type</p>
                                 <p class="text-primary">nullable</p>
+                                <p class="text-primary">key</p>
                                 <p class="text-primary">default</p>
                             </div>
                             <template x-for="(field,j) in Object.keys(data.currentModel.migrate[table])">
                                 <div>
                                     <template x-if="!editable(field)">
-                                        <div class="grid-4-3-2-3">
+                                        <div class="grid-3-2-2-2-2-1">
                                             <p x-text="field"></p>
                                             <p x-text="data.currentModel.migrate[table][field].type"></p>
                                             <p x-text="data.currentModel.migrate[table][field].nullable"></p>
+                                            <p>
+                                                <span x-show="data.currentModel.migrate[table][field].key"  x-text="data.currentModel.migrate[table][field].key"></span>
+                                                <span x-show="!data.currentModel.migrate[table][field].key">X</span>
+                                            </p>
                                             <p x-text="data.currentModel.migrate[table][field].default"></p>
                                         </div>
                                     </template>
                                     <template x-if="editable(field)">
-                                        <div class="grid-4-3-2-2-1">
+                                        <div class="grid-3-2-2-2-2-1">
                                             <p class="p-r-2" x-text="field">
                                             </p>
                                             <p class="p-r-2">
@@ -54,6 +58,10 @@
                                             </p>
                                             <p>
                                                 <input type="checkbox" x-model="data.currentModel.migrate[table][field].nullable">
+                                            </p>
+                                            <p>
+                                                <input  type="checkbox"
+                                                        x-model="data.currentModel.migrate[table][field].key">
                                             </p>
                                             <p>
                                                 <input class="b-0 b-b-1 b-primary font-md w-75p" type="text"
@@ -83,17 +91,17 @@
                             </form>
                         </div>
                     </template>
-                     <form class="m-t-5" x-on:submit.prevent="addSub">
-                         <div class="grid-2-4-6">
-                             <span class="place-x-end p-t-2" x-text="data.currentModel.name.toLowerCase()+'_'"></span>
-                             <input class="b-0 b-b-1 b-primary font-md p-y-1" placeholder="submodel" type="text" x-model="data.subName">
-                             <div class="p-t-1 place-x-end">
-                                 <button class="b-rounded p-1 b-0 bg-accent text-white hover:raise-1-gray font-md" x-bind:disabled="data.subName==''" type="submit">add submodel</button>
+                    <form class="m-t-5" x-on:submit.prevent="addSub">
+                        <div class="grid-2-4-6">
+                            <span class="place-x-end p-t-2" x-text="data.currentModel.name.toLowerCase()+'_'"></span>
+                            <input class="b-0 b-b-1 b-primary font-md p-y-1" placeholder="submodel" type="text" x-model="data.subName">
+                            <div class="p-t-1 place-x-end">
+                                <button class="b-rounded p-1 b-0 bg-accent text-white hover:raise-1-gray font-md" x-bind:disabled="data.subName==''" type="submit">add submodel</button>
 
-                             </div>
+                            </div>
 
-                         </div>
-                     </form>
+                        </div>
+                    </form>
                 </div>
             </template>
         </div>

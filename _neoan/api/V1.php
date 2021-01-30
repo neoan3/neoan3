@@ -4,6 +4,7 @@ namespace Neoan3\Api;
 
 use Exception;
 use Neoan3\Core\Event;
+use Neoan3\Core\ReflectionWrapper;
 use Neoan3\Core\RouteException;
 use ReflectionMethod;
 
@@ -162,8 +163,9 @@ class V1
                 $this->setResponseHeader(405);
                 throw new Exception('method ' . $this->header['REQUEST_METHOD'] . ' is not supported at this endpoint');
             }
-            $r = new ReflectionMethod($class, $function);
-            $params = $r->getParameters();
+            $r = new ReflectionWrapper($class, $function);
+            $r->dispatchAttributes(__NAMESPACE__);
+            $params = $r->method->getParameters();
             $lastParam = array_pop($params);
             // last: body/params
             if ($lastParam && !$lastParam->isDefaultValueAvailable() && empty($this->stream)) {
