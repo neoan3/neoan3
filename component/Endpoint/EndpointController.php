@@ -10,8 +10,8 @@ use Neoan3\Frame\Demo;
  * Class Endpoint
  * @package Neoan3\Components
  */
-
-class EndpointController extends Demo{
+class EndpointController extends Demo
+{
 
     /**
      * Get to know how API endpoints work!
@@ -32,11 +32,11 @@ class EndpointController extends Demo{
      * @param array $params
      * @return array
      */
-    function getEndpoint($userType='self', $id=null, $params=['new'=>'tu']): array
+    function getEndpoint($userType = 'self', $id = null, $params = ['new' => 'tu']): array
     {
         return array_merge([
             'type' => $userType,
             'id' => $id,
-        ],$params);
+        ], $params);
     }
 }
