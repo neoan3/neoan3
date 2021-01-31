@@ -166,9 +166,10 @@ class V1
             $r = new ReflectionWrapper($class, $function);
             $r->dispatchAttributes(__NAMESPACE__);
             $params = $r->method->getParameters();
+            $totalParams = count($params);
             $lastParam = array_pop($params);
             // last: body/params
-            if ($lastParam && !$lastParam->isDefaultValueAvailable() && empty($this->stream)) {
+            if ($lastParam && !$lastParam->isDefaultValueAvailable() && (empty($this->stream) && count($this->header['arguments']) < $totalParams )) {
                 Event::dispatch('Core\\Api::error', ['msg' => 'request is empty']);
                 $this->setResponseHeader(400);
                 throw new Exception('request is empty');
