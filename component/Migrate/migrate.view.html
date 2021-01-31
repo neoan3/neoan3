@@ -49,27 +49,33 @@
                                         </div>
                                     </template>
                                     <template x-if="editable(field)">
-                                        <div class="grid-3-2-2-2-2-1">
-                                            <p class="p-r-2" x-text="field">
-                                            </p>
-                                            <p class="p-r-2">
+                                        <div class="grid-3-2-2-2-2-1 m-y-5">
+                                            <div class="p-r-2" x-text="field">
+                                            </div>
+                                            <div class="p-r-2">
                                                 <input class="b-0 b-b-1 b-primary font-md w-75p" type="text"
                                                        x-model="data.currentModel.migrate[table][field].type">
-                                            </p>
-                                            <p>
+                                            </div>
+                                            <div>
                                                 <input type="checkbox" x-model="data.currentModel.migrate[table][field].nullable">
-                                            </p>
-                                            <p>
+                                            </div>
+                                            <div>
                                                 <input  type="checkbox"
                                                         x-model="data.currentModel.migrate[table][field].key">
-                                            </p>
-                                            <p>
+                                                <div x-show="data.currentModel.migrate[table][field].key">
+                                                    <select x-model="data.currentModel.migrate[table][field].key">
+                                                        <option x-bind:selected="data.currentModel.migrate[table][field].key === true" disabled>index</option>
+                                                        <option value="unique">unique</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div>
                                                 <input class="b-0 b-b-1 b-primary font-md w-75p" type="text"
                                                        x-model="data.currentModel.migrate[table][field].default">
-                                            </p>
-                                            <p>
+                                            </div>
+                                            <div>
                                                 <button style="cursor: pointer" class="bg-transparent b-0 text-red" x-on:click="removeField(table,field)">X</button>
-                                            </p>
+                                            </div>
 
                                         </div>
                                     </template>
