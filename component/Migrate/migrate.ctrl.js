@@ -19,8 +19,11 @@ function migrate() {
             }).then(async j => {
                 if(j.ok){
                     let result = await j.json();
-                    console.log(result)
-                    alert('Run `neoan3 migrate models up`')
+                    if(result.success === 'safe-space'){
+                        alert('safe-space found: database updated automatically')
+                    } else {
+                        alert('Run `neoan3 migrate models up`')
+                    }
                 } else {
                     alert('Cannot write')
                 }
