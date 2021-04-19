@@ -13,7 +13,7 @@ use Neoan3\Core\Serve;
 use Neoan3\Provider\Attributes\UseAttributes;
 use Neoan3\Provider\Auth\Auth;
 use Neoan3\Provider\Auth\AuthObject;
-use Neoan3\Provider\Auth\SessionWrapper;
+use Neoan3\Provider\Auth\JwtWrapper;
 use Neoan3\Provider\MySql\Database;
 use Neoan3\Provider\MySql\DatabaseWrapper;
 
@@ -44,7 +44,7 @@ class Demo extends Serve
     {
         parent::__construct();
         $this->assignProvider('auth', $auth, function (){
-            $this->provider['auth'] = new SessionWrapper();
+            $this->provider['auth'] = new JwtWrapper();
             $this->provider['auth']->setSecret('my-secret');
         });
 

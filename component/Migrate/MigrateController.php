@@ -37,13 +37,22 @@ class MigrateController extends Serve
             ->output();
     }
 
-    function postMigrate(array $body)
+    function postMigrate(array $body): array
     {
         $folder = path . '/model/' . ucfirst($body['name']);
         if($this->provider['file']->exists($folder) ){
             $this->provider['file']->putContents($folder. '/migrate.json', json_encode($body['migrate']));
+            return $this->updateDatabase();
         }
-        return $body;
+        return ['success'=> false];
+    }
+    private function updateDatabase()
+    {
+        if($this->provider['file']->exists(dirname(path) . '/.safe-space')){
+            shell_exec('cd /var/www/html \ neoan3 migrate models up -c:0');
+            return ['success'=> 'safe-space'];
+        }
+        return ['success'=> true];
     }
 
     private function migrateFiles()
