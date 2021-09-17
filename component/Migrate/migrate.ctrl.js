@@ -1,4 +1,4 @@
-const models = JSON.parse('{{models}}');
+const models = JSON.parse(`{{models}}`);
 function migrate() {
     return {
         start() {
