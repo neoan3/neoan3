@@ -44,8 +44,8 @@ class Serve
     {
         if($provided){
             $this->provider[$name] = $provided;
-        } else {
-            $callback();
+        } elseif($return = $callback()) {
+            $this->provider[$name] = $return;
         }
 
     }
@@ -55,7 +55,8 @@ class Serve
      * @param $callback
      * @return $this
      */
-    public function addRenderParameter($as, $callback){
+    public function addRenderParameter($as, $callback): Serve
+    {
         $params = [$as => $callback($this)];
         $this->renderer->attachParameters($params);
         return $this;
