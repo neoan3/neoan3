@@ -28,12 +28,12 @@ class EndpointController extends Serve
      *
      * try them out by visiting these combinations in your browser
      *
-     * @param string $userType
+     * @param string|null $userType
      * @param null $id
      * @param array $params
      * @return array
      */
-    function getEndpoint(string $userType = 'self', $id = null, array $params = ['new' => 'tu']): array
+    function getEndpoint(?string $userType = 'self', $id = null, array $params = ['new' => 'tu']): array
     {
         return array_merge([
             'type' => $userType,
