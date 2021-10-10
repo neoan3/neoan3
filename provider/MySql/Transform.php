@@ -251,7 +251,7 @@ class Transform
     /**
      * @return mixed
      */
-    private function readMigrate()
+    private function readMigrate(): mixed
     {
         return json_decode(file_get_contents(path . "/model/" . ucfirst($this->modelName) . "/migrate.json"), true);
     }
@@ -317,10 +317,10 @@ class Transform
 
     /**
      * @param $result
-     * @param $table
-     * @param $fields
-     * @param $row
-     * @param $runner
+     * @param string $table
+     * @param array $fields
+     * @param array $row
+     * @param int $runner
      */
     private function assignResult(&$result, string $table, array $fields, array $row, int $runner)
     {
