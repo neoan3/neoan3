@@ -19,6 +19,13 @@ class EndpointTest extends TestCase
         $this->assertArrayHasKey('some', $response);
         $this->assertSame('value', $response['some']);
     }
+    function testPostEndpoint()
+    {
+        $response = $this->instance->postEndpoint(['some'=>'value']);
+        $this->assertIsArray($response, 'output format wrong');
+        $this->assertArrayHasKey('id', $response);
+    }
+
     public function testInit()
     {
         $this->expectOutputRegex('/^<!doctype html>/');

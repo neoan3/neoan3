@@ -60,8 +60,8 @@ class MigrateController extends Serve
     function postMigrate(array $body): array
     {
         $folder = path . '/model/' . ucfirst($body['name']);
-        $this->generateInterfaces($body, $folder);
         if($this->fileSystem->exists($folder) ){
+            $this->generateInterfaces($body, $folder);
             $this->fileSystem->putContents($folder. '/migrate.json', json_encode($body['migrate']));
             return $this->updateDatabase($body['dbCredentials']);
         }
