@@ -4,6 +4,7 @@ namespace Neoan3;
 
 // catch all errors?
 use ErrorException;
+use Neoan3\Core\ReflectionWrapper;
 
 function exception_error_handler($errno, $errstr, $errfile, $errline)
 {
@@ -27,6 +28,8 @@ $route = new Core\Route();
 $namespace = $route->call;
 $consumer = __NAMESPACE__ . "\\Component\\$namespace\\${namespace}Controller";
 Core\Event::dispatch('Core::beforeInit', ['component' => $route->call]);
+$r = new ReflectionWrapper($consumer, 'init');
+$r->dispatchAttributes(__NAMESPACE__);
 $run = new $consumer;
 $run->init();
 
