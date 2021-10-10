@@ -43,9 +43,10 @@ class Demo extends Serve
     function __construct(Database $db = null, Auth $auth = null)
     {
         parent::__construct();
-        $this->assignProvider('auth', $auth, function (){
-            $this->provider['auth'] = new JwtWrapper();
-            $this->provider['auth']->setSecret('my-secret');
+        $this->Auth = $this->assignProvider('auth', $auth, function (){
+            $auth = new JwtWrapper();
+            $auth->setSecret('my-secret123');
+            return $auth;
         });
 
         $this->assignProvider('db', $db, function(){
@@ -58,7 +59,6 @@ class Demo extends Serve
                 $this->renderer->addToHead('title', '! No credentials found! Run "neoan3 new database '. $this->dbCredentials .'"');
             }
         });
-        $this->Auth = $this->provider['auth'];
 
         /*
          * PHP8 Attributes
@@ -70,6 +70,7 @@ class Demo extends Serve
         }
 
         $this->renderer->includeElement('customElement');
+        $this->hook('header', 'nav');
     }
 
 

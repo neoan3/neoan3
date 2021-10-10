@@ -39,6 +39,7 @@ class Serve
      * @param $name
      * @param $provided
      * @param $callback
+     * @return mixed
      */
     public function assignProvider($name, $provided, $callback)
     {
@@ -47,7 +48,7 @@ class Serve
         } elseif($return = $callback()) {
             $this->provider[$name] = $return;
         }
-
+        return $this->provider[$name];
     }
 
     /**

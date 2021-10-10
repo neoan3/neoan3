@@ -1,0 +1,39 @@
+<div class="container m-t-5" x-data="endpointCtrl()">
+    <form x-on:submit="send">
+
+        <div class="d-flex">
+            <p>{{base}}api.v1/</p>
+            <input x-model="data.endpoint" class="f-1 m-l-1 b-gray" type="text" placeholder="endpoint" required>
+            <select x-model="data.method" class="b-gray m-x-1">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="DELETE">DELETE</option>
+            </select>
+            <input type="submit" class="b-2 b-grayt bg-primary text-white hover:b-primary cursor-pointer" value="send">
+        </div>
+        <div>
+            <button type="button" x-on:click="data.activeTab=0" class="b-l-0 b-t-0 b-r-0 b-b-1 cursor-pointer p-x-3 p-y-2"
+                    x-bind:class="{'bg-primary text-white':data.activeTab === 0, 'bg-transparent': data.activeTab !== 0}">
+                Authorization
+            </button>
+            <button type="button" x-on:click="data.activeTab=1" class="b-l-0 b-t-0 b-r-0 b-b-1 cursor-pointer p-x-3 p-y-2"
+            x-bind:class="{'bg-primary text-white':data.activeTab === 1, 'bg-transparent': data.activeTab !== 1}">Payload</button>
+        </div>
+        <section style="min-height: 220px">
+            <div class="m-y-3" x-show="data.activeTab===0">
+                <div class="d-flex">
+                    <p>Authorization token</p>
+                    <input x-model="data.authorization" class="f-1 m-l-1 b-gray" type="text">
+                </div>
+            </div>
+            <div class="m-y-3" x-show="data.activeTab===1">
+                <textarea class="b-gray w-100p" rows="8" x-model="data.payload"></textarea>
+            </div>
+
+        </section>
+        <hr>
+        <h3 class="text-primary">Response <span x-text="data.response" x-bind:class="data.statusClass"></span></h3>
+        <div id="result"></div>
+    </form>
+</div>

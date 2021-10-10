@@ -1,15 +1,40 @@
 const models = JSON.parse(`{{models}}`);
+const safeSpace = Boolean(`{{safeSpace}}`);
+const isNewestCli = Boolean(`{{newestCli}}`);
+
 function migrate() {
     return {
         start() {
             this.data.started = true;
-            this.data.currentModel = models[this.data.currentModelIndex];
-            if(Object.keys(models[this.data.currentModelIndex].migrate).length < 1){
+            this.data.currentModel = this.data.models[this.data.currentModelIndex];
+            if(Object.keys(this.data.models[this.data.currentModelIndex].migrate).length < 1){
                 this.data.currentModel.migrate = {};
                 this.data.currentModel.migrate[this.data.currentModel.name.toLowerCase()] = this.generateBasis();
             }
         },
+        async createNewModel(){
+          const obj = {dbCredentials:this.data.credentialName, name: this.data.newModel}
+          fetch('{{base}}/api.v1/migrate', {
+              method: 'PUT',
+              headers: {
+                  'Content-Type':'application/json;charset=utf-8'
+              },
+              body: JSON.stringify(obj)
+          }).then(async j => {
+              if(j.ok){
+                  this.data.models = await j.json();
+                  this.data.showCreateModal = false;
+                  setTimeout(()=>{
+                      this.data.currentModelIndex = this.data.models.findIndex(m => m.name.toLowerCase() === obj.name.toLowerCase())
+                  },50)
+
+              }else {
+                  alert('Cannot write')
+              }
+          })
+        },
         async finish(){
+            this.data.currentModel.dbCredentials = this.data.credentialName;
             fetch('{{base}}/api.v1/migrate',{
                 method: 'POST',
                 headers: {
@@ -31,6 +56,12 @@ function migrate() {
 
         },
         data: {
+            safeSpace: safeSpace,
+            isNewestCli:isNewestCli,
+            credentialName: 'neoan_db',
+            showSafeSpaceWarning:true,
+            showCreateModal:false,
+            newModel:'',
             started: false,
             subName: '',
             currentModelIndex:-1,

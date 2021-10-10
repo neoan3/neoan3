@@ -19,4 +19,9 @@ class EndpointTest extends TestCase
         $this->assertArrayHasKey('some', $response);
         $this->assertSame('value', $response['some']);
     }
+    public function testInit()
+    {
+        $this->expectOutputRegex('/^<!doctype html>/');
+        $this->instance->init();
+    }
 }

@@ -1,11 +1,4 @@
 <div>
-    <nav class="bg-primary text-white">
-        <div class="container p-y-2">
-            <h1>&lt; neoan<sup>3</sup> /> running</h1>
-            <p>Welcome to your new project</p>
-        </div>
-
-    </nav>
     <div class="container" x-data="{tab:'System', tabs:['System','Introduction','Quickstart','Changes']}">
         <section class="b-primary b-1 b-rounded m-y-2" style="display:flex; justify-content: space-between">
             <template x-for="x in tabs">
@@ -33,6 +26,19 @@
                 </template>
             </section>
         </div>
+        <div class="m-y-5 p-4 b-rounded b-1 b-primary" x-data="{display:true, reload(){ this.display = false; setTimeout(()=> this.display = true,1)}}">
+
+            <div class="d-flex">
+                <h3 class="text-secondary font-default f-1">Did you know?</h3>
+                <div class="place-y-center">
+                    <button class="p-x-3 p-y-2 b-1 b-primary b-rounded bg-transparent hover:text-white hover:bg-primary" x-on:click="reload()">another random tip</button>
+                </div>
+            </div>
+            <template x-if="display">
+                <custom-element >That you can build hybrid applications with neoan3, where neoan3 serves a javascript frontend? </custom-element>
+            </template>
+        </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js" defer></script>
 </div>
