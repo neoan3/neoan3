@@ -42,6 +42,7 @@ class MigrateTest extends TestCase
 
     public function testPutMigrate()
     {
+        $this->fileSystem->putContents(path.'/model/NotModel/migrate.json',"{}");
         $res = $this->instance->putMigrate(['name'=>'tada']);
         $this->assertIsArray($res);
         $this->assertSame('safe-space', $res['success']);
