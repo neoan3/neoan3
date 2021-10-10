@@ -53,7 +53,8 @@ class MigrateTest extends TestCase
             'not_model' => [
                 'property' => [
                     'type' => 'varchar(200)',
-                    'nullable' => true
+                    'nullable' => true,
+                    'key' => false
                 ],
                 'property2' => [
                     'type' => 'binary(16)',

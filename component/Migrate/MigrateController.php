@@ -62,6 +62,7 @@ class MigrateController extends Serve
         $folder = path . '/model/' . ucfirst($body['name']);
         if($this->fileSystem->exists($folder) ){
             $this->generateInterfaces($body, $folder);
+            $this->generateModelWrapper($body, $folder);
             $this->fileSystem->putContents($folder. '/migrate.json', json_encode($body['migrate']));
             return $this->updateDatabase($body['dbCredentials']);
         }
@@ -99,6 +100,57 @@ class MigrateController extends Serve
             ];
         }
         return json_encode($models);
+    }
+    private function generateModelWrapper($migration, $folder)
+    {
+
+        $all = "<?php\nnamespace Neoan3\\Model\\{$migration['name']};\n\n";
+        $all .= "use Neoan3\Provider\Model\ModelWrapper;\n";
+        $all .= "use Neoan3\Provider\Model\ModelWrapperTrait;\n\n";
+        $all .= "class {$migration['name']}ModelWrapper extends {$migration['name']}Model implements ModelWrapper\n{\n";
+        $all .= "\tuse ModelWrapperTrait;\n\n";
+        $mainTable = array_shift($migration['migrate']);
+        foreach ($mainTable as $name => $definition){
+            $definition['type'] = preg_replace('/\([0-9]+\)/', '', $definition['type']);
+            $type = 'string';
+            if(in_array($definition['type'],['boolean','tinyint','int'])){
+                $type = 'int';
+            }
+            if($definition['key'] === 'primary' || $definition['nullable']){
+                $type = '?' . $type;
+            }
+            $all .= "\tprivate $type \$" . $name . ($definition['nullable'] ? ' = null;' : ';') . "\n";
+        }
+        foreach ($migration['migrate'] as $tableName => $properties){
+            $all .= "\tprivate array \$$tableName = [];\n";
+        }
+        $all .= "\n";
+        foreach ($mainTable as $name => $definition){
+            $namePart = str_replace('_', '', ucwords($name, '_'));
+            $all .= "\tpublic function get$namePart(): mixed\n\t{\n";
+            $all .= "\t\treturn \$this->$name;\n\t}\n\n";
+            $all .= "\tpublic function set$namePart(\$input): static\n\t{\n";
+            $all .= "\t\t\$this->$name = \$input;\n";
+            $all .= "\t\treturn \$this;\n\t}\n\n";
+        }
+        foreach ($migration['migrate'] as $tableName => $properties){
+            $namePart = str_replace('_', '', ucwords($tableName, '_'));
+            $all .= "\tpublic function get$namePart(): array\n\t{\n";
+            $all .= "\t\treturn \$this->$tableName;\n\t}\n\n";
+            $all .= "\tpublic function add$namePart(array \$newSub): static\n\t{\n";
+            $all .= "\t\t\$this->$tableName" . "[] = \$newSub;\n";
+            $all .= "\t\treturn \$this;\n\t}\n\n";
+
+            $all .= "\tpublic function remove$namePart(string \$id): static\n\t{\n";
+            $all .= "\t\tforeach (\$this->$tableName as \$i => \$any){\n";
+            $all .= "\t\t\tif(\$any['id'] === \$id){\n";
+            $all .= "\t\t\t\t\$this->$tableName"."[\$i]['delete_date'] = null;\n\t\t\t}\n\t\t}\n";
+            $all .= "\t\treturn \$this;\n\t}\n\n";
+
+        }
+        $all .= '}';
+        $this->fileSystem->putContents($folder . '/' . $migration['name'] . 'ModelWrapper.php', $all);
+        return $all;
     }
     private function generateInterfaces($migrate, $folder)
     {
