@@ -42,7 +42,7 @@ class MigrateTest extends TestCase
                 ]
             ]
         ];
-        $mock =['migrate'=>$testTable,'name'=>'notModel'];
+        $mock =['migrate'=>$testTable,'name'=>'notModel', 'dbCredentials' => 'testing'];
         $this->fileSystem->putContents(path . '/model/NotModel','');
         $this->fileSystem->putContents(path.'/model/NotModel/migrate.json',"{}");
         $response = $this->instance->postMigrate($mock);
