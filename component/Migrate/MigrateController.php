@@ -3,6 +3,7 @@
 namespace Neoan3\Component\Migrate;
 
 use Neoan3\Core\Renderer;
+use Neoan3\Core\RouteException;
 use Neoan3\Core\Serve;
 use Neoan3\Provider\FileSystem\File;
 use Neoan3\Provider\FileSystem\Native;
@@ -15,12 +16,23 @@ use Neoan3\Provider\FileSystem\Native;
  */
 class MigrateController extends Serve
 {
+    private bool $isSafeSpace;
+    private bool $isNewestCli = false;
+    private Native $fileSystem;
+
     public function __construct(Renderer $renderer = null, Native $fileSystem= null)
     {
         parent::__construct($renderer);
-        $this->assignProvider('file', $fileSystem, function (){
-            $this->provider['file'] = new File();
+        $this->fileSystem = $this->assignProvider('file', $fileSystem, function (){
+            return new File();
         });
+        $this->isSafeSpace = $this->fileSystem->exists(dirname(path) . '/.safe-space');
+        if($this->isSafeSpace){
+            $cliVersion = $this->runShellCommand('neoan3 -v');
+            preg_match('/v([0-9]+)\.([0-9]+)\.([0-9]+)/',$cliVersion, $version);
+            // current minimum requirement
+            $this->isNewestCli = $version[1] >= 1 && $version[2]>=5 && $version[3]>=2;
+        }
     }
 
     /**
@@ -28,29 +40,50 @@ class MigrateController extends Serve
      */
     function init(): void
     {
-
-        $this->renderer->includeJs(__DIR__ . '/migrate.ctrl.js',['base'=>base, 'models' => $this->migrateFiles()]);
-        $this->renderer->includeStylesheet('https://cdn.jsdelivr.net/npm/gaudiamus-css@1.2.1/css/gaudiamus.min.css');
-        $this->renderer->includeJs('https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.min.js');
-
-        $this->hook('main', 'migrate')
+        $this
+            ->callback(function($serve){
+                $serve->renderer->includeJs(__DIR__ . '/migrate.ctrl.js',[
+                    'base'=>base,
+                    'models' => $serve->migrateFiles(),
+                    'safeSpace' => $serve->isSafeSpace,
+                    'newestCli' => $this->isNewestCli
+                ]);
+                $serve->renderer->includeStylesheet('https://cdn.jsdelivr.net/npm/gaudiamus-css@latest/css/gaudiamus.min.css');
+                $serve->renderer->includeJs('https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.min.js');
+                $serve->renderer->includeStylesheet(base . 'frame/Demo/demo.css');
+            })
+            ->hook('main', 'migrate', ['cli-requirement' => $this->isNewestCli])
+            ->hook('header','nav')
             ->output();
     }
 
     function postMigrate(array $body): array
     {
         $folder = path . '/model/' . ucfirst($body['name']);
-        if($this->provider['file']->exists($folder) ){
-            $this->provider['file']->putContents($folder. '/migrate.json', json_encode($body['migrate']));
-            return $this->updateDatabase();
+        $this->generateInterfaces($body, $folder);
+        if($this->fileSystem->exists($folder) ){
+            $this->fileSystem->putContents($folder. '/migrate.json', json_encode($body['migrate']));
+            return $this->updateDatabase($body['dbCredentials']);
         }
         return ['success'=> false];
     }
-    private function updateDatabase()
+
+    /**
+     * @throws RouteException
+     */
+    function putMigrate($body):array
     {
-        if($this->provider['file']->exists(dirname(path) . '/.safe-space')){
-            shell_exec('cd /var/www/html \ neoan3 migrate models up -c:0');
-            return ['success'=> 'safe-space'];
+        if(!$this->isSafeSpace){
+            throw new RouteException('Not within safe space', 401);
+        }
+        $this->runShellCommand("neoan3 new model ". $body['name']);
+        return json_decode($this->migrateFiles());
+    }
+    private function updateDatabase($credentialName): array
+    {
+        if($this->isSafeSpace){
+            $try = $this->runShellCommand('neoan3 migrate models up -n:' . $credentialName);
+            return ['success'=> $try ? 'safe-space' : false];
         }
         return ['success'=> true];
     }
@@ -58,14 +91,66 @@ class MigrateController extends Serve
     private function migrateFiles()
     {
         $models = [];
-        foreach ($this->provider['file']->glob(path . '/model/*/migrate.json') as $migrate) {
+        foreach ($this->fileSystem->glob(path . '/model/*/migrate.json') as $migrate) {
             preg_match('/model\/([^\/]+)/', $migrate, $name);
             $models[] = [
                 'name' => $name[1],
-                'migrate' => json_decode($this->provider['file']->getContents($migrate), true)
+                'migrate' => json_decode($this->fileSystem->getContents($migrate), true)
             ];
         }
         return json_encode($models);
+    }
+    private function generateInterfaces($migrate, $folder)
+    {
+        $all = '';
+        $tables = [];
+        foreach ($migrate['migrate'] as $table => $any){
+            $tables[] = $table;
+        }
+        $i = 0;
+        foreach ($migrate['migrate'] as $table => $desc) {
+            $c = 'interface ' . ucfirst($table) . "{\n\t";
+            foreach ($desc as $name => $item) {
+                switch (preg_replace('/\([0-9]+\)/', '', $item['type'])) {
+                    case 'binary':
+                        $c .= ($item['key'] === 'primary' ? 'readonly ':'') . $name . "?: string,\n\t";
+                        break;
+                    case 'timestamp':
+                    case 'datetime':
+                        $c .= "readonly " . $name . "_st: number,\n\t";
+                        $c .= $name . ($item['nullable'] ? '?' : '') . ": string,\n\t";
+                        break;
+                    case 'varchar':
+                    case 'text':
+                        $c .= $name . ($item['nullable'] ? '?' : '') . ": string,\n\t";
+                        break;
+                    default:
+                        $c .= $name . ($item['nullable'] ? '?' : '') . ": number,\n\t";
+
+                }
+
+            }
+            if($i == 0){
+                $subs = array_slice($tables,1);
+                foreach ($subs as $sub){
+                    $c .= $sub .': Array<' . ucfirst($sub) . ">,\n\t";
+                }
+            }
+            $c = substr($c,0,-1) . "}\n";
+            $all .= $c;
+            $i++;
+        }
+        $tables = array_map(function ($val){ return ucfirst($val);}, $tables);
+        $all .= "\nexport {" . implode(', ', $tables)  . "}";
+        $this->fileSystem->putContents($folder . '/' . $migrate['name'] . '.ts', $all);
+        return $all;
+    }
+    private function runShellCommand($neoanCommand)
+    {
+        $path = path;
+        $pipe = DIRECTORY_SEPARATOR === '\\' ? '|' : '\\';
+        $command = "cd $path $pipe $neoanCommand";
+        return shell_exec($command);
     }
 
 }

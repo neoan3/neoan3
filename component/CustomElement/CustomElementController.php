@@ -16,7 +16,10 @@ class CustomElementController extends Demo
         'That <strong>neoan3</strong> got even faster with version 3? 
         Not only are we trying to provide the fastest development-experience, but also the fastest production sites! <br><br>
         We beat the most common frameworks by request-time, query-time and boot-up time - all while being completely interpreted (no build process) .',
-        'You can influence how these new endpoints look like. Try creating a folder _template in your neoan3 application and add a file "view.html". The next time you create a route-component, the cli tool will use your template.'
+        'You can influence how new endpoints look like. Try creating a folder _template in your neoan3 application and add a file "view.html". The next time you create a route-component, the cli tool will use your template.',
+        'When using neoan3 with docker, vagrant or natively on Linux with Apache you can add the file ".save-space" to the parent directory of your neoan3 installation. <br>
+        That way, you don\'t have to execute `neoan3 migrate` after making model changes.',
+        'The migrate tool generates TypeScript interfaces in the model folder you can use in your frontend when building API services.'
     ];
     /**
      * @return array

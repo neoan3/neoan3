@@ -2,16 +2,16 @@
     <h2 class="text-primary">Quick start</h2>
     <ul>
         <li>
-            <a class="text-secondary text-decoration-none" href="#route-endpoint">Creating your first server side rendered (route) endpoint</a>
+            <a class="text-primary text-decoration-none" href="#route-endpoint">Creating your first server side rendered (route) endpoint</a>
         </li>
         <li>
-            <a class="text-secondary text-decoration-none" href="#api-endpoint">Creating your first api endpoint</a>
+            <a class="text-primary text-decoration-none" href="#api-endpoint">Creating your first api endpoint</a>
         </li>
         <li>
-            <a class="text-secondary text-decoration-none" href="#model">Creating your first database model</a>
+            <a class="text-primary text-decoration-none" href="#model">Creating your first database model</a>
         </li>
         <li>
-            <a class="text-secondary text-decoration-none" href="#test">Creating your first test</a>
+            <a class="text-primary text-decoration-none" href="#test">Creating your first test</a>
         </li>
     </ul>
     <h3 id="route-endpoint">Creating your first route endpoint</h3>
@@ -108,33 +108,51 @@
         You are done! You read that right: You can now CRUD to the table post.
         In order to try it out, create (or reuse) a route-component. In there, make the following changes:
     </p>
-    <pre class="bg-black b-rounded p-y-1 p-x-2 text-white">
-    // e.g. in a Unicore style component
-    ...
-    function init(): void
-    {
-        $this
-            ->uni('Demo')
-            ->addRenderParameter('post', function ($serve){
-                return $serve->loadModel(PostModel::class)::create([
-                    'name'=>'First post',
-                    'text'=>'What a day!',
-                ]);
-            })
-            ->hook('main', 'firstComponent')
-            ->output();
+    <pre><code>
+    // e.g. extending a frame and using PHP8 Attributes
+    class FirstComponentController extends Neoan3\Frame\Demo</span>{
+
+        #[InitModel(PostModel::class)]
+        function init(): void
+        {
+            $newPost = PostModel::create([
+                        'name'=>'First post',
+                        'text'=>'What a day!',
+                    ]);
+            $this
+                ->hook('main', 'firstComponent', ['post' => $newPost])
+                ->output();
+        }
     }
-    ...
-    </pre>
+    </code></pre>
+    <pre><code>
+    // or in a Unicore style component
+    class FirstComponentController extends Neoan3\Core\Unicore{
+
+        function init(): void
+        {
+            $this
+                ->uni('Demo') // use frame "Demo"
+                ->addRenderParameter('post', function ($serve){
+                    return $serve->loadModel(PostModel::class)::create([
+                        'name'=>'First post',
+                        'text'=>'What a day!',
+                    ]);
+                })
+                ->hook('main', 'firstComponent')
+                ->output();
+        }
+    }
+    </code></pre>
     <p>
         And in your view (e.g. /component/FirstComponent/firstComponent.view.html), make the following addition:
     </p>
-    <pre class="bg-black b-rounded p-y-1 p-x-2 text-white">
+    <pre><code>
     ...
     &lt;h2>New post: {{post.name}}&lt;/h2>
     &lt;p>{{post.text}}&lt;/p>
     ...
-    </pre>
+    </code></pre>
     <h3 id="test">Creating your first test</h3>
     <p>
         Testing is a crucial part of developing. Neglected by many, the industry rightfully demands testable code.
@@ -153,3 +171,4 @@
         <code class="bg-black b-rounded p-y-1 p-x-2 text-white">neoan3 test</code>
     </p>
 </div>
+<script>hljs.highlightAll()</script>

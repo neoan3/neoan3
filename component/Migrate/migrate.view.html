@@ -1,4 +1,48 @@
-<div class="m-5" x-data="migrate()" x-init="$watch('data.currentModelIndex',()=>start())">
+
+<div class="container" x-data="migrate()" x-init="$watch('data.currentModelIndex',()=>start())">
+    <template x-if="data.safeSpace&&data.showCreateModal">
+        <div class="position-absolute bg-black-75" style="left:0;top:0;right:0;bottom:0;">
+            <div class="position-relative bg-white w-50p b-rounded b-1 b-primary p-5" style="top: 30%;left:25%">
+                <form x-on:submit.prevent="createNewModel">
+                    <h3>Create new model</h3>
+                    <div class="d-flex">
+                        <label for="new-model">model name</label>
+                        <input x-model="data.newModel" type="text" id="new-model" class="m-l-2 f-1 b-0 b-b-1 b-primary font-md">
+                    </div>
+                    <div class="d-flex m-t-3">
+                        <span class="f-1">&nbsp;</span>
+                        <button type="button" x-on:click="data.showCreateModal=false;data.newModel=''" class="b-rounded p-1 b-0 bg-accent text-white hover:raise-1-gray font-md">cancel</button>
+                        <button class="m-l-1 b-rounded p-1 b-0 bg-primary text-white hover:raise-1-gray font-md">create</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </template>
+    <template x-if="!isNewestCli">
+        <div class="m-y-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+            </svg>
+            <span class="text-warning">Your cli-tool is <strong>not</strong> up to date. Please update!</span>
+        </div>
+    </template>
+    <div class="m-y-2" x-show="!data.safeSpace">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+        </svg>
+        In order to create a new model, use the cli tool: <code class="p-x-1 bg-black text-white font-default">neoan3 new model [[yourModeName]]</code> ; then reload this page.
+    </div>
+    <div class="bg-primary text-white p-3">
+        <div class="grid-3-5-4">
+            <label for="db-cred">Using db-credentials:</label>
+            <input id="db-cred" class="b-0 b-rounded" type="text" x-model="data.credentialName">
+            <div class="text-warning place-x-end">safe-space mode active</div>
+        </div>
+    </div>
+
     <div class="grid-2-10">
         <div class="b-primary b-r-1">
 
@@ -11,13 +55,14 @@
         </div>
         <div class="p-l-5">
             <h2>Model</h2>
-            <form x-on:submit.prevent="start" >
-                <select class="b-0 b-b-1 b-primary font-md p-y-1 w-100p" x-model="data.currentModelIndex">
+            <form x-on:submit.prevent="start" class="d-flex">
+                <select class="f-1 b-0 b-b-1 b-primary font-md p-y-1 w-100p" x-model="data.currentModelIndex">
                     <option selected disabled value="-1">select model</option>
                     <template x-for="(model,i) in data.models">
                         <option x-bind:key="i" x-bind:value="i" x-text="model.name"></option>
                     </template>
                 </select>
+                <button x-on:click="data.showCreateModal=true" type="button" class="b-1 b-primary bg-transparent" title="new model">+</button>
             </form>
             <template x-if="data.started">
                 <div>
@@ -110,6 +155,20 @@
                     </form>
                 </div>
             </template>
+            <div class="m-y-2 bg-warning-75 text-white p-3" x-show="data.safeSpace&&data.showSafeSpaceWarning">
+                <div class="d-flex">
+                    <h3 class="f-1">Security Warning!</h3>
+                    <button x-on:click="data.showSafeSpaceWarning=false" title="hide warning" class="place-y-center cursor-pointer b-rounded-3 b-1 b-white bg-warning text-white">x</button>
+                </div>
+
+                <p>You are running in safe-space mode as indicated by the file .safe-space in the parent directory of this installation!
+                    This mode will attempt to run the cli-tool to create and migrate automatically.
+                    In general, it is <strong>not recommended</strong> to deploy the migrate-component.
+                    If you see this message within your development environment, no caution is necessary.
+                    <strong>However,</strong> if you see this message in production, REMOVE the safe-space file and consider removing this component from production!
+                </p>
+
+            </div>
         </div>
     </div>
 

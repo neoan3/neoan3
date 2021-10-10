@@ -228,6 +228,18 @@ class Transform
                     case 'binary':
                         $returnArray[$field] = '$' . $value;
                         break;
+                    case 'datetime':
+                        if (is_numeric($value)) {
+                            $value = date('Y-m-d H:i:s', round($value / 1000));
+                        } else {
+                            $value = preg_replace("/\s[A-Z]{3}\s[0-9]{4}\s\([^)]+\)/", '', $value);
+                        }
+                        $date_array = date_parse($value);
+                        $returnArray[$field] = !empty($date_array['errors']) ? null : date('Y-m-d H:i:s', mktime($date_array['hour'], $date_array['minute'], $date_array['second'], $date_array['month'], $date_array['day'], $date_array['year']));
+                        break;
+                    case 'decimal':
+                        $returnArray[$field] = (is_int($value) ? '=' : '') . $value;
+                        break;
                     default:
                         $returnArray[$field] = $value;
                 }
