@@ -48,7 +48,7 @@ class Serve
         } elseif($return = $callback()) {
             $this->provider[$name] = $return;
         }
-        return $this->provider[$name];
+        return $this->provider[$name] ?? null;
     }
 
     /**
