@@ -1,7 +1,7 @@
 <?php
-namespace Neoan3\Model;
+namespace Neoan3\Provider\Model;
 
-trait Init {
+trait InitProvider {
     /**
      * @param array $providers
      */
