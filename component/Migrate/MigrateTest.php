@@ -34,12 +34,19 @@ class MigrateTest extends TestCase
 
     function testPostMigrate()
     {
-        $mock =['migrate'=>['test'=>'me'],'name'=>'notModel'];
+        $testTable = [
+            'not_model' => [
+                'property' => [
+                    'type' => 'varchar(200)',
+                    'nullable' => true
+                ]
+            ]
+        ];
+        $mock =['migrate'=>$testTable,'name'=>'notModel'];
         $this->fileSystem->putContents(path . '/model/NotModel','');
         $this->fileSystem->putContents(path.'/model/NotModel/migrate.json',"{}");
         $response = $this->instance->postMigrate($mock);
         $this->assertIsArray($response);
-        $this->assertSame(['test'=>'me'], $mock['migrate']);
     }
 
 }
