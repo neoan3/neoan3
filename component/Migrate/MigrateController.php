@@ -17,8 +17,9 @@ use Neoan3\Provider\FileSystem\Native;
 class MigrateController extends Serve
 {
     private bool $isSafeSpace;
-    private bool $isNewestCli = false;
+    private bool $isNewestCli = true;
     private Native $fileSystem;
+    private bool $execWorks = false;
 
     public function __construct(Renderer $renderer = null, Native $fileSystem= null)
     {
@@ -29,6 +30,9 @@ class MigrateController extends Serve
         $this->isSafeSpace = $this->fileSystem->exists(dirname(path) . '/.safe-space');
         if($this->isSafeSpace){
             $cliVersion = $this->runShellCommand('neoan3 -v');
+            if($cliVersion){
+                $this->execWorks = true;
+            }
             preg_match('/v([0-9]+)\.([0-9]+)\.([0-9]+)/',$cliVersion, $version);
             // current minimum requirement
             $this->isNewestCli = $version[1] >= 1 && $version[2]>=5 && $version[3]>=2;
@@ -82,7 +86,7 @@ class MigrateController extends Serve
     }
     private function updateDatabase($credentialName): array
     {
-        if($this->isSafeSpace){
+        if($this->isSafeSpace && $this->execWorks){
             $try = $this->runShellCommand('neoan3 migrate models up -n:' . $credentialName);
             return ['success'=> $try ? 'safe-space' : false];
         }
@@ -200,8 +204,7 @@ class MigrateController extends Serve
     private function runShellCommand($neoanCommand)
     {
         $path = path;
-        $pipe = DIRECTORY_SEPARATOR === '\\' ? '|' : '\\';
-        $command = "cd $path $pipe $neoanCommand";
+        $command = "cd $path | $neoanCommand";
         return shell_exec($command);
     }
 
