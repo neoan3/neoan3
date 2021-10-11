@@ -11,7 +11,7 @@ class Route
     function __construct()
     {
         require_once(path . '/default.php');
-        $this->protocol = ($_SERVER['SERVER_PORT'] != '80' && empty($_SERVER['HTTPS']) ? ':8080' : '');
+        $this->protocol = ($_SERVER['SERVER_PORT'] != '80' && empty($_SERVER['HTTPS']) ? ':' . $_SERVER['SERVER_PORT'] : '');
         $this->defineBase();
         $this->call = ucfirst(default_ctrl);
         $this->loader();
