@@ -23,7 +23,7 @@ trait ModelWrapperTrait{
         }
     }
 
-    public static function retrieve(mixed $input)
+    public static function retrieve($input)
     {
         $instance = new self();
         $instance->databaseTransactionMode = 'update';
