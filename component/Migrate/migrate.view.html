@@ -35,7 +35,7 @@
         </svg>
         In order to create a new model, use the cli tool: <code class="p-x-1 bg-black text-white font-default">neoan3 new model [[yourModeName]]</code> ; then reload this page.
     </div>
-    <div class="bg-primary text-white p-3">
+    <div class="bg-primary text-white p-3" x-show="data.safeSpace">
         <div class="grid-3-5-4">
             <label for="db-cred">Using db-credentials:</label>
             <input id="db-cred" class="b-0 b-rounded" type="text" x-model="data.credentialName">
