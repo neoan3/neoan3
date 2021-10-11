@@ -22,7 +22,7 @@ class MockClass{
     {
         return [['id'=> '123', 'name' => 'test']];
     }
-    public function setName($in): static
+    public function setName($in): self
     {
         $this->name = $in;
         return $this;
