@@ -2,6 +2,7 @@
 
 namespace Neoan3\Component\Migrate;
 
+use Neoan3\Core\Event;
 use Neoan3\Core\Renderer;
 use Neoan3\Core\RouteException;
 use Neoan3\Core\Serve;
@@ -29,13 +30,16 @@ class MigrateController extends Serve
         });
         $this->isSafeSpace = $this->fileSystem->exists(dirname(path) . '/.safe-space');
         if($this->isSafeSpace){
-            $cliVersion = $this->runShellCommand('neoan3 -v');
-            if($cliVersion){
-                $this->execWorks = true;
-            }
-            preg_match('/v([0-9]+)\.([0-9]+)\.([0-9]+)/',$cliVersion, $version);
-            // current minimum requirement
-            $this->isNewestCli = $version[1] >= 1 && $version[2]>=5 && $version[3]>=2;
+            // only run version-check if executed as route-component
+            Event::hook('Core::beforeInit', function (){
+                $cliVersion = $this->runShellCommand('neoan3 -v');
+
+                preg_match('/v([0-9]+)\.([0-9]+)\.([0-9]+)/',$cliVersion, $version);
+                if(!empty($version)){
+                    // current minimum requirement
+                    $this->isNewestCli = $version[1] >= 1 && $version[2]>=5 && $version[3]>=2;
+                }
+            });
         }
     }
 
@@ -204,7 +208,7 @@ class MigrateController extends Serve
     private function runShellCommand($neoanCommand)
     {
         $path = path;
-        $command = "cd $path | $neoanCommand";
+        $command = "cd $path && $neoanCommand";
         return shell_exec($command);
     }
 
