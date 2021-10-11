@@ -29,7 +29,7 @@ class Demo extends Serve
      * Name your credentials
      * @var string
      */
-    private string $dbCredentials = 'testing_db';
+    private string $dbCredentials = 'neoan3_db';
 
     public Auth $Auth;
 
