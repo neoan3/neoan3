@@ -35,6 +35,7 @@ function migrate() {
         },
         async finish(){
             this.data.currentModel.dbCredentials = this.data.credentialName;
+            localStorage.setItem('neoan3MigrationDatabase', this.data.credentialName)
             fetch('{{base}}/api.v1/migrate',{
                 method: 'POST',
                 headers: {
@@ -58,7 +59,7 @@ function migrate() {
         data: {
             safeSpace: safeSpace,
             isNewestCli:isNewestCli,
-            credentialName: 'neoan_db',
+            credentialName: localStorage.getItem('neoan3MigrationDatabase') ? localStorage.neoan3MigrationDatabase : 'neoan3_db',
             showSafeSpaceWarning:true,
             showCreateModal:false,
             newModel:'',
