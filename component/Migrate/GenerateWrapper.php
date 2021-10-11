@@ -16,11 +16,11 @@ class GenerateWrapper extends Serve
     function __construct(string $modelName, Native $fileSystem = null)
     {
         parent::__construct();
-        $this->modelName = $modelName;
+        $this->modelName = ucfirst($modelName);
         $this->fileSystem = $this->assignProvider('file', $fileSystem, function () {
             return new File();
         });
-        $migration = $this->fileSystem->getContents(path . '/model/' . $modelName . '/migrate.json');
+        $migration = $this->fileSystem->getContents(path . '/model/' . $this->modelName . '/migrate.json');
         $this->subTables = json_decode($migration, true);
         $this->mainTable = array_shift($this->subTables);
     }

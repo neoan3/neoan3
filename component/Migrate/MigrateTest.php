@@ -54,22 +54,26 @@ class MigrateTest extends TestCase
                 'property' => [
                     'type' => 'varchar(200)',
                     'nullable' => true,
-                    'key' => false
+                    'key' => false,
+                    'default' => false
                 ],
                 'property2' => [
                     'type' => 'binary(16)',
                     'key' => 'primary',
-                    'nullable' => false
+                    'nullable' => false,
+                    'default' => false
                 ],
                 'property3' => [
                     'type' => 'datetime',
                     'key' => false,
-                    'nullable' => true
+                    'nullable' => true,
+                    'default' => false
                 ],
                 'property4' => [
                     'type' => 'text',
                     'key' => false,
-                    'nullable' => true
+                    'nullable' => true,
+                    'default' => 'current_timestamp()'
                 ]
             ]
         ];
