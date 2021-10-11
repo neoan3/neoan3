@@ -56,7 +56,6 @@ class EndpointController extends Serve
      * As this route is independent of a frame, we load dependencies directly.
      * Please avoid such a pattern in your application and rather set up your dependencies in a frame.
      */
-    #[InitModel()]
     function init()
     {
         $this->renderer->includeJs(__DIR__ . '/endpoint.ctrl.js',['endpoint'=>base . 'api.v1/']);
