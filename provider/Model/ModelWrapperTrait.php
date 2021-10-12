@@ -47,7 +47,7 @@ trait ModelWrapperTrait{
     /**
      * @throws \Exception
      */
-    public function rehydrate()
+    public function rehydrate(): ModelWrapper
     {
         if(!$this->id){
             throw new \Exception('Does not exist',404);
