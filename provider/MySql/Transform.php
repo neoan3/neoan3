@@ -231,6 +231,9 @@ class Transform
                     case 'datetime':
                         if (is_numeric($value)) {
                             $value = date('Y-m-d H:i:s', round($value / 1000));
+                        } elseif($value === '.') {
+                            $returnArray[$field] = $value;
+                            break;
                         } else {
                             $value = preg_replace("/\s[A-Z]{3}\s[0-9]{4}\s\([^)]+\)/", '', $value);
                         }
