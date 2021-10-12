@@ -78,7 +78,7 @@ trait ModelWrapperTrait{
     /**
      * @throws \Exception
      */
-    public function store(?string $transactionMode = null): static
+    public function store(?string $transactionMode = null): ModelWrapper
     {
         $transactionMode = $transactionMode ?? $this->databaseTransactionMode;
         if (!method_exists(self::class, $transactionMode) && !method_exists(Transform::class, $transactionMode)) {
