@@ -1,4 +1,3 @@
-
 <div class="container" x-data="migrate()" x-init="$watch('data.currentModelIndex',()=>start())">
     <template x-if="data.safeSpace&&data.showCreateModal">
         <div class="position-absolute bg-black-75" style="left:0;top:0;right:0;bottom:0;">
@@ -43,17 +42,8 @@
         </div>
     </div>
 
-    <div class="grid-2-10">
-        <div class="b-primary b-r-1">
-
-            <div >
-                <h3>Your migrate.json</h3>
-                <textarea style="min-height: 300px" class="b-primary b-rounded w-75p" x-text="JSON.stringify(data.currentModel.migrate)"></textarea>
-                <button class="b-rounded p-1 b-0 bg-primary text-white hover:raise-1-gray font-md" x-on:click="finish" type="button">write out</button>
-            </div>
-
-        </div>
-        <div class="p-l-5">
+    <div class="grid">
+        <div >
             <h2>Model</h2>
             <form x-on:submit.prevent="start" class="d-flex">
                 <select class="f-1 b-0 b-b-1 b-primary font-md p-y-1 w-100p" x-model="data.currentModelIndex">
@@ -170,8 +160,14 @@
 
             </div>
         </div>
+        <div x-show="data.started" class="b-t-1 b-primary m-t-3">
+            <div class="grid m-y-3">
+                <button class=" place-x-end b-rounded p-1 b-0 bg-primary text-white hover:raise-1-gray font-md" x-on:click="finish" type="button">(re)generate</button>
+            </div>
+            <h3>Your migrate.json</h3>
+            <p>File-permission issues? On very restrictive systems you might have to copy this migrate-JSON into your model manually. (https://n3-migrate.herokuapp.com/)</p>
+            <textarea class="b-primary b-rounded w-100p m-b-2" x-text="JSON.stringify(data.currentModel.migrate)"></textarea>
+        </div>
     </div>
 
 </div>
-
-
