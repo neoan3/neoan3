@@ -6,7 +6,7 @@ use Neoan3\Provider\MySql\DatabaseWrapper;
 use Neoan3\Provider\MySql\MockDatabaseWrapper;
 use PHPUnit\Framework\TestCase;
 
-class MockClass{
+class MockClass implements ModelWrapper {
     use ModelWrapperTrait;
     private ?string $id = null;
     private ?string $name = null;
@@ -18,9 +18,16 @@ class MockClass{
     {
         return ['id'=> '123', 'name' => 'test'];
     }
-    static function find($array)
+    static function find($array, $any = []): array
     {
+        if(isset($array['fail'])){
+            return [];
+        }
         return [['id'=> '123', 'name' => 'test']];
+    }
+    static function update($obj)
+    {
+        return $obj;
     }
     public function setName($in): self
     {
@@ -46,12 +53,31 @@ class ModelTest extends TestCase
         $mock->store('create');
         $this->assertArrayHasKey('id', $mock->toArray());
 
-
-
-        $test = MockClass::retrieve(['name'=>'test']);
+        $test = MockClass::retrieveOne(['name'=>'test']);
         $this->assertArrayHasKey('id', $test->toArray());
-        $test = MockClass::retrieve('123');
+        $test = MockClass::retrieveOne('123');
         $this->assertArrayHasKey('name', $test->toArray());
+
+        $many = MockClass::retrieveMany(['name'=>'test']);
+        $many->map(function($single){
+            $this->assertObjectHasAttribute('id', $single);
+        });
+
+    }
+    public function testCollection()
+    {
+        $collection = MockClass::retrieveMany(['name'=>'test']);
+        foreach ($collection as $iterator => $item){
+            $this->assertObjectHasAttribute('id', $item);
+        }
+        $this->assertIsArray($collection->toArray());
+        $this->assertIsInt($collection->count());
+        $this->assertInstanceOf(Collection::class, $collection->store());
+    }
+    public function testNothingFound()
+    {
+        $this->expectExceptionCode(404);
+        MockClass::retrieveOne(['fail'=>'me']);
     }
     public function testFailedTransaction()
     {
