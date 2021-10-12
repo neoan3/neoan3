@@ -22,32 +22,69 @@ trait ModelWrapperTrait{
             }
         }
     }
-
-    public static function retrieve($input)
+    /**
+     * @throws \Exception
+     */
+    public static function retrieveOne($input): self
     {
         $instance = new self();
         $instance->databaseTransactionMode = 'update';
         if(is_array($input)){
-            $instance->generate(self::find($input)[0]);
+            $fromDatabase = self::find($input,['limit'=>[0,1]]);
+            if(!empty($fromDatabase)){
+                $fromDatabase = $fromDatabase[0];
+            }
         } else {
-            $instance->generate(self::get($input));
+            $fromDatabase = self::get($input);
         }
+        if(empty($fromDatabase)){
+            throw new \Exception('no entry found', 404);
+        }
+        $instance->generate($fromDatabase);
         return $instance;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function rehydrate(): ModelWrapper
+    {
+        if(!$this->id){
+            throw new \Exception('Does not exist',404);
+        }
+
+        $this->generate(self::get($this->id));
+        return $this;
+    }
+
+    public static function retrieveMany(array $input, $callFunctions = []): Collection
+    {
+        $instances = new Collection();
+        foreach (self::find($input, $callFunctions) as $i => $result){
+            $single = new self();
+            $single->databaseTransactionMode = 'update';
+            $single->generate($result);
+            $instances->add($single);
+        }
+
+        return $instances;
     }
     public function toArray(): array
     {
-        return get_object_vars($this);
+        $properties =  get_object_vars($this);
+        unset($properties['databaseTransactionMode']);
+        return $properties;
     }
     /**
      * @throws \Exception
      */
-    public function store(?string $transactionMode = null): self
+    public function store(?string $transactionMode = null): ModelWrapper
     {
         $transactionMode = $transactionMode ?? $this->databaseTransactionMode;
         if (!method_exists(self::class, $transactionMode) && !method_exists(Transform::class, $transactionMode)) {
             throw new \Exception("Method `$transactionMode` does not exist for this model.", 500);
         }
-        $this->generate(self::$transactionMode(get_object_vars($this)));
+        $this->generate(self::$transactionMode(self::toArray()));
         return $this;
     }
 }

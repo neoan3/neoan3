@@ -1,21 +1,23 @@
-# neoan3 PHP all purpose hybrid framework
-
 [![Build Status](https://travis-ci.com/neoan3/neoan3.svg?branch=master)](https://travis-ci.com/neoan3/neoan3)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/4009f063f124fdf61efb/test_coverage)](https://codeclimate.com/github/neoan3/neoan3/test_coverage)
 [![google page speed](https://img.shields.io/badge/100%25%20page%20speed-lighthouse-blue.svg?style=flat&colorA=555)](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fneoan3.rocks%2Fgetting-started%2F)
 [![Discord](https://img.shields.io/discord/701820506671677580?label=discord&style=flat)](https://discord.gg/vjRgWUG)
 [![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/neoan3/neoan3)](https://codeclimate.com/github/neoan3/neoan3/)
 ![GitHub repo size](https://img.shields.io/github/repo-size/neoan3/neoan3)
+# neoan3 PHP all purpose hybrid framework
+[![logo](https://repository-images.githubusercontent.com/324675108/b9215c00-47c6-11eb-9ffe-6423299df845)](http://neoan3.rocks/getting-started/)
+
+
 
 Rapid development, light-weight, lightning-fast, beginner-friendly yet limitlessly powerful? 
 
-neoan3 is all that and more. 
+THE MVC framework neoan3 is all that and more. 
 
-[See documentation](http://neoan3.rocks/getting-started/) (work in progress)
+[See documentation](http://neoan3.rocks/getting-started/)
 
-<h1>Version 3</h1>
 
 ### _supports PHP 8!_ (delivering SSR content in ~ 0.004 seconds)
+### _A powerful cli and other tools help you develop faster than ever before_ 
 
 ## Give it 5 minutes
 
