@@ -16,7 +16,10 @@ class MockClass implements ModelWrapper {
     }
     static function get($id)
     {
-        return ['id'=> '123', 'name' => 'test'];
+        if($id === 'fail'){
+            return [];
+        }
+        return ['id'=> $id, 'name' => 'test'];
     }
     static function find($array, $any = []): array
     {
@@ -60,6 +63,7 @@ class ModelTest extends TestCase
 
         $many = MockClass::retrieveMany(['name'=>'test']);
         $many->map(function($single){
+            $single->rehydrate();
             $this->assertObjectHasAttribute('id', $single);
         });
 
@@ -73,6 +77,12 @@ class ModelTest extends TestCase
         $this->assertIsArray($collection->toArray());
         $this->assertIsInt($collection->count());
         $this->assertInstanceOf(Collection::class, $collection->store());
+    }
+    public function testHydrationFailed()
+    {
+        $f = new MockClass();
+        $this->expectExceptionCode(404);
+        $f->rehydrate();
     }
     public function testNothingFound()
     {

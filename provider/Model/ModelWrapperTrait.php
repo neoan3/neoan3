@@ -44,6 +44,19 @@ trait ModelWrapperTrait{
         return $instance;
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function rehydrate()
+    {
+        if(!$this->id){
+            throw new \Exception('Does not exist',404);
+        }
+
+        $this->generate(self::get($this->id));
+        return $this;
+    }
+
     public static function retrieveMany(array $input, $callFunctions = []): Collection
     {
         $instances = new Collection();
