@@ -51,6 +51,12 @@ class V1
     private function requestMethod()
     {
         if (isset($_SERVER['REQUEST_METHOD'])) {
+            if(isset($_SERVER['HTTP_ORIGIN'])){
+                $origin = $_SERVER['HTTP_ORIGIN'];
+                if(in_array($origin, allowed_origins) || in_array('*', allowed_origins)){
+                    header("Access-Control-Allow-Origin: $origin");
+                }
+            }
             Event::dispatch('Core\\Api::incoming', $_SERVER);
             $this->header['REQUEST_METHOD'] = $_SERVER['REQUEST_METHOD'];
             if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {

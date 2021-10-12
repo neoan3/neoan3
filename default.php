@@ -1,6 +1,11 @@
 <?php
 // default route (homepage)
-define('default_ctrl','demo');
+const default_ctrl = 'demo';
+
+// CORS
+const allowed_origins = ['http://localhost:8080'];
 
 // optional: custom 404
-define('default_404','notFound');
+const default_404 = 'notFound';
+
+
