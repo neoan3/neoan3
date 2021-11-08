@@ -2,19 +2,22 @@
 
 namespace Neoan3;
 
-// catch all errors?
+
 use ErrorException;
 use Neoan3\Core\ReflectionWrapper;
 
-function exception_error_handler($errno, $errstr, $errfile, $errline)
+/**
+ * @throws ErrorException
+ */
+function exception_error_handler($errno, $errorStr, $errorFile, $errorLine)
 {
-    if (!(error_reporting() & $errfile)) {
+    if (!(error_reporting() & $errorFile)) {
         return;
     }
-    throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+    throw new ErrorException($errorStr, $errno, 0, $errorFile, $errorLine);
 
 }
-
+// elevate all issues to errors?
 //set_error_handler("exception_error_handler");
 
 
