@@ -46,14 +46,7 @@ class GenerateWrapper extends Serve
         $lines = [];
         // main
         foreach ($this->mainTable as $name => $definition) {
-            $definition['type'] = preg_replace('/\([0-9]+\)/', '', $definition['type']);
-            $type = 'string';
-            if (in_array($definition['type'], ['boolean', 'tinyint', 'int'])) {
-                $type = 'int';
-            }
-            if ($definition['key'] === 'primary' || $definition['nullable']) {
-                $type = '?' . $type;
-            }
+            $type = $this->defineType($definition);
             $lines[] = "\tprivate $type \$" . $name . ($definition['nullable'] && !$definition['default'] ? ' = null;' : ';') . "";
         }
         // sub
@@ -62,15 +55,27 @@ class GenerateWrapper extends Serve
         }
         return implode("\n", $lines) ."\n\n";
     }
+    private function defineType($definition): string
+    {
+        $definition['type'] = preg_replace('/\([0-9]+\)/', '', $definition['type']);
+        $type = 'string';
+        if (in_array($definition['type'], ['boolean', 'tinyint', 'int'])) {
+            $type = 'int';
+        }
+        if ($definition['key'] === 'primary' || $definition['nullable'] || $definition['type'] === 'binary') {
+            $type = '?' . $type;
+        }
+        return $type;
+    }
 
     private function generateSettersAndGetters(): string
     {
         $lines = [];
         foreach ($this->mainTable as $name => $definition) {
             $namePart = $this->transformName($name);
-            $lines[] = "\tpublic function get$namePart(): mixed\n\t{";
+            $lines[] = "\tpublic function get$namePart(): {$this->defineType($definition)}\n\t{";
             $lines[] = "\t\treturn \$this->$name;\n\t}\n";
-            $lines[] = "\tpublic function set$namePart(\$input): static\n\t{";
+            $lines[] = "\tpublic function set$namePart(\$input): {$this->modelName}ModelWrapper\n\t{";
             $lines[] = "\t\t\$this->$name = \$input;";
             $lines[] = "\t\treturn \$this;\n\t}\n";
         }
@@ -78,14 +83,14 @@ class GenerateWrapper extends Serve
             $namePart = $this->transformName($tableName);
             $lines[] = "\tpublic function get$namePart(): array\n\t{";
             $lines[] = "\t\treturn \$this->$tableName;\n\t}\n";
-            $lines[] = "\tpublic function add$namePart(array \$newSub): static\n\t{";
+            $lines[] = "\tpublic function add$namePart(array \$newSub): {$this->modelName}ModelWrapper\n\t{";
             $lines[] = "\t\t\$this->$tableName" . "[] = \$newSub;";
             $lines[] = "\t\treturn \$this;\n\t}\n";
 
-            $lines[] = "\tpublic function remove$namePart(string \$id): static\n\t{";
+            $lines[] = "\tpublic function remove$namePart(string \$id): {$this->modelName}ModelWrapper\n\t{";
             $lines[] = "\t\tforeach (\$this->$tableName as \$i => \$any){";
             $lines[] = "\t\t\tif(\$any['id'] === \$id){";
-            $lines[] = "\t\t\t\t\$this->$tableName" . "[\$i]['delete_date'] = null;\n\t\t\t}\n\t\t}";
+            $lines[] = "\t\t\t\t\$this->$tableName" . "[\$i]['delete_date'] = '.';\n\t\t\t}\n\t\t}";
             $lines[] = "\t\treturn \$this;\n\t}\n";
 
         }

@@ -67,6 +67,7 @@ class MigrateController extends Serve
 
     function postMigrate(array $body): array
     {
+        $body['migrate'] = $this->convertToBoolean($body['migrate']);
         $folder = path . '/model/' . ucfirst($body['name']);
         if($this->fileSystem->exists($folder) ){
             $this->generateInterfaces($body, $folder);
@@ -89,6 +90,21 @@ class MigrateController extends Serve
         $this->runShellCommand("neoan3 new model ". $body['name']);
         return json_decode($this->migrateFiles());
     }
+    private function convertToBoolean($migrate): array
+    {
+        foreach ($migrate as $table => $descriptions){
+            foreach ($descriptions as $field => $description){
+                foreach ($description as $key => $value){
+                    if($value === 'false' || $value === 'true'){
+                        $migrate[$table][$field][$key] = $value === 'true';
+                    }
+                }
+
+            }
+        }
+        return $migrate;
+    }
+
     private function updateDatabase($credentialName): array
     {
         if($this->isSafeSpace){

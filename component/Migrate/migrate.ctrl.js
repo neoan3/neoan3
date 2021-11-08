@@ -110,35 +110,40 @@ function migrate() {
                 "key": "primary",
                 "nullable": false,
                 "default": false,
-                "a_i": false
+                "a_i": false,
+                "transform":false
             },
             "new": {
                 "type": "varchar(60)",
                 "key": false,
                 "nullable": true,
                 "default": false,
-                "a_i": false
+                "a_i": false,
+                "transform":false
             },
             "fk": {
                 "type": "binary(16)",
                 "key": false,
                 "nullable": false,
                 "default": false,
-                "a_i": false
+                "a_i": false,
+                "transform":false
             },
             "insert_date": {
                 "type": "timestamp",
                 "key": false,
                 "nullable": true,
                 "default": "current_timestamp()",
-                "a_i": false
+                "a_i": false,
+                "transform":false
             },
             "delete_date": {
                 "type": "datetime",
                 "key": false,
                 "nullable": true,
                 "default": false,
-                "a_i": false
+                "a_i": false,
+                "transform":false
             }
         }
     }

@@ -57,22 +57,23 @@
             <template x-if="data.started">
                 <div>
                     <template x-for="(table,i) in Object.keys(data.currentModel.migrate)">
-                        <div class="m-y-2 b-rounded b-primary b-1 raise-1-primary p-2">
+                        <div class="m-y-2 b-rounded b-primary b-1 raise-1-primary p-2 position-relative">
                             <template x-if="i>0">
-                                <button style="right: 30px; cursor: pointer" x-on:click="removeTable(table)" class="position-absolute m-r-2 m-t-2 text-red b-0 b-rounded bg-transparent">x</button>
+                                <button style="right: 30px; cursor: pointer" x-on:click="removeTable(table)" class="position-absolute m-r-2 m-t-2 text-warning font-lg b-0 b-rounded bg-transparent">x</button>
                             </template>
                             <p class="font-md" x-text="table"></p>
-                            <div class="grid-3-2-2-2-2">
+                            <div class="grid-3-2-1-1-2-3">
                                 <p class="text-primary">name</p>
                                 <p class="text-primary">type</p>
                                 <p class="text-primary">nullable</p>
                                 <p class="text-primary">key</p>
                                 <p class="text-primary">default</p>
+                                <p class="text-primary">transform</p>
                             </div>
                             <template x-for="(field,j) in Object.keys(data.currentModel.migrate[table])">
                                 <div>
                                     <template x-if="!editable(field)">
-                                        <div class="grid-3-2-2-2-2-1">
+                                        <div class="grid-3-2-1-1-2-1">
                                             <p x-text="field"></p>
                                             <p x-text="data.currentModel.migrate[table][field].type"></p>
                                             <p x-text="data.currentModel.migrate[table][field].nullable"></p>
@@ -84,7 +85,7 @@
                                         </div>
                                     </template>
                                     <template x-if="editable(field)">
-                                        <div class="grid-3-2-2-2-2-1 m-y-5">
+                                        <div class="grid-3-2-1-1-2-2 m-y-5">
                                             <div class="p-r-2" x-text="field">
                                             </div>
                                             <div class="p-r-2">
@@ -109,7 +110,11 @@
                                                        x-model="data.currentModel.migrate[table][field].default">
                                             </div>
                                             <div>
-                                                <button style="cursor: pointer" class="bg-transparent b-0 text-red" x-on:click="removeField(table,field)">X</button>
+                                                <select class="b-0 b-b-1 b-primary font-md w-75p" x-model="data.currentModel.migrate[table][field].transform">
+                                                    <option value="false">type-based</option>
+                                                    <option value="=">= (circumvent auto-transformation)</option>
+                                                </select>
+                                                <button title="remove field" style="cursor: pointer" class="bg-transparent b-0 text-warning" x-on:click="removeField(table,field)">X</button>
                                             </div>
 
                                         </div>
