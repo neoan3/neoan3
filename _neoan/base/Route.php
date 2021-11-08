@@ -23,7 +23,7 @@ class Route
         $string .= '://' . $_SERVER['SERVER_NAME'] . $this->protocol;
         preg_match('/.+?(?=index\.php)/', $_SERVER['PHP_SELF'], $matches);
         $string .= $matches[0] ?? '';
-        $string = str_replace(['\\','_neoan/base'],['',''],$string);
+        $string = str_replace(['\\','_neoan/base','_neoan/api'],['','',''],$string);
 
         if (substr($string, -2) === '//') {
             $string .= substr($string, -1);
