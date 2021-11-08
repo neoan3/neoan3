@@ -7,19 +7,33 @@
 ##################################################
 
 /**
- * @param $no
- * @return false or value
+ * @param int $num
+ * @return string|null
  */
-function sub($no)
+function routePart(int $num) : ?string
+{
+    return sub($num);
+}
+
+/**
+ * Deprecated: use routePart(int $num): ?string
+ * @param $no
+ * @return string|null or value
+ */
+function sub($no): ?string
 {
     global $route;
     global $serve;
+    global $api;
     if ($route && !empty($route->url_parts[$no])) {
         return $route->url_parts[$no];
     } elseif($serve && !empty($request = explode('/',$serve->request))){
         return $request[$no] ?? false;
+    } elseif($api && !empty($request = explode('/',$_SERVER['REQUEST_URI']))){
+        array_shift($request);
+        return $request[$no] ?? false;
     } else {
-        return false;
+        return null;
     }
 }
 
@@ -29,7 +43,7 @@ function sub($no)
  * @param bool $web
  * @return string
  */
-function neoan($input = '', $web = false)
+function neoan(string $input = '', bool $web = false)
 {
     if (!$web) {
         return neoan_path . '/' . $input;
@@ -43,7 +57,7 @@ function neoan($input = '', $web = false)
  * @param bool $web
  * @return string
  */
-function asset($input = '', $web = false)
+function asset(string $input = '', bool $web = false): string
 {
     if (!$web) {
         return asset_path . '/' . $input;
@@ -57,7 +71,7 @@ function asset($input = '', $web = false)
  * @param bool $web
  * @return string
  */
-function frame($input = '', $web = false)
+function frame(string $input = '', bool $web = false): string
 {
     if (!$web) {
         return path . '/frame/' . $input;
@@ -67,12 +81,12 @@ function frame($input = '', $web = false)
 }
 
 /**
- * @param null|string $where
+ * @param string|null $where
  * @param string $method
  * @param bool $get
  * @return bool|string
  */
-function redirect($where = null, $method = 'php', $get = false)
+function redirect(string $where = null, string $method = 'php', bool $get = false)
 {
     if ($method == 'php') {
         header('location: ' . base . $where . ($get ? '?' . $get : ''));
@@ -87,7 +101,8 @@ function redirect($where = null, $method = 'php', $get = false)
  * @return mixed
  * @throws Exception
  */
-function getCredentials($path = DIRECTORY_SEPARATOR .'credentials'.DIRECTORY_SEPARATOR.'credentials.json'){
+function getCredentials(string $path = DIRECTORY_SEPARATOR .'credentials'.DIRECTORY_SEPARATOR.'credentials.json')
+{
     if(file_exists($path)){
         return json_decode(file_get_contents($path),true);
     } else {
