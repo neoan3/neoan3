@@ -70,7 +70,7 @@ class GenerateWrapper extends Serve
             $namePart = $this->transformName($name);
             $lines[] = "\tpublic function get$namePart(): mixed\n\t{";
             $lines[] = "\t\treturn \$this->$name;\n\t}\n";
-            $lines[] = "\tpublic function set$namePart(\$input): static\n\t{";
+            $lines[] = "\tpublic function set$namePart(\$input): {$this->modelName}ModelWrapper\n\t{";
             $lines[] = "\t\t\$this->$name = \$input;";
             $lines[] = "\t\treturn \$this;\n\t}\n";
         }
@@ -78,14 +78,14 @@ class GenerateWrapper extends Serve
             $namePart = $this->transformName($tableName);
             $lines[] = "\tpublic function get$namePart(): array\n\t{";
             $lines[] = "\t\treturn \$this->$tableName;\n\t}\n";
-            $lines[] = "\tpublic function add$namePart(array \$newSub): static\n\t{";
+            $lines[] = "\tpublic function add$namePart(array \$newSub): {$this->modelName}ModelWrapper\n\t{";
             $lines[] = "\t\t\$this->$tableName" . "[] = \$newSub;";
             $lines[] = "\t\treturn \$this;\n\t}\n";
 
-            $lines[] = "\tpublic function remove$namePart(string \$id): static\n\t{";
+            $lines[] = "\tpublic function remove$namePart(string \$id): {$this->modelName}ModelWrapper\n\t{";
             $lines[] = "\t\tforeach (\$this->$tableName as \$i => \$any){";
             $lines[] = "\t\t\tif(\$any['id'] === \$id){";
-            $lines[] = "\t\t\t\t\$this->$tableName" . "[\$i]['delete_date'] = null;\n\t\t\t}\n\t\t}";
+            $lines[] = "\t\t\t\t\$this->$tableName" . "[\$i]['delete_date'] = '.';\n\t\t\t}\n\t\t}";
             $lines[] = "\t\treturn \$this;\n\t}\n";
 
         }
