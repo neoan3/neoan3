@@ -25,7 +25,7 @@ trait ModelWrapperTrait{
     /**
      * @throws \Exception
      */
-    public static function retrieveOne($input): parent
+    public static function retrieveOne($input): self
     {
         $instance = new self();
         $instance->databaseTransactionMode = 'update';
