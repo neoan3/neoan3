@@ -170,13 +170,29 @@ class Transform
      * @param $condition
      * @param array $callFunctions
      * @return array
+     * @throws \Exception
      */
     function find($condition, array $callFunctions = []): array
     {
         $joinTables = [];
         foreach ($condition as $tableField => $value){
-            if( preg_match('/[a-z_]+/', $tableField, $matches) === 1){
-                $joinTables[] = $matches[0];
+            // short-hand condition
+            if(is_numeric($tableField)){
+                $tableField = mb_substr($value,1);
+                $value = null;
+            }
+            if( preg_match('/(' . $this->modelName.'[a-z_]+)\.([a-z_]+)/', $tableField, $matches) === 1){
+                $joinTables[] = $matches[1];
+                if(!isset($this->modelStructure[$matches[1]][$matches[2]])){
+                    $this->transformError('Model cannot locate '. $matches[0] .'. Check condition / database structure.');
+                }
+                $condition[$tableField] = $this->binaryAutoCondition($this->modelStructure[$matches[1]][$matches[2]]['type'],$value);
+
+            } else {
+                if(!isset($this->modelStructure[$this->modelName][$tableField])){
+                    $this->transformError('Model cannot locate '. $this->modelName .'.'.$tableField .'. Check condition / database structure.');
+                }
+                $condition[$tableField] = $this->binaryAutoCondition($this->modelStructure[$this->modelName][$tableField]['type'],$value);
             }
         }
 
@@ -198,6 +214,12 @@ class Transform
         }
 
         return $return;
+    }
+
+    private function binaryAutoCondition(string $type, $value)
+    {
+        $valueCanBeProcessed = !empty($value) && !preg_match('/^[\$=!]/',$value);
+        return strpos($type,'binary') !== false && $valueCanBeProcessed ? '$' . $value : $value;
     }
 
     /**
@@ -348,5 +370,13 @@ class Transform
                 }
             }
         }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function transformError(string $message)
+    {
+        throw new \Exception($message,500);
     }
 }
