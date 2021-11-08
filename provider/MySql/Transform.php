@@ -171,7 +171,7 @@ class Transform
      * @param array $callFunctions
      * @return array
      */
-    function find($condition, $callFunctions = []): array
+    function find($condition, array $callFunctions = []): array
     {
         $joinTables = [];
         foreach ($condition as $tableField => $value){
@@ -187,7 +187,7 @@ class Transform
             }
         }
         $callFunctions = array_merge([
-            'orderBy'=>[$this->modelName . '.id', 'DESC']],
+            'orderBy'=>[$this->modelName . '.insert_date', 'DESC']],
             $callFunctions
         );
         $hits = $this->db->easy($join, $condition, $callFunctions);
@@ -224,6 +224,10 @@ class Transform
         $returnArray = [];
         foreach ($fieldValueArray as $field => $value){
             if(isset($this->modelStructure[$table][$field])){
+                if(isset($this->modelStructure[$table][$field]['transform']) && $this->modelStructure[$table][$field]['transform']){
+                    $returnArray[$field] = $this->modelStructure[$table][$field]['transform'] . $value;
+                    continue;
+                }
                 switch ($this->cleanType($this->modelStructure[$table][$field]['type'])){
                     case 'binary':
                         $returnArray[$field] = '$' . $value;

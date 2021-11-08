@@ -84,7 +84,11 @@ trait ModelWrapperTrait{
         if (!method_exists(self::class, $transactionMode) && !method_exists(Transform::class, $transactionMode)) {
             throw new \Exception("Method `$transactionMode` does not exist for this model.", 500);
         }
-        $this->generate(self::$transactionMode(self::toArray()));
+        $executed = self::$transactionMode(self::toArray());
+        if(empty($executed)){
+            throw new \Exception("Method `$transactionMode` failed.", 500);
+        }
+        $this->generate($executed);
         return $this;
     }
 }
