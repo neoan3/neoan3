@@ -228,6 +228,9 @@ class Transform
                     case 'binary':
                         $returnArray[$field] = '$' . $value;
                         break;
+                    case 'boolean':
+                        $returnArray[$field] = '=' . $value;
+                        break;
                     case 'datetime':
                         if (is_numeric($value)) {
                             $value = date('Y-m-d H:i:s', round($value / 1000));
