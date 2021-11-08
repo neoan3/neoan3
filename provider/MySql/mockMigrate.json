@@ -15,6 +15,24 @@
     "a_string": {
       "type": "varchar(255)",
       "key": null
+    },
+    "a_boolean": {
+      "type": "boolean",
+      "key": null
+    },
+    "a_datetime": {
+      "type": "datetime",
+      "key": null
+    },
+    "a_password": {
+      "type": "varchar(200)",
+      "key": null,
+      "transform": "="
+    },
+    "a_decimal": {
+      "type": "decimal(10,2)",
+      "key": null,
+      "transform": false
     }
   },
   "mock_sub": {
@@ -36,6 +54,10 @@
     },
     "a_string": {
       "type": "varchar(255)",
+      "key": null
+    },
+    "a_datetime": {
+      "type": "datetime",
       "key": null
     },
     "delete_date": {

@@ -14,6 +14,11 @@ class TransformTest extends TestCase
         'a_stamp_st' => '123456789',
         'an_int' => 1,
         'a_string' => 'some',
+        'a_boolean' => true,
+        'a_datetime' => '2021-06-08 12:12:12',
+        'a_datetime_st' => 123123123,
+        'a_password' => 'pwd123',
+        'a_decimal' => 2,
         'mock_sub' => [
             [
                 'id' => 'cde',
@@ -22,6 +27,8 @@ class TransformTest extends TestCase
                 'a_stamp_st' => '123456789',
                 'an_int' => 1,
                 'a_string' => 'some',
+                'a_datetime' => '2021-06-08 12:12:12',
+                'a_datetime_st' => 12312312313,
                 'delete_date' => '123456',
                 'delete_date_st' => '123456'
             ],
@@ -54,6 +61,21 @@ class TransformTest extends TestCase
         $actual = $transform->update($this->mockMock);
         $this->assertArrayHasKey('id', $actual);
         $this->assertArrayHasKey('mock_sub', $actual);
+    }
+    public function testUpdateTypeConditionsValidate()
+    {
+
+        $mockMock = $this->mockMock;
+        // change datetime to now
+        $mockMock['a_datetime'] = '.';
+        // change another datetime to JS date
+        $mockMock['mock_sub'][0]['a_datetime'] = '2021-06-12T12:30:00 GMT+0200 (CEST)';
+        $this->dbMock->mockUpdate('mock', $this->mockMock);
+
+        $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
+        $actual = $transform->update($mockMock);
+        $this->assertArrayHasKey('id', $actual);
+
 
     }
     public function testUpdateAddedSub()
@@ -102,6 +124,28 @@ class TransformTest extends TestCase
         $transform = new Transform('mock', new DatabaseWrapper(), $this->mockStructure);
         $this->expectException(\Exception::class);
         $transform->find(['mock_unknown.mock_unknown' => '123456789']);
+    }
+    public function testFindShortHand()
+    {
+        $this->dbMock->registerResult([]);
+        $this->dbMock->mockGet('mock');
+        $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
+        $try = $transform->find(['^mock_sub.id']);
+        $this->assertEmpty($try);
+    }
+    public function testFindShallow()
+    {
+        $this->dbMock->registerResult([['id' => '123']]);
+        $this->dbMock->mockGet('mock');
+        $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
+        $try = $transform->find(['an_int' => 1]);
+        $this->assertIsArray($try);
+    }
+    public function testFindShallowFail()
+    {
+        $transform = new Transform('mock', $this->dbMock, $this->mockStructure);
+        $this->expectException(\Exception::class);
+        $try = $transform->find(['unknown' => 1]);
     }
 
     public function testDelete()
