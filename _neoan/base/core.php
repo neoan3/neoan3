@@ -34,5 +34,9 @@ Core\Event::dispatch('Core::beforeInit', ['component' => $route->call]);
 $r = new ReflectionWrapper($consumer, 'init');
 $r->dispatchAttributes(__NAMESPACE__);
 $run = new $consumer;
-$run->init();
+$returns = $run->init();
+if($returns){
+    echo "<pre>";
+    print_r($returns);
+}
 
