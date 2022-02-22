@@ -11,7 +11,7 @@
 
 Rapid development, light-weight, lightning-fast, beginner-friendly yet limitlessly powerful? 
 
-THE MVC framework neoan3 is all that and more. 
+THE awesome MVC framework neoan3 is all that and more. 
 
 [See documentation](http://neoan3.rocks/getting-started/)
 
